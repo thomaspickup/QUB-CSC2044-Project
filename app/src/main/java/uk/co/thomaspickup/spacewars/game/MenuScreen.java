@@ -27,7 +27,6 @@ public class MenuScreen extends GameScreen {
 	 * Define the trigger touch region for playing the 'games'
 	 */
 	private Rect mSpaceShipDemoBound;
-	private Rect mPlatformDemoBound;
 
 	/**
 	 * Create a simple menu screen
@@ -93,10 +92,8 @@ public class MenuScreen extends GameScreen {
 
 		// Get and draw the bitmaps into the defined rectangles
 		Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
-		Bitmap playPlatformGame = mGame.getAssetManager().getBitmap("PlatformIcon");
 
 		graphics2D.clear(Color.WHITE);
 		graphics2D.drawBitmap(playSpaceShipGame, null, mSpaceShipDemoBound,null);
-		graphics2D.drawBitmap(playPlatformGame, null, mPlatformDemoBound, null);
 	}
 }
