@@ -41,17 +41,12 @@ public class MenuScreen extends GameScreen {
 		// Load in the bitmap used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("SpaceshipIcon", "img/Spaceship1.png");
-		assetManager.loadAndAddBitmap("PlatformIcon", "img/Platform.png");
 
-		// Load in the demo icons
-		assetManager.loadAndAddBitmap("AlphaBlendingIcon", "img/demos/alphaBlending/Icon.png");
-		assetManager.loadAndAddBitmap("GraphicsManipulationIcon", "img/demos/graphicsManipulation/Icon.png");
 
 		// Define the rects what will be used to 'hold' the images
 		int spacingX = game.getScreenWidth() / 6;
 		int spacingY = game.getScreenHeight() / 3;
 		mSpaceShipDemoBound = new Rect(spacingX, spacingY, 2 * spacingX, 2 * spacingY);
-		mPlatformDemoBound = new Rect(4 * spacingX, spacingY, 5 * spacingX, 2 * spacingY);
 	}
 
 	/*
@@ -82,16 +77,6 @@ public class MenuScreen extends GameScreen {
 				SteeringDemoGameScreen steeringDemoGameScreen = new SteeringDemoGameScreen(mGame);
 				// As it's the only added screen it will become active.
 				mGame.getScreenManager().addScreen(steeringDemoGameScreen);
-			}
-
-			else if (mPlatformDemoBound.contains((int) touchEvent.x,
-					(int) touchEvent.y)) {
-				// If the play game area has been touched then swap screens
-				mGame.getScreenManager().removeScreen(this.getName());
-				CollisionDemoGameScreen collisionDemoGameScreen = new CollisionDemoGameScreen(mGame);
-				// As it's the only added screen it will become active.
-				mGame.getScreenManager().addScreen(collisionDemoGameScreen);
-
 			}
 		}
 	}
