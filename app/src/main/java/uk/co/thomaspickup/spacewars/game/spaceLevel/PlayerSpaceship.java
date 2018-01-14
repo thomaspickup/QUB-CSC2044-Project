@@ -1,4 +1,4 @@
-package uk.co.thomaspickup.spacewars.game.spaceDemo;
+package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 import uk.co.thomaspickup.spacewars.gage.ai.SteeringBehaviours;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;

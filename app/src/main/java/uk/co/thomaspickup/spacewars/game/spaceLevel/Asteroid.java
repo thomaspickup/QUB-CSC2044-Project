@@ -1,4 +1,4 @@
-package uk.co.thomaspickup.spacewars.game.spaceDemo;
+package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 import java.util.Random;
 

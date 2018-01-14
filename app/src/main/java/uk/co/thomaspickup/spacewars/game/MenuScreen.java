@@ -13,8 +13,7 @@ import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
-import uk.co.thomaspickup.spacewars.game.platformDemo.CollisionDemoGameScreen;
-import uk.co.thomaspickup.spacewars.game.spaceDemo.SteeringDemoGameScreen;
+import uk.co.thomaspickup.spacewars.game.spaceLevel.SteeringDemoGameScreen;
 
 /**
  * An exceedingly basic menu screen with a couple of touch area
