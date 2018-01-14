@@ -43,9 +43,9 @@ public class MenuScreen extends GameScreen {
 
 
 		// Define the rects what will be used to 'hold' the images
-		int spacingX = game.getScreenWidth() / 6;
+		int spacingX = game.getScreenWidth() / 4;
 		int spacingY = game.getScreenHeight() / 3;
-		mSpaceShipDemoBound = new Rect(spacingX, spacingY, 2 * spacingX, 2 * spacingY);
+		mSpaceShipDemoBound = new Rect(spacingX, spacingY, 3 * spacingX, 2 * spacingY);
 	}
 
 	/*
