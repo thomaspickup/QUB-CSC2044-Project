@@ -5,7 +5,7 @@ import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 
 /**
- * Game screen class acting as a container for a coherent section of the game (a
+ * SpaceGame screen class acting as a container for a coherent section of the game (a
  * level, configuration screen, etc.).
  * 
  * @version 1.0
@@ -31,14 +31,14 @@ public abstract class GameScreen {
 	}
 
 	/**
-	 * Game to which game screen belongs
+	 * SpaceGame to which game screen belongs
 	 */
 	protected final Game mGame;
 
 	/**
 	 * Return the game to which this game screen is attached
 	 * 
-	 * @return Game to which screen is attached
+	 * @return SpaceGame to which screen is attached
 	 */
 	public Game getGame() {
 		return mGame;
@@ -52,7 +52,7 @@ public abstract class GameScreen {
 	 * Create a new game screen associated with the specified game instance
 	 * 
 	 * @param game
-	 *            Game instance to which the game screen belongs
+	 *            SpaceGame instance to which the game screen belongs
 	 */
 	public GameScreen(String name, Game game) {
 		mName = name;

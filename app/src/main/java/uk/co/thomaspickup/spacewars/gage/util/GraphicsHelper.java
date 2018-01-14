@@ -21,7 +21,7 @@ public final class GraphicsHelper {
 	 * The return rects are not clipped against the screen viewport.
 	 * 
 	 * @param gameObject
-	 *            Game object instance to be considered
+	 *            SpaceGame object instance to be considered
 	 * @param layerViewport
 	 *            Layer viewport region to check the entity against
 	 * @param screenViewport
@@ -81,7 +81,7 @@ public final class GraphicsHelper {
 	 * The returned Rects are clipped against the layer and screen viewport
 	 * 
 	 * @param gameObject
-	 *            Game object instance to be considered
+	 *            SpaceGame object instance to be considered
 	 * @param layerViewport
 	 *            Layer viewport region to check the entity against
 	 * @param screenViewport
@@ -171,7 +171,7 @@ public final class GraphicsHelper {
 	/**
 	 * Create a 3:2 aspect ratio screen viewport
 	 * 
-	 * @param game Game view for which the screenport will be defined
+	 * @param game SpaceGame view for which the screenport will be defined
 	 * @param screenPort Screen viewport to be defined
 	 */
 	public static void create3To2AspectRatioScreenViewport(

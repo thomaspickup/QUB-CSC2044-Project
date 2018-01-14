@@ -64,7 +64,7 @@ public class SteeringDemoGameScreen extends GameScreen {
 	 * Create a simple steering game world
 	 * 
 	 * @param game
-	 *            Game to which this screen belongs
+	 *            SpaceGame to which this screen belongs
 	 */
 	public SteeringDemoGameScreen(Game game) {
 		super("SteeringDemoGameScreen", game);

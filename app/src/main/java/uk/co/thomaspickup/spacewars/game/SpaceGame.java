@@ -12,19 +12,19 @@ import uk.co.thomaspickup.spacewars.gage.Game;
  * 
  * @version 1.0
  */
-public class DemoGame extends Game {
+public class SpaceGame extends uk.co.thomaspickup.spacewars.gage.Game {
 
 	/**
 	 * Create a new demo game
 	 */
-	public DemoGame() {
+	public SpaceGame() {
 		super();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see uk.ac.qub.eeecs.gage.Game#onCreate(android.os.Bundle)
+	 * @see uk.ac.qub.eeecs.gage.SpaceGame#onCreate(android.os.Bundle)
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class DemoGame extends Game {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 
-		// Call the Game's onCreateView to get the view to be returned.
+		// Call the SpaceGame's onCreateView to get the view to be returned.
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		// Create and add a stub game screen to the screen manager. We don't

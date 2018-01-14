@@ -78,7 +78,7 @@ public class AlphaBlendingGameScreen extends GameScreen {
     /**
      * Create an alpha blending demo
      *
-     * @param game Game to which this screen belongs
+     * @param game SpaceGame to which this screen belongs
      */
     public AlphaBlendingGameScreen(Game game) {
         super("AlphaBlendingGameScreen", game);

@@ -83,7 +83,7 @@ public class GraphicsManipulationGameScreen extends GameScreen {
     /**
      * Create an alpha blending demo
      *
-     * @param game Game to which this screen belongs
+     * @param game SpaceGame to which this screen belongs
      */
     public GraphicsManipulationGameScreen(Game game) {
         super("AlphaBlendingGameScreen", game);

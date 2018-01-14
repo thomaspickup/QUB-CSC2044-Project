@@ -1,8 +1,8 @@
 package uk.co.thomaspickup.spacewars.gage;
 
-import uk.co.thomaspickup.spacewars.game.DemoGame;
+import uk.co.thomaspickup.spacewars.game.SpaceGame;
+
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Window;
@@ -16,9 +16,9 @@ import android.view.WindowManager;
 public class MainActivity extends Activity {
 
     /**
-     * Game fragment instance
+     * SpaceGame fragment instance
      */
-    private Game mGame;
+    private uk.co.thomaspickup.spacewars.gage.Game mGame;
 
     /*
      * (non-Javadoc)
@@ -43,10 +43,10 @@ public class MainActivity extends Activity {
 
         // Add in the main game fragment
         FragmentManager fm = getFragmentManager();
-        mGame = (Game)fm.findFragmentById(R.id.activity_fragment_id);
+        mGame = (uk.co.thomaspickup.spacewars.gage.Game)fm.findFragmentById(R.id.activity_fragment_id);
 
         if (mGame == null) {
-            mGame = new DemoGame();
+            mGame = new SpaceGame();
             fm.beginTransaction().add(R.id.activity_fragment_id, mGame)
                     .commit();
         }

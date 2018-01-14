@@ -11,7 +11,7 @@ import uk.co.thomaspickup.spacewars.gage.util.GraphicsHelper;
 import uk.co.thomaspickup.spacewars.gage.util.Vector2;
 
 /**
- * Game object superclass
+ * SpaceGame object superclass
  * 
  * @version 1.0
  */
@@ -22,7 +22,7 @@ public class GameObject {
 	// /////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Game screen to which this game object belongs
+	 * SpaceGame screen to which this game object belongs
 	 */
 	protected GameScreen mGameScreen;
 
@@ -175,7 +175,7 @@ public class GameObject {
 	 * @param graphics2D
 	 *            Graphics instance
 	 * @param layerViewport
-	 *            Game layer viewport
+	 *            SpaceGame layer viewport
 	 * @param screenViewport
 	 *            Screen viewport
 	 */
@@ -196,7 +196,7 @@ public class GameObject {
 	 * @param graphics2D
 	 *            Graphics instance
 	 * @param layerViewport
-	 *            Game layer viewport
+	 *            SpaceGame layer viewport
 	 * @param screenViewport
 	 *            Screen viewport
 	 * @param paint

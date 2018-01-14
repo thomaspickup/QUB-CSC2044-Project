@@ -31,7 +31,7 @@ public class MenuScreen extends GameScreen {
 	 * Create a simple menu screen
 	 * 
 	 * @param game
-	 *            Game to which this screen belongs
+	 *            SpaceGame to which this screen belongs
 	 */
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);

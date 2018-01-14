@@ -141,11 +141,11 @@ public abstract class Game extends Fragment {
 	
 	
 	// /////////////////////////////////////////////////////////////////////////
-	// Properties: Game Loop
+	// Properties: SpaceGame Loop
 	// /////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Game loop thread
+	 * SpaceGame loop thread
 	 */
 	private GameLoop mLoop;
 
@@ -336,7 +336,7 @@ public abstract class Game extends Fragment {
 
 	/**
 	 * Notify the game loop that the update has completed. This method is in
-	 * invoked automatically once control has returned from the Game update()
+	 * invoked automatically once control has returned from the SpaceGame update()
 	 * method.
 	 */
 	public void notifyUpdateCompleted() {
@@ -351,7 +351,7 @@ public abstract class Game extends Fragment {
 	 */
 	private void doDraw(ElapsedTime elapsedTime) {
 		// Get and draw the current screen. The render surface will
-		// invoked Game.notifyDrawCompleted when the draw is done.
+		// invoked SpaceGame.notifyDrawCompleted when the draw is done.
 		GameScreen gameScreen = mScreenManager.getCurrentScreen();
 		if (gameScreen != null)
 			mRenderSurface.render(elapsedTime, gameScreen);
@@ -366,7 +366,7 @@ public abstract class Game extends Fragment {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Game Loop
+	// SpaceGame Loop
 	// /////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -412,7 +412,7 @@ public abstract class Game extends Fragment {
 
 		/**
 		 * Variable holding the duration (in ns) of the target game step period.
-		 * Changes to the Game's mTargetUpdatesPerSecond will change this value.
+		 * Changes to the SpaceGame's mTargetUpdatesPerSecond will change this value.
 		 */
 		long targetStepPeriod;
 		

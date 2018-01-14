@@ -32,7 +32,7 @@ public class CanvasRenderSurface extends View implements IRenderSurface {
 	private CanvasGraphics2D mCanvasGraphics2D;
 
 	/**
-	 * Game instance to which this render surface belongs
+	 * SpaceGame instance to which this render surface belongs
 	 */
 	protected Game mGame;
 
@@ -61,7 +61,7 @@ public class CanvasRenderSurface extends View implements IRenderSurface {
 	 * context
 	 * 
 	 * @param game
-	 *            Game which will use this render surface
+	 *            SpaceGame which will use this render surface
 	 * @param context
 	 *            Context onto which the surface will be rendered
 	 */
