@@ -93,6 +93,7 @@ public class SpaceLevelScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("Spaceship2", "img/Spaceship2.png");
 		assetManager.loadAndAddBitmap("Spaceship3", "img/Spaceship3.png");
 		assetManager.loadAndAddBitmap("Turret", "img/Turret.png");
+		assetManager.loadAndAddBitmap("PauseButton", "img/Pause.png");
 
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
