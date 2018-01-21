@@ -112,9 +112,12 @@ public class SpaceLevelScreen extends GameScreen {
 		// Create a number of randomly positioned asteroids
 		Random random = new Random();
 		mAsteroids = new ArrayList<Asteroid>(NUM_ASTEROIDS);
-		for (int idx = 0; idx < NUM_ASTEROIDS; idx++)
-			mAsteroids.add(new Asteroid(random.nextFloat() * LEVEL_WIDTH,
-					random.nextFloat() * LEVEL_HEIGHT, this));
+		for (int idx = 0; idx < NUM_ASTEROIDS; idx++) {
+			float x = random.nextFloat() * LEVEL_WIDTH;
+			float y = random.nextFloat() * LEVEL_HEIGHT;
+
+			mAsteroids.add(new Asteroid(x, y, this));
+		}
 
 		// Create a number of randomly positioned AI controlled ships
 		mAISpaceships = new ArrayList<AISpaceship>(NUM_SEEKERS + NUM_TURRETS);
@@ -122,10 +125,40 @@ public class SpaceLevelScreen extends GameScreen {
 			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
 					random.nextFloat() * LEVEL_HEIGHT,
 					AISpaceship.ShipBehaviour.Seeker, this));
-		for (int idx = 0; idx < NUM_TURRETS; idx++)
-			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
-					random.nextFloat() * LEVEL_HEIGHT,
-					AISpaceship.ShipBehaviour.Turret, this));
+
+		// Positions Turrets
+		for (int idx = 0; idx < NUM_TURRETS; idx++) {
+			// Problem -
+			// Turrets being overlayed on Asteroids
+			// Solution -
+			// Added in code to check whether a turret is going
+			// to be put within 50px of an asteroid. If so
+			// recalculate coordinates.
+			boolean valid = false;
+			float x, y;
+
+			do {
+				valid = true;
+				x = random.nextFloat() * LEVEL_WIDTH;
+				y = random.nextFloat() * LEVEL_HEIGHT;
+
+				for (Asteroid asteroid : mAsteroids) {
+					float asX = asteroid.getBound().x;
+					float asY = asteroid.getBound().y;
+
+					// Check if in X Realm
+					if (!(asX >+ x + 50.0f || asX <= x + 50.0f)) {
+						valid = false;
+					}
+
+					if (!(asY >= y + 50.0f || asY <= x + 50.0f)) {
+						valid = false;
+					}
+				}
+			} while (valid = false);
+
+			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this));
+		}
 
 	}
 
