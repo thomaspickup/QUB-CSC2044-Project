@@ -44,7 +44,7 @@ public class PlayerSpaceship extends Sprite {
 	 */
 	public PlayerSpaceship(float startX, float startY, GameScreen gameScreen) {
 		super(startX, startY, 50.0f, 50.0f, gameScreen.getGame()
-				.getAssetManager().getBitmap("Spaceship1"), gameScreen);
+				.getAssetManager().getBitmap("Spaceship2"), gameScreen);
 
 		// Store the centre of the screen
 		screenCentre.x = gameScreen.getGame().getScreenWidth() / 2;

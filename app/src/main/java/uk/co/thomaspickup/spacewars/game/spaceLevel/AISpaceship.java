@@ -72,7 +72,7 @@ public class AISpaceship extends Sprite {
 			maxVelocity = 50.0f;
 			maxAngularVelocity = 150.0f;
 			maxAngularAcceleration = 300.0f;
-			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship2");
+			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship1");
 			break;
 		}
 	}
