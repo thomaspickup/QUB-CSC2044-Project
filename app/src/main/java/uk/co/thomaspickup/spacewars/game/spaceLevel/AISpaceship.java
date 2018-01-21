@@ -54,7 +54,7 @@ public class AISpaceship extends Sprite {
 	 *            Gamescreen to which AI belongs
 	 */
 	public AISpaceship(float startX, float startY, ShipBehaviour shipBehaviour,
-			SteeringDemoGameScreen gameScreen) {
+			SpaceLevelScreen gameScreen) {
 		super(startX, startY, 50.0f, 50.0f, null, gameScreen);
 
 		mShipBehaviour = shipBehaviour;
@@ -96,29 +96,29 @@ public class AISpaceship extends Sprite {
 			// Turn towards the player
 			angularAcceleration = 
 				SteeringBehaviours.lookAt(this, 
-						((SteeringDemoGameScreen) mGameScreen).getPlayerSpaceship().position);
+						((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position);
 			break;
 		case Seeker:
 			// Seek towards the player
 			SteeringBehaviours.seek(this, 
-					((SteeringDemoGameScreen) mGameScreen).getPlayerSpaceship().position, 
+					((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position,
 					acceleration);
 
 			// Try to avoid a collision with the playership
 			SteeringBehaviours.separate(this, 
-					((SteeringDemoGameScreen) mGameScreen).getPlayerSpaceship(), 
+					((SpaceLevelScreen) mGameScreen).getPlayerSpaceship(),
 					separateThresholdShip, 1.0f, accComponent);
 			accAccumulator.set(accComponent);
 			
 			// Try to avoid a collision with the other spaceships			
 			SteeringBehaviours.separate(this,
-					((SteeringDemoGameScreen) mGameScreen).getAISpaceships(),
+					((SpaceLevelScreen) mGameScreen).getAISpaceships(),
 					separateThresholdShip, 1.0f, accComponent);
 			accAccumulator.add(accComponent);
 			
 			// Try to avoid a collision with the asteroids
 			SteeringBehaviours.separate(this,
-					((SteeringDemoGameScreen) mGameScreen).getAsteroids(),
+					((SpaceLevelScreen) mGameScreen).getAsteroids(),
 					separateThresholdAsteroid, 1.0f, accComponent);
 			accAccumulator.add(accComponent);
 

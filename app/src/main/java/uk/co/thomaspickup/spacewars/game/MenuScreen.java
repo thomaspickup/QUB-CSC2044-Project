@@ -13,7 +13,7 @@ import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
-import uk.co.thomaspickup.spacewars.game.spaceLevel.SteeringDemoGameScreen;
+import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 /**
  * An exceedingly basic menu screen with a couple of touch area
@@ -72,9 +72,9 @@ public class MenuScreen extends GameScreen {
 					(int) touchEvent.y)) {
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
-				SteeringDemoGameScreen steeringDemoGameScreen = new SteeringDemoGameScreen(mGame);
+				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
 				// As it's the only added screen it will become active.
-				mGame.getScreenManager().addScreen(steeringDemoGameScreen);
+				mGame.getScreenManager().addScreen(spaceLevelScreen);
 			}
 		}
 	}

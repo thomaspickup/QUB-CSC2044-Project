@@ -21,7 +21,7 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  * 
  * @version 1.0
  */
-public class SteeringDemoGameScreen extends GameScreen {
+public class SpaceLevelScreen extends GameScreen {
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Properties
@@ -66,8 +66,8 @@ public class SteeringDemoGameScreen extends GameScreen {
 	 * @param game
 	 *            SpaceGame to which this screen belongs
 	 */
-	public SteeringDemoGameScreen(Game game) {
-		super("SteeringDemoGameScreen", game);
+	public SpaceLevelScreen(Game game) {
+		super("SpaceLevelScreen", game);
 
 		// Create the screen viewport
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
