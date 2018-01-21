@@ -42,7 +42,7 @@ public class SteeringBehaviours {
 	 * Store an acceleration vector for the specified body away from the
 	 * specified target position
 	 * 
-	 * @param seekingSprite
+	 * @param fleeingSprite
 	 *            Fleeing sprite
 	 * @param targetPosition
 	 *            Target position
