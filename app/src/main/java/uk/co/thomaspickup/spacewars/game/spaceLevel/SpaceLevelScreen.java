@@ -47,6 +47,8 @@ public class SpaceLevelScreen extends GameScreen {
 	
 	private GameObject mSpaceBackground;
 
+	private GameObject mPauseButton;
+
 	private PlayerSpaceship mPlayerSpaceship;
 
 	private final int NUM_ASTEROIDS = 20;
@@ -99,6 +101,10 @@ public class SpaceLevelScreen extends GameScreen {
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
 				LEVEL_HEIGHT / 2.0f, LEVEL_WIDTH, LEVEL_HEIGHT, getGame()
 						.getAssetManager().getBitmap("SpaceBackground"), this);
+
+		// Creates the pause button
+		mPauseButton = new GameObject(20.0f, 20.0f, 100.0f, 100.0f,
+				getGame().getAssetManager().getBitmap("PauseButton"), this);
 
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
@@ -223,6 +229,10 @@ public class SpaceLevelScreen extends GameScreen {
 
 		// Draw the background first of all
 		mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
+				mScreenViewport);
+
+		// Draws the Pause Button
+		mPauseButton.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
 
 		// Draw each of the asteroids
