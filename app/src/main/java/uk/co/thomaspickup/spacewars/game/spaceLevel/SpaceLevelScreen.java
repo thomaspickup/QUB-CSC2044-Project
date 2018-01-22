@@ -48,7 +48,7 @@ public class SpaceLevelScreen extends GameScreen {
 	
 	private GameObject mSpaceBackground;
 
-	private ReleaseButton mPauseButton;
+	private PauseButton mPauseButton;
 
 	private PlayerSpaceship mPlayerSpaceship;
 
@@ -105,7 +105,7 @@ public class SpaceLevelScreen extends GameScreen {
 						.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseButton = new ReleaseButton(50.0f, 50.0f, 100.0f, 100.0f,
+		mPauseButton = new PauseButton(50.0f, 50.0f, 100.0f, 100.0f,
 				"PauseButtonWhite", "PauseButtonBlack", this);
 
 		// Create the player spaceship
