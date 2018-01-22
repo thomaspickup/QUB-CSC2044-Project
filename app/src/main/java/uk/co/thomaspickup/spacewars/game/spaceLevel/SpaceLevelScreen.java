@@ -208,6 +208,8 @@ public class SpaceLevelScreen extends GameScreen {
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
+		// Update Pause Button
+		mPauseButton.update(elapsedTime);
 
 		// Update the player spaceship
 		mPlayerSpaceship.update(elapsedTime);
