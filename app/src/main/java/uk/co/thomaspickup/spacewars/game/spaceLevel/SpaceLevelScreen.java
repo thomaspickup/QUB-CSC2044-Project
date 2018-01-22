@@ -10,6 +10,7 @@ import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
+import uk.co.thomaspickup.spacewars.gage.ui.ReleaseButton;
 import uk.co.thomaspickup.spacewars.gage.util.BoundingBox;
 import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
@@ -47,7 +48,7 @@ public class SpaceLevelScreen extends GameScreen {
 	
 	private GameObject mSpaceBackground;
 
-	private GameObject mPauseButton;
+	private ReleaseButton mPauseButton;
 
 	private PlayerSpaceship mPlayerSpaceship;
 
@@ -95,7 +96,8 @@ public class SpaceLevelScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("Spaceship2", "img/Spaceship2.png");
 		assetManager.loadAndAddBitmap("Spaceship3", "img/Spaceship3.png");
 		assetManager.loadAndAddBitmap("Turret", "img/Turret.png");
-		assetManager.loadAndAddBitmap("PauseButton", "img/Pause.png");
+		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/PauseWhite.png");
+		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/PauseBlack.png");
 
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
@@ -103,8 +105,8 @@ public class SpaceLevelScreen extends GameScreen {
 						.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseButton = new GameObject(20.0f, 20.0f, 100.0f, 100.0f,
-				getGame().getAssetManager().getBitmap("PauseButton"), this);
+		mPauseButton = new ReleaseButton(50.0f, 50.0f, 100.0f, 100.0f,
+				"PauseButtonWhite", "PauseButtonBlack", this);
 
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
@@ -264,10 +266,6 @@ public class SpaceLevelScreen extends GameScreen {
 		mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
 
-		// Draws the Pause Button
-		mPauseButton.draw(elapsedTime, graphics2D, mLayerViewport,
-				mScreenViewport);
-
 		// Draw each of the asteroids
 		for (Asteroid asteroid : mAsteroids)
 			asteroid.draw(elapsedTime, graphics2D, mLayerViewport,
@@ -280,6 +278,10 @@ public class SpaceLevelScreen extends GameScreen {
 
 		// Draw the player
 		mPlayerSpaceship.draw(elapsedTime, graphics2D, mLayerViewport,
+				mScreenViewport);
+
+		// Draws the Pause Button
+		mPauseButton.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
 	}
 }
