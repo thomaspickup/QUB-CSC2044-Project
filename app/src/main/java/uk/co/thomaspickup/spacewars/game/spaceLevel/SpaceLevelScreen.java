@@ -10,7 +10,6 @@ import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
-import uk.co.thomaspickup.spacewars.gage.ui.ReleaseButton;
 import uk.co.thomaspickup.spacewars.gage.util.BoundingBox;
 import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
@@ -48,7 +47,9 @@ public class SpaceLevelScreen extends GameScreen {
 	
 	private GameObject mSpaceBackground;
 
+	// Pause Button
 	private PauseButton mPauseButton;
+	private Boolean isPaused;
 
 	private PlayerSpaceship mPlayerSpaceship;
 
@@ -211,6 +212,21 @@ public class SpaceLevelScreen extends GameScreen {
 		// Update Pause Button
 		mPauseButton.update(elapsedTime);
 
+		/*
+			Checks if the game is paused:
+				If it is it resumes and sets isPaused to False
+				If it isn't it pauses and sets isPaused to True
+		 */
+		if (mPauseButton.pushTriggered()) {
+			if (!isPaused) {
+				this.pause();
+				isPaused = true;
+			} else {
+				this.resume();
+				isPaused = false;
+			}
+		}
+
 		// Update the player spaceship
 		mPlayerSpaceship.update(elapsedTime);
 
@@ -285,5 +301,9 @@ public class SpaceLevelScreen extends GameScreen {
 		// Draws the Pause Button
 		mPauseButton.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
+	}
+
+	public void onPausePressed() {
+
 	}
 }

@@ -606,6 +606,9 @@ public abstract class Game extends Fragment {
 			running = false;
 			while (true) {
 				try {
+					draw.isLocked = true;
+					update.isLocked = false;
+
 					renderThread.join();
 					return;
 				} catch (InterruptedException e) {
