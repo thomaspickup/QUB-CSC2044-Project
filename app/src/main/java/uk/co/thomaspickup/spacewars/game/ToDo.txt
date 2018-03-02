@@ -3,8 +3,10 @@
  - Start Button
  - Options
  - Close Button
- - Pause
-- AI Difficulty (Fire Power?)
-- Weapon Firing
+ - Moving Background
+ - Sound?
+ - Pause Menu
+- AI Difficulty (Fire Power? Speed?)
+- Weapon Firing (Lasers)
 - Health Bar
 - Lives?
