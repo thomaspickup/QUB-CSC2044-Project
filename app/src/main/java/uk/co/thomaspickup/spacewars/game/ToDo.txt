@@ -1,0 +1,10 @@
+// To Do List \\
+- Menu
+ - Start Button
+ - Options
+ - Close Button
+ - Pause
+- AI Difficulty (Fire Power?)
+- Weapon Firing
+- Health Bar
+- Lives?
