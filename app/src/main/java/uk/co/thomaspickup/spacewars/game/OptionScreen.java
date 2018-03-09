@@ -20,6 +20,8 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
  */
 
 public class OptionScreen extends GameScreen {
+
+
     /**
      * Create a simple options screen
      *

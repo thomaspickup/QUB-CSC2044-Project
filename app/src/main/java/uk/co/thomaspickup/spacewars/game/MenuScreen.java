@@ -25,7 +25,7 @@ public class MenuScreen extends GameScreen {
 	/**
 	 * Define the trigger touch region for playing the 'games'
 	 */
-	private Rect mSpaceShipDemoBound;
+	private Rect mPlayButtonBound;
 
 	/**
 	 * Create a simple menu screen
@@ -38,13 +38,13 @@ public class MenuScreen extends GameScreen {
 
 		// Load in the bitmap used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("SpaceshipIcon", "img/Spaceship1.png");
-
+		assetManager.loadAndAddBitmap("PlayIcon", "img/play.png");
 
 		// Define the rects what will be used to 'hold' the images
-		int spacingX = game.getScreenWidth() / 4;
-		int spacingY = game.getScreenHeight() / 3;
-		mSpaceShipDemoBound = new Rect(spacingX, spacingY, 3 * spacingX, 2 * spacingY);
+		int spacingX = (game.getScreenWidth() / 5) * 2;
+		int spacingY = (game.getScreenHeight() / 6) * 2;
+		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX * 2, spacingY);
+
 	}
 
 	/*
@@ -68,7 +68,7 @@ public class MenuScreen extends GameScreen {
 			// trigger a 'button', but, hey, it's an exceedingly basic menu.
 			TouchEvent touchEvent = touchEvents.get(0);
 
-			if (mSpaceShipDemoBound.contains((int) touchEvent.x,
+			if (mPlayButtonBound.contains((int) touchEvent.x,
 					(int) touchEvent.y)) {
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
@@ -90,9 +90,10 @@ public class MenuScreen extends GameScreen {
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
 
 		// Get and draw the bitmaps into the defined rectangles
-		Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
+		//Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
+		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
 
-		graphics2D.clear(Color.WHITE);
-		graphics2D.drawBitmap(playSpaceShipGame, null, mSpaceShipDemoBound,null);
+		graphics2D.clear(Color.BLACK);
+		graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
 	}
 }
