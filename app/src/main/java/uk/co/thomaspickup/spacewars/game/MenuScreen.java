@@ -28,6 +28,7 @@ public class MenuScreen extends GameScreen {
 	 */
 	private Rect mPlayButtonBound;
 	private Rect mSettingsButtonBound;
+	private Rect mTitleBound;
 
 	/**
 	 * Creates the menu screens
@@ -42,12 +43,19 @@ public class MenuScreen extends GameScreen {
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("PlayIcon", "img/PlayButton.png");
 		assetManager.loadAndAddBitmap("SettingsIcon", "img/SettingsButton.png");
+		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
 
-		// Define the rects what will be used to 'hold' the images
+		// Defines the Title Image Rect
 		int spacingX = (game.getScreenWidth() / 2) - 230;
-		int spacingY = (game.getScreenHeight() / 2) - 100;
+		int spacingY = 200;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+560, spacingY + 200);
+
+		// Defines the Play Button Image Rect
+		spacingX = (game.getScreenWidth() / 2) - 230;
+		spacingY = (game.getScreenHeight() / 2) - 100;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + 560 , spacingY +300);
 
+		// Defines the Settings Cog Rect
 		spacingY = spacingY + 340;
 		spacingX = spacingX + 160;
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + 230, spacingY + 230);
@@ -99,11 +107,12 @@ public class MenuScreen extends GameScreen {
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
 
 		// Get and draw the bitmaps into the defined rectangles
-		//Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
+		Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
 		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
 		Bitmap settingsIcon = mGame.getAssetManager().getBitmap("SettingsIcon");
 
 		graphics2D.clear(Color.BLACK);
+		graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
 		graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
 		graphics2D.drawBitmap(settingsIcon, null, mSettingsButtonBound, null);
 	}
