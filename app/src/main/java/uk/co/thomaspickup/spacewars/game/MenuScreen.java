@@ -16,7 +16,8 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 /**
- * An exceedingly basic menu screen with a couple of touch area
+ * The main menu of the Space Wars Game
+ * It links to the game as well as an options menus
  * 
  * @version 1.0
  */
@@ -29,10 +30,10 @@ public class MenuScreen extends GameScreen {
 	private Rect mSettingsButtonBound;
 
 	/**
-	 * Create a simple menu screen
+	 * Creates the menu screens
 	 * 
 	 * @param game
-	 *            SpaceGame to which this screen belongs
+	 *            SpaceGasme to which this screen belongs
 	 */
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);
@@ -67,14 +68,10 @@ public class MenuScreen extends GameScreen {
 
 		List<TouchEvent> touchEvents = input.getTouchEvents();
 		if (touchEvents.size() > 0) {
-
-			// Just check the first touch event that occurred in the frame.
-			// It means pressing the screen with several fingers may not
-			// trigger a 'button', but, hey, it's an exceedingly basic menu.
 			TouchEvent touchEvent = touchEvents.get(0);
 
 			if (mPlayButtonBound.contains((int) touchEvent.x,
-					(int) touchEvent.y)) {
+					(int) touchEvent.y)) {s
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
 				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
