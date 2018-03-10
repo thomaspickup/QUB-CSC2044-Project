@@ -71,7 +71,7 @@ public class MenuScreen extends GameScreen {
 			TouchEvent touchEvent = touchEvents.get(0);
 
 			if (mPlayButtonBound.contains((int) touchEvent.x,
-					(int) touchEvent.y)) {s
+					(int) touchEvent.y)) {
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
 				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
