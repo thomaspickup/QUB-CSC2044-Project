@@ -105,7 +105,6 @@ public class MenuScreen extends GameScreen {
 	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
-
 		// Get and draw the bitmaps into the defined rectangles
 		Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
 		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");

@@ -1,6 +1,6 @@
 // To Do List \\
 - Menu
- - Start Button
+ - Start Button [-]
  - Options
  - Close Button
  - Moving Background

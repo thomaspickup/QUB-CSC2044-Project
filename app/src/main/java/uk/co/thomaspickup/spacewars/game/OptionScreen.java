@@ -1,8 +1,10 @@
 package uk.co.thomaspickup.spacewars.game;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.content.Context;
 
 import java.util.List;
 
@@ -20,7 +22,11 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
  */
 
 public class OptionScreen extends GameScreen {
-
+    // Difficulty
+    // Easy = 1 = x.5
+    // Medium = 2 = x1
+    // Hard = 3 = x2
+    int currentDifficulty;
 
     /**
      * Create a simple options screen
