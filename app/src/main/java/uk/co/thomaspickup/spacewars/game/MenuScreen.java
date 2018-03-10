@@ -23,9 +23,10 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 public class MenuScreen extends GameScreen {
 
 	/**
-	 * Define the trigger touch region for playing the 'games'
+	 * Define the trigger touch region for navigating to the game or options menu
 	 */
 	private Rect mPlayButtonBound;
+	private Rect mSettingsButtonBound;
 
 	/**
 	 * Create a simple menu screen
@@ -36,15 +37,19 @@ public class MenuScreen extends GameScreen {
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);
 
-		// Load in the bitmap used on the menu screen
+		// Load in the bitmaps used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("PlayIcon", "img/PlayButton.png");
+		assetManager.loadAndAddBitmap("SettingsIcon", "img/SettingsButton.png");
 
 		// Define the rects what will be used to 'hold' the images
-		int spacingX = game.getScreenWidth() / 5;
-		int spacingY = game.getScreenHeight() / 6;
-		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX * 2, spacingY);
+		int spacingX = (game.getScreenWidth() / 2) - 230;
+		int spacingY = (game.getScreenHeight() / 2) - 100;
+		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + 560 , spacingY +300);
 
+		spacingY = spacingY + 340;
+		spacingX = spacingX + 160;
+		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + 230, spacingY + 230);
 	}
 
 	/*
@@ -73,8 +78,15 @@ public class MenuScreen extends GameScreen {
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
 				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
+
 				// As it's the only added screen it will become active.
 				mGame.getScreenManager().addScreen(spaceLevelScreen);
+			} else if (mSettingsButtonBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				// If the settings icon area has been touched then load up options menu
+				mGame.getScreenManager().removeScreen(this.getName());
+				OptionScreen optionScreen = new OptionScreen(mGame);
+
+				mGame.getScreenManager().addScreen(optionScreen);
 			}
 		}
 	}
@@ -92,8 +104,10 @@ public class MenuScreen extends GameScreen {
 		// Get and draw the bitmaps into the defined rectangles
 		//Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
 		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
+		Bitmap settingsIcon = mGame.getAssetManager().getBitmap("SettingsIcon");
 
 		graphics2D.clear(Color.BLACK);
 		graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
+		graphics2D.drawBitmap(settingsIcon, null, mSettingsButtonBound, null);
 	}
 }
