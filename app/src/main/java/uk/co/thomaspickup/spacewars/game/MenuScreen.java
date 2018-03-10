@@ -38,11 +38,11 @@ public class MenuScreen extends GameScreen {
 
 		// Load in the bitmap used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("PlayIcon", "img/play.png");
+		assetManager.loadAndAddBitmap("PlayIcon", "img/PlayButton.png");
 
 		// Define the rects what will be used to 'hold' the images
-		int spacingX = (game.getScreenWidth() / 5) * 2;
-		int spacingY = (game.getScreenHeight() / 6) * 2;
+		int spacingX = game.getScreenWidth() / 5;
+		int spacingY = game.getScreenHeight() / 6;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX * 2, spacingY);
 
 	}
