@@ -9,6 +9,7 @@ import android.content.Context;
 import java.util.List;
 
 import uk.co.thomaspickup.spacewars.gage.Game;
+import uk.co.thomaspickup.spacewars.gage.MainActivity;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
@@ -23,10 +24,14 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 public class OptionScreen extends GameScreen {
     // Difficulty
-    // Easy = 1 = x.5
-    // Medium = 2 = x1
-    // Hard = 3 = x2
-    int currentDifficulty;
+    // Easy = 1
+    // Normal = 2
+    // Hard = 3
+    // Insane = 4
+    int currentDifficultySetting;
+
+    // Create instance of settingsHandler to allow for easy of referencing
+    settingsHandler settings = new settingsHandler();
 
     /**
      * Create a simple options screen
@@ -36,6 +41,8 @@ public class OptionScreen extends GameScreen {
      */
     public OptionScreen(Game game) {
         super("OptionScreen", game);
+
+        currentDifficultySetting = settings.getDifficulty(getGame().getContext());
     }
 
     /*
@@ -47,7 +54,13 @@ public class OptionScreen extends GameScreen {
      */
     @Override
     public void update(ElapsedTime elapsedTime) {
+        // Process any touch events occurring since the update
+        Input input = mGame.getInput();
 
+        List<TouchEvent> touchEvents = input.getTouchEvents();
+        if (touchEvents.size() > 0) {
+
+        }
     }
 
     /*
