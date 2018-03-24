@@ -71,8 +71,8 @@ public class AISpaceship extends Sprite {
 		case Turret:
 			maxAcceleration = 0.0f;
 			maxVelocity = 0.0f;
-			maxAngularVelocity = 50.0f;
-			maxAngularAcceleration = 50.0f;
+			maxAngularVelocity = 50.0f* speedMultiplier;
+			maxAngularAcceleration = 50.0f * speedMultiplier;
 			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Turret");
 			break;
 		case Seeker:
