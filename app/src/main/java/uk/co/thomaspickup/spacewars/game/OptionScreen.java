@@ -4,7 +4,6 @@ package uk.co.thomaspickup.spacewars.game;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
@@ -21,6 +20,8 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
  * - Mute
  */
 public class OptionScreen extends GameScreen {
+    // ~~~~ Vars Start ~~~~
+    // ~~ Current Settings Vars ~~
     // Difficulty
     // Easy = 1
     // Normal = 2
@@ -36,9 +37,20 @@ public class OptionScreen extends GameScreen {
     // Create instance of SettingsHandler to allow for easy of referencing
     SettingsHandler settings = new SettingsHandler();
 
+    // ~~ Bounds for objects on screen ~~
     // Bounds for difficultySettings
     private Rect mEasyBound, mNormalBound, mHardBound, mInsaneBound;
 
+    // Bounds for mute button
+    private Rect mMuteBound;
+
+    // Bounds for back button
+    private Rect mBackButton;
+
+    // Bounds for titles
+    private Rect mMainTitle, mDifficultyTitle, mSoundTitle;
+
+    // ~~~~ Methods Start ~~~~
     /**
      * Create a simple options screen
      *
