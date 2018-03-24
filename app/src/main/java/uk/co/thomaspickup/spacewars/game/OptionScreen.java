@@ -14,10 +14,10 @@ import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 
 /**
- * Created by Thomas Pickup.
  * This screen acts as an options screen where the user can adjust various in game options:
  * - Difficulty
  * - Mute
+ * Created by Thomas Pickup
  */
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~

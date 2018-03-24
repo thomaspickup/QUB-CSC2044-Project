@@ -1,6 +1,8 @@
 package uk.co.thomaspickup.spacewars.game;
 
 /**
+ * This class is used for various functions that are used globally around the game.
+ * Mainly maths based functions
  * Created by thomaspickup on 24/03/2018.
  */
 

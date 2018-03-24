@@ -1,6 +1,8 @@
 package uk.co.thomaspickup.spacewars.game;
 
 /**
+ * This class holds all of the strings that would link to various constants.
+ * I.E. the settings paths are all controlled via this!
  * Created by thomaspickup on 10/03/2018.
  */
 

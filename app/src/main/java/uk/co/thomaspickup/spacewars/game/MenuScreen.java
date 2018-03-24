@@ -3,9 +3,7 @@ package uk.co.thomaspickup.spacewars.game;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-
 import java.util.List;
-
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;

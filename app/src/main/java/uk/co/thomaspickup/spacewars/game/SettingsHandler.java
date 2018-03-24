@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by thomaspickup.
  * This class handles all the settings for the app, both setting them and getting them.
+ * Created by thomaspickup.
  */
 
 public class SettingsHandler {
