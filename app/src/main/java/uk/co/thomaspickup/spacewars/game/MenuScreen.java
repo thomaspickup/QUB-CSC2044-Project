@@ -46,9 +46,9 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
 
 		// Defines the Title Image Rect
-		int spacingX = (game.getScreenWidth() / 2) - 230;
-		int spacingY = 200;
-		mTitleBound = new Rect(spacingX,spacingY, spacingX+560, spacingY + 200);
+		int spacingX = (game.getScreenWidth() / 2) - 560;
+		int spacingY = 30;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
 
 		// Defines the Play Button Image Rect
 		spacingX = (game.getScreenWidth() / 2) - 230;
