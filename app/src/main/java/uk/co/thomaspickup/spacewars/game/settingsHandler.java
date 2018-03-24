@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by thomaspickup on 11/03/2018.
+ * Created by thomaspickup.
+ * This class handles all the settings for the app, both setting them and getting them.
  */
 
 public class settingsHandler {
@@ -104,4 +105,7 @@ public class settingsHandler {
             return false;
         }
     }
+
+    // TODO: Add Set Mute
+    // TODO: Add Get Mute
 }

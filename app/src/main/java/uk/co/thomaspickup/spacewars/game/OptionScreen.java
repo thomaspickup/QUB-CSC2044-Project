@@ -1,14 +1,12 @@
 package uk.co.thomaspickup.spacewars.game;
 
+// Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.nfc.Tag;
 import android.util.Log;
-
 import java.util.List;
-
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.MainActivity;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
@@ -20,9 +18,11 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 /**
- * Created by Thomas Pickup on 09/03/2018.
+ * Created by Thomas Pickup.
+ * This screen acts as an options screen where the user can adjust various in game options:
+ * - Difficulty
+ * - Mute
  */
-
 public class OptionScreen extends GameScreen {
     // Difficulty
     // Easy = 1
@@ -30,6 +30,7 @@ public class OptionScreen extends GameScreen {
     // Hard = 3
     // Insane = 4
     int currentDifficultySetting;
+    boolean gameMuted;
 
     // Create instance of settingsHandler to allow for easy of referencing
     settingsHandler settings = new settingsHandler();
@@ -46,29 +47,44 @@ public class OptionScreen extends GameScreen {
     public OptionScreen(Game game) {
         super("OptionScreen", game);
 
+        // Loads in Current Settings from SharedPreferences
         currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+        // TODO: load in current sound setting
 
-        // TODO: Create Buttons and import them in through the asset manager.
+        // Load in the bitmaps used on the options screen
+        AssetStore assetManager = mGame.getAssetManager();
+        assetManager.loadAndAddBitmap("btnEasy-Normal", "img/buttons/btnEasy-Normal.png");
+        assetManager.loadAndAddBitmap("btnEasy-Selected", "img/buttons/btnEasy-Selected.png");
+        assetManager.loadAndAddBitmap("btnNormal-Normal", "img/buttons/btnNormal-Normal.png");
+        assetManager.loadAndAddBitmap("btnNormal-Selected", "img/buttons/btnNormal-Selected.png");
+        assetManager.loadAndAddBitmap("btnHard-Normal", "img/buttons/btnHard-Normal.png");
+        assetManager.loadAndAddBitmap("btnHard-Selected", "img/buttons/btnHard-Selected.png");
+        assetManager.loadAndAddBitmap("btnInsane-Normal", "img/buttons/btnInsane-Normal.png");
+        assetManager.loadAndAddBitmap("btnInsane-Selected", "img/buttons/btnInsane-Selected.png");
+
         // Sets bounds for the difficulty settings stack
-        // each button 1/10 screen width x
-        // and 150px high
-        int startX = (getGame().getScreenWidth() / 4);
-        int endX = startX + (getGame().getScreenWidth() / 10);
+        // each button 255px width
+        // and 120px high
+        int startX = (getGame().getScreenWidth() / 2) - 525;
+        int endX = startX + 255;
         int startY = (getGame().getScreenHeight() / 3);
-        int endY = startY + 150;
+        int endY = startY + 120;
         mEasyBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + (getGame().getScreenWidth() / 20);
-        endX = startX + (getGame().getScreenWidth() / 10);
+        startX = endX + 10;
+        endX = startX + 255;
         mNormalBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + (getGame().getScreenWidth() / 20);
-        endX = startX + (getGame().getScreenWidth() / 10);
+        startX = endX + 10;
+        endX = startX + 255;
         mHardBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + (getGame().getScreenWidth() / 20);
-        endX = startX + (getGame().getScreenWidth() / 10);
+        startX = endX + 10;
+        endX = startX + 255;
         mInsaneBound = new Rect(startX, startY, endX, endY);
+
+        // TODO: Create bounds for titles and Mute Button
+        // TODO: Create bound for back button
     }
 
     /*
@@ -98,11 +114,9 @@ public class OptionScreen extends GameScreen {
                 settings.setDifficulty(getGame().getContext(), 3);
                 currentDifficultySetting = settings.getDifficulty(getGame().getContext());
             } else if (mInsaneBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                Log.i("InputDetected", "Insane Button Pressed");
                 settings.setDifficulty(getGame().getContext(), 4);
                 currentDifficultySetting = settings.getDifficulty(getGame().getContext());
             }
-
         }
     }
 
@@ -115,23 +129,47 @@ public class OptionScreen extends GameScreen {
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
+        // Sets Background
+        graphics2D.clear(Color.BLACK);
+
+        // Decide whether the option is selected then display the relevant button for each setting
+        // Easy Button
         if (currentDifficultySetting == 1) {
-            graphics2D.clear(Color.WHITE);
-        } else if (currentDifficultySetting == 2) {
-            graphics2D.clear(Color.YELLOW);
-        } else if (currentDifficultySetting == 3) {
-            graphics2D.clear(Color.GREEN);
-        } else if (currentDifficultySetting == 4) {
-            graphics2D.clear(Color.RED);
+            Bitmap btnEasy_Selected = mGame.getAssetManager().getBitmap("btnEasy-Selected");
+            graphics2D.drawBitmap(btnEasy_Selected, null,mEasyBound,null);
+        } else {
+            Bitmap btnEasy_Normal = mGame.getAssetManager().getBitmap("btnEasy-Normal");
+            graphics2D.drawBitmap(btnEasy_Normal, null,mEasyBound,null);
         }
 
-        // TODO: Draw the toggle buttons rather than temporary placeholders
-        Paint paintCan = new Paint();
-        paintCan.setColor(Color.BLACK);
+        // Normal Button
+        if (currentDifficultySetting == 2) {
+            Bitmap btnNormal_Selected = mGame.getAssetManager().getBitmap("btnNormal-Selected");
+            graphics2D.drawBitmap(btnNormal_Selected, null,mNormalBound,null);
+        } else {
+            Bitmap btnNormal_Normal = mGame.getAssetManager().getBitmap("btnNormal-Normal");
+            graphics2D.drawBitmap(btnNormal_Normal, null,mNormalBound,null);
+        }
 
-        graphics2D.drawText("Easy", mEasyBound.centerX(),mEasyBound.centerY(), paintCan);
-        graphics2D.drawText("Normal", mNormalBound.centerX(),mEasyBound.centerY(), paintCan);
-        graphics2D.drawText("Hard", mHardBound.centerX(),mEasyBound.centerY(), paintCan);
-        graphics2D.drawText("Insane", mInsaneBound.centerX(),mEasyBound.centerY(), paintCan);
+        // Hard Button
+        if (currentDifficultySetting == 3) {
+            Bitmap btnHard_Selected = mGame.getAssetManager().getBitmap("btnHard-Selected");
+            graphics2D.drawBitmap(btnHard_Selected, null,mHardBound,null);
+        } else {
+            Bitmap btnHard_Normal = mGame.getAssetManager().getBitmap("btnHard-Normal");
+            graphics2D.drawBitmap(btnHard_Normal, null,mHardBound,null);
+        }
+
+        // Insane Button
+        if (currentDifficultySetting == 4) {
+            Bitmap btnInsane_Selected = mGame.getAssetManager().getBitmap("btnInsane-Selected");
+            graphics2D.drawBitmap(btnInsane_Selected, null,mInsaneBound,null);
+        } else {
+            Bitmap btnInsane_Normal = mGame.getAssetManager().getBitmap("btnInsane-Normal");
+            graphics2D.drawBitmap(btnInsane_Normal, null,mInsaneBound,null);
+        }
+
+        // TODO: Draw the Titles
+        // TODO: Draw the Buttons
     }
 }
