@@ -45,7 +45,7 @@ public class OptionScreen extends GameScreen {
     private Rect mMuteBound;
 
     // Bounds for back button
-    private Rect mBackButton;
+    private Rect mBackBound;
 
     // Bounds for titles
     private Rect mMainTitle, mDifficultyTitle, mSoundTitle;
@@ -76,6 +76,7 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("btnInsane-Selected", "img/buttons/btnInsane-Selected.png");
         assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
         assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
+        assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
 
         // Sets bounds for the difficulty settings stack
         // each button 255px width
@@ -98,14 +99,21 @@ public class OptionScreen extends GameScreen {
         endX = startX + 255;
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
+        // Sets the bounds for the Mute Button
         int btnSoundWidth = 200;
         int btnSoundHeight = 200;
         endY = game.getScreenHeight() - (btnSoundHeight + 50);
         startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
         mMuteBound = new Rect(startX, endY - btnSoundHeight, startX + btnSoundWidth, endY);
 
+        // Sets the bounds for the back button
+        int btnBackWidth = 150;
+        int btnBackHeight = 150;
+        startX = 50;
+        startY = 50;
+        mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
+
         // TODO: Create bounds for titles
-        // TODO: Create bound for back button
     }
 
     /*
@@ -208,8 +216,11 @@ public class OptionScreen extends GameScreen {
             Bitmap btnSound_Mute = mGame.getAssetManager().getBitmap("btnSound-Mute");
             graphics2D.drawBitmap(btnSound_Mute, null,mMuteBound,null);
         }
-        
+
+        // Back Button
+        Bitmap btnBack = mGame.getAssetManager().getBitmap("btnBack");
+        graphics2D.drawBitmap(btnBack, null, mBackBound,null);
+
         // TODO: Draw the Titles
-        // TODO: Draw the back button
     }
 }
