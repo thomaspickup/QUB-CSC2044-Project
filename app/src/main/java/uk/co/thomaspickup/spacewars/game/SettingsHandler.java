@@ -8,16 +8,16 @@ import android.content.SharedPreferences;
  * This class handles all the settings for the app, both setting them and getting them.
  */
 
-public class settingsHandler {
+public class SettingsHandler {
     // Sets up a new instance of helper tools
     // for commonly used algorithms.
-    helperTools maths = new helperTools();
+    HelperTools maths = new HelperTools();
 
     /**
-     * Constructor for the settingsHandler class.
+     * Constructor for the SettingsHandler class.
      * Allows for class to be implemented easily.
      */
-    public settingsHandler() {
+    public SettingsHandler() {
         // Does nothing when initializing.
     }
 
@@ -37,27 +37,27 @@ public class settingsHandler {
         Context myAppContext = appContext;
 
         // Creates instance of SharePreferences called settings
-        SharedPreferences settings = myAppContext.getSharedPreferences(appStrings.getPREF(), 0);
+        SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF(), 0);
 
         // Creates instance of SharedPreferences Editor called editor
         SharedPreferences.Editor editor;
 
-        if (!settings.contains(appStrings.getPREF_DIFFICULTY())) {
+        if (!settings.contains(AppStrings.getPREF_DIFFICULTY())) {
             // If the key doesn't already exist then create the default key of 0
 
             // Defines the editor as the edit of settings
             editor = settings.edit();
 
             // Puts the int
-            editor.putInt(appStrings.getPREF_DIFFICULTY(), 2);
+            editor.putInt(AppStrings.getPREF_DIFFICULTY(), 2);
 
             // Commits changes to shared preferences
             editor.commit();
 
-            difficultySetting = settings.getInt(appStrings.getPREF_DIFFICULTY(), 2);
+            difficultySetting = settings.getInt(AppStrings.getPREF_DIFFICULTY(), 2);
         } else {
             // If the key has already been set return the value stored in the key
-            difficultySetting = settings.getInt(appStrings.getPREF_DIFFICULTY(), 2);
+            difficultySetting = settings.getInt(AppStrings.getPREF_DIFFICULTY(), 2);
         }
 
         // Returns the result from SharedPreferences
@@ -82,7 +82,7 @@ public class settingsHandler {
             Context myAppContext = appContext;
 
             // Creates instance of SharePreferences called settings
-            SharedPreferences settings = myAppContext.getSharedPreferences(appStrings.getPREF(), 0);
+            SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF(), 0);
 
             // Creates instance of SharedPreferences Editor called editor
             SharedPreferences.Editor editor;
@@ -91,7 +91,7 @@ public class settingsHandler {
             editor = settings.edit();
 
             // Puts the int
-            editor.putInt(appStrings.getPREF_DIFFICULTY(), myDifficultySetting);
+            editor.putInt(AppStrings.getPREF_DIFFICULTY(), myDifficultySetting);
 
             // Commits changes to shared preferences
             editor.commit();

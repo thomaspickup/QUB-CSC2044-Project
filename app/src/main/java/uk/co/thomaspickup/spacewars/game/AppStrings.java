@@ -4,7 +4,7 @@ package uk.co.thomaspickup.spacewars.game;
  * Created by thomaspickup on 10/03/2018.
  */
 
-public class appStrings {
+public class AppStrings {
     private static String PREF = "pref";
     private static String PREF_DIFFICULTY = "prefDifficulty";
 

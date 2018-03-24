@@ -3,19 +3,16 @@ package uk.co.thomaspickup.spacewars.game;
 // Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
+
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
-import uk.co.thomaspickup.spacewars.gage.MainActivity;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
-import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 /**
  * Created by Thomas Pickup.
@@ -32,8 +29,8 @@ public class OptionScreen extends GameScreen {
     int currentDifficultySetting;
     boolean gameMuted;
 
-    // Create instance of settingsHandler to allow for easy of referencing
-    settingsHandler settings = new settingsHandler();
+    // Create instance of SettingsHandler to allow for easy of referencing
+    SettingsHandler settings = new SettingsHandler();
 
     // Bounds for difficultySettings
     private Rect mEasyBound, mNormalBound, mHardBound, mInsaneBound;

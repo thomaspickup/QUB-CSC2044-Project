@@ -4,7 +4,7 @@ package uk.co.thomaspickup.spacewars.game;
  * Created by thomaspickup on 24/03/2018.
  */
 
-public class helperTools {
+public class HelperTools {
     /**
      * Checks if the value x is in between (including) a lowerBound and an upperBound.
      * @param x The Number to check.
