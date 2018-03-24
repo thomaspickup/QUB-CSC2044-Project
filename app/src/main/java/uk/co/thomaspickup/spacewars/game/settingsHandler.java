@@ -8,6 +8,10 @@ import android.content.SharedPreferences;
  */
 
 public class settingsHandler {
+    // Sets up a new instance of helper tools
+    // for commonly used algorithms.
+    helperTools maths = new helperTools();
+
     /**
      * Constructor for the settingsHandler class.
      * Allows for class to be implemented easily.
@@ -72,7 +76,7 @@ public class settingsHandler {
      * @return Success (True or False)
      */
     public boolean setDifficulty(Context appContext, int difficultySetting) {
-        if (difficultySetting >= 1 && difficultySetting <=4) {
+        if (maths.inBetween(difficultySetting, 1, 4)) {
             int myDifficultySetting = difficultySetting;
             Context myAppContext = appContext;
 

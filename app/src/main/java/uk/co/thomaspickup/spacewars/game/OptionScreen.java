@@ -1,10 +1,11 @@
 package uk.co.thomaspickup.spacewars.game;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
-import android.content.Context;
+import android.nfc.Tag;
+import android.util.Log;
 
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class OptionScreen extends GameScreen {
     // Create instance of settingsHandler to allow for easy of referencing
     settingsHandler settings = new settingsHandler();
 
+    // Bounds for difficultySettings
+    private Rect mEasyBound, mNormalBound, mHardBound, mInsaneBound;
+
     /**
      * Create a simple options screen
      *
@@ -43,6 +47,28 @@ public class OptionScreen extends GameScreen {
         super("OptionScreen", game);
 
         currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+
+        // TODO: Create Buttons and import them in through the asset manager.
+        // Sets bounds for the difficulty settings stack
+        // each button 1/10 screen width x
+        // and 150px high
+        int startX = (getGame().getScreenWidth() / 4);
+        int endX = startX + (getGame().getScreenWidth() / 10);
+        int startY = (getGame().getScreenHeight() / 3);
+        int endY = startY + 150;
+        mEasyBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + (getGame().getScreenWidth() / 20);
+        endX = startX + (getGame().getScreenWidth() / 10);
+        mNormalBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + (getGame().getScreenWidth() / 20);
+        endX = startX + (getGame().getScreenWidth() / 10);
+        mHardBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + (getGame().getScreenWidth() / 20);
+        endX = startX + (getGame().getScreenWidth() / 10);
+        mInsaneBound = new Rect(startX, startY, endX, endY);
     }
 
     /*
@@ -59,6 +85,23 @@ public class OptionScreen extends GameScreen {
 
         List<TouchEvent> touchEvents = input.getTouchEvents();
         if (touchEvents.size() > 0) {
+            TouchEvent touchEvent = touchEvents.get(0);
+
+            if (mEasyBound.contains((int) touchEvent.x,
+                    (int) touchEvent.y)) {
+                settings.setDifficulty(getGame().getContext(), 1);
+                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+            } else if (mNormalBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                settings.setDifficulty(getGame().getContext(), 2);
+                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+            } else if (mHardBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                settings.setDifficulty(getGame().getContext(), 3);
+                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+            } else if (mInsaneBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                Log.i("InputDetected", "Insane Button Pressed");
+                settings.setDifficulty(getGame().getContext(), 4);
+                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+            }
 
         }
     }
@@ -72,6 +115,23 @@ public class OptionScreen extends GameScreen {
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
+        if (currentDifficultySetting == 1) {
+            graphics2D.clear(Color.WHITE);
+        } else if (currentDifficultySetting == 2) {
+            graphics2D.clear(Color.YELLOW);
+        } else if (currentDifficultySetting == 3) {
+            graphics2D.clear(Color.GREEN);
+        } else if (currentDifficultySetting == 4) {
+            graphics2D.clear(Color.RED);
+        }
 
+        // TODO: Draw the toggle buttons rather than temporary placeholders
+        Paint paintCan = new Paint();
+        paintCan.setColor(Color.BLACK);
+
+        graphics2D.drawText("Easy", mEasyBound.centerX(),mEasyBound.centerY(), paintCan);
+        graphics2D.drawText("Normal", mNormalBound.centerX(),mEasyBound.centerY(), paintCan);
+        graphics2D.drawText("Hard", mHardBound.centerX(),mEasyBound.centerY(), paintCan);
+        graphics2D.drawText("Insane", mInsaneBound.centerX(),mEasyBound.centerY(), paintCan);
     }
 }
