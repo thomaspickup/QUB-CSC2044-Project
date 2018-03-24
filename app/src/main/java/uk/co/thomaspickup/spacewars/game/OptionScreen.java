@@ -3,6 +3,7 @@ package uk.co.thomaspickup.spacewars.game;
 // Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
@@ -48,7 +49,7 @@ public class OptionScreen extends GameScreen {
     private Rect mBackBound;
 
     // Bounds for titles
-    private Rect mMainTitle, mDifficultyTitle, mSoundTitle;
+    private Rect mDifficultyTitle, mMuteTitle;
 
     // ~~~~ Methods Start ~~~~
     /**
@@ -77,13 +78,22 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
         assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
         assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
+        assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/txtDifficulty.png");
+        assetManager.loadAndAddBitmap("txtMute", "img/titles/txtMute.png");
+
+        // Bounds for Difficulty Title
+        int txtDifficultyWidth = 525;
+        int txtDifficultyHeight = 200;
+        int startX = (getGame().getScreenWidth() / 2) - (txtDifficultyWidth / 2);
+        int startY = 50;
+        mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
 
         // Sets bounds for the difficulty settings stack
         // each button 255px width
         // and 120px high
-        int startX = (getGame().getScreenWidth() / 2) - 525;
+        startX = (getGame().getScreenWidth() / 2) - 525;
         int endX = startX + 255;
-        int startY = (getGame().getScreenHeight() / 3);
+        startY = startY + txtDifficultyHeight + 50;
         int endY = startY + 120;
         mEasyBound = new Rect(startX, startY, endX, endY);
 
@@ -99,12 +109,22 @@ public class OptionScreen extends GameScreen {
         endX = startX + 255;
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
+        // Sets the Mute Title
+        int txtMuteWidth = 525;
+        int txtMuteHeight = 200;
+        startY = endY + 100;
+        endY = startY + txtMuteHeight;
+        startX = (getGame().getScreenWidth() / 2) - (txtMuteWidth / 2);
+        endX = startX + txtMuteWidth;
+        mMuteTitle = new Rect(startX, startY, endX, endY);
+
         // Sets the bounds for the Mute Button
         int btnSoundWidth = 200;
         int btnSoundHeight = 200;
-        endY = game.getScreenHeight() - (btnSoundHeight + 50);
+        startY = endY + 50;
+        endY = startY + btnSoundHeight;
         startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
-        mMuteBound = new Rect(startX, endY - btnSoundHeight, startX + btnSoundWidth, endY);
+        mMuteBound = new Rect(startX, startY, startX + btnSoundWidth, endY);
 
         // Sets the bounds for the back button
         int btnBackWidth = 150;
@@ -112,8 +132,6 @@ public class OptionScreen extends GameScreen {
         startX = 50;
         startY = 50;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
-
-        // TODO: Create bounds for titles
     }
 
     /*
@@ -153,9 +171,9 @@ public class OptionScreen extends GameScreen {
                     settings.setSound(getGame().getContext(), 0);
                     currentSoundSetting = settings.getSound(getGame().getContext());
                 }
+            } else if (mBackBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                // TODO: Add logic for back button on options screen
             }
-
-            // TODO: Add Touch Listener for back button
         }
     }
 
@@ -170,6 +188,10 @@ public class OptionScreen extends GameScreen {
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
         // Sets Background
         graphics2D.clear(Color.BLACK);
+
+        // Draws Difficulty Title
+        Bitmap txtDifficulty = mGame.getAssetManager().getBitmap("txtDifficulty");
+        graphics2D.drawBitmap(txtDifficulty,null,mDifficultyTitle,null);
 
         // Decide whether the option is selected then display the relevant button for each setting
         // Easy Button
@@ -208,6 +230,10 @@ public class OptionScreen extends GameScreen {
             graphics2D.drawBitmap(btnInsane_Normal, null,mInsaneBound,null);
         }
 
+        // Mute Title
+        Bitmap txtMute = mGame.getAssetManager().getBitmap("txtMute");
+        graphics2D.drawBitmap(txtMute,null,mMuteTitle,null);
+
         // Mute Button
         if (currentSoundSetting == 0) {
             Bitmap btnSound_UnMute = mGame.getAssetManager().getBitmap("btnSound-UnMute");
@@ -220,7 +246,5 @@ public class OptionScreen extends GameScreen {
         // Back Button
         Bitmap btnBack = mGame.getAssetManager().getBitmap("btnBack");
         graphics2D.drawBitmap(btnBack, null, mBackBound,null);
-
-        // TODO: Draw the Titles
     }
 }
