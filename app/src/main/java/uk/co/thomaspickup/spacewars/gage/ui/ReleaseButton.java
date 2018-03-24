@@ -1,6 +1,7 @@
 package uk.co.thomaspickup.spacewars.gage.ui;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
@@ -43,6 +44,7 @@ public class ReleaseButton extends GameObject {
      */
     protected Sound mReleaseSound;
 
+    private Bitmap mBitmap;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors                                                          //
@@ -73,7 +75,7 @@ public class ReleaseButton extends GameObject {
 
         mDefaultBitmap = assetStore.getBitmap(defaultBitmap);
         mPushBitmap = assetStore.getBitmap(pushBitmap);
-
+        mBitmap = mDefaultBitmap;
         mReleaseSound = (releaseSound == null) ? null : assetStore.getSound(releaseSound);
 
     }
@@ -113,7 +115,7 @@ public class ReleaseButton extends GameObject {
     public void update(ElapsedTime elapsedTime) {
         // Consider any touch events occurring in this update
         Input input = mGameScreen.getGame().getInput();
-        BoundingBox bound = getBound();
+        BoundingBox bound = this.getBound();
 
 
         // Check for a press release on this button
@@ -121,7 +123,10 @@ public class ReleaseButton extends GameObject {
             if (touchEvent.type == TouchEvent.TOUCH_UP
                     && bound.contains(touchEvent.x, touchEvent.y)) {
                 // A touch up has occurred in this control
+                mBitmap = mPushBitmap;
+                mIsPushed = true;
                 mPushTriggered = true;
+                Log.i("ReleaseButton", "TouchUp");
                 // TODO: Also play sound here if it's available.
                 return;
             }
@@ -134,6 +139,7 @@ public class ReleaseButton extends GameObject {
                     if (!mIsPushed) {
                         mBitmap = mPushBitmap;
                         mIsPushed = true;
+                        Log.i("ReleaseButton", "TouchDown");
                     }
 
                     return;

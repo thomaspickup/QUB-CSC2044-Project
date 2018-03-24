@@ -4,6 +4,7 @@ import uk.co.thomaspickup.spacewars.gage.ui.ReleaseButton;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 
 /**
+ * Extends the class ReleaseButton and allows for a pause button to be built into the game.
  * Created by thomaspickup on 22/01/2018.
  */
 

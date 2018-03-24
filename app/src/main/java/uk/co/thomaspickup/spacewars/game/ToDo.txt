@@ -1,11 +1,8 @@
 // To Do List \\
 - Menu
- - Start Button [-]
- - Options
- - Close Button
- - Moving Background
- - Sound?
- - Pause Menu
+ - Moving Background?
+ - Sound
+ - Pause Menu?
 - AI Difficulty (Fire Power? Speed?)
 - Weapon Firing (Lasers)
 - Health Bar

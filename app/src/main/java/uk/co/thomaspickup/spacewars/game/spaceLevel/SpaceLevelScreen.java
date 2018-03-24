@@ -15,6 +15,7 @@ import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
+import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
  * Simple steering game world 
@@ -60,6 +61,8 @@ public class SpaceLevelScreen extends GameScreen {
 	private final int NUM_TURRETS = 5;
 	private List<AISpaceship> mAISpaceships;
 
+	private SettingsHandler settings = new SettingsHandler();
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -72,6 +75,10 @@ public class SpaceLevelScreen extends GameScreen {
 	 */
 	public SpaceLevelScreen(Game game) {
 		super("SpaceLevelScreen", game);
+
+		// Gets current settings
+		int currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+		int currentSoundSetting = settings.getSound(getGame().getContext());
 
 		// Create the screen viewport
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
@@ -106,7 +113,7 @@ public class SpaceLevelScreen extends GameScreen {
 						.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseButton = new PauseButton(50.0f, 50.0f, 100.0f, 100.0f,
+		mPauseButton = new PauseButton(100.0f, 100.0f, 200.0f, 200.0f,
 				"PauseButtonWhite", "PauseButtonBlack", this);
 
 		// Create the player spaceship
@@ -127,7 +134,7 @@ public class SpaceLevelScreen extends GameScreen {
 		for (int idx = 0; idx < NUM_SEEKERS; idx++)
 			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
 					random.nextFloat() * LEVEL_HEIGHT,
-					AISpaceship.ShipBehaviour.Seeker, this));
+					AISpaceship.ShipBehaviour.Seeker, this, currentDifficultySetting));
 
 		// Positions Turrets
 		for (int idx = 0; idx < NUM_TURRETS; idx++) {
@@ -160,7 +167,7 @@ public class SpaceLevelScreen extends GameScreen {
 				}
 			} while (valid = false);
 
-			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this));
+			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting));
 		}
 
 	}
