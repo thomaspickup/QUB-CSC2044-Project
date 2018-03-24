@@ -39,24 +39,28 @@ public class MenuScreen extends GameScreen {
 
 		// Load in the bitmaps used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("PlayIcon", "img/PlayButton.png");
-		assetManager.loadAndAddBitmap("SettingsIcon", "img/SettingsButton.png");
+		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
+		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
 		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
 
 		// Defines the Title Image Rect
 		int spacingX = (game.getScreenWidth() / 2) - 560;
-		int spacingY = 30;
+		int spacingY = 100;
 		mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
 
 		// Defines the Play Button Image Rect
-		spacingX = (game.getScreenWidth() / 2) - 230;
-		spacingY = (game.getScreenHeight() / 2) - 100;
-		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + 560 , spacingY +300);
+		int btnPlayWidth = 400;
+		int btnPlayHeight = 400;
+		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
+		spacingY = (game.getScreenHeight() / 2) + 50;
+		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
 
 		// Defines the Settings Cog Rect
-		spacingY = spacingY + 340;
-		spacingX = spacingX + 160;
-		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + 230, spacingY + 230);
+		int btnSettingsWidth = 150;
+		int btnSettingsHeight = 150;
+		spacingY = 50;
+		spacingX = game.getScreenWidth() - (btnSettingsWidth + 50);
+		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
 	}
 
 	/*
