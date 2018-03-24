@@ -74,6 +74,8 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("btnHard-Selected", "img/buttons/btnHard-Selected.png");
         assetManager.loadAndAddBitmap("btnInsane-Normal", "img/buttons/btnInsane-Normal.png");
         assetManager.loadAndAddBitmap("btnInsane-Selected", "img/buttons/btnInsane-Selected.png");
+        assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
+        assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
 
         // Sets bounds for the difficulty settings stack
         // each button 255px width
@@ -96,8 +98,13 @@ public class OptionScreen extends GameScreen {
         endX = startX + 255;
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
+        int btnSoundWidth = 200;
+        int btnSoundHeight = 200;
+        endY = game.getScreenHeight() - (btnSoundHeight + 50);
+        startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
+        mMuteBound = new Rect(startX, endY - btnSoundHeight, startX + btnSoundWidth, endY);
+
         // TODO: Create bounds for titles
-        // TODO: Create bound for mute button
         // TODO: Create bound for back button
     }
 
@@ -130,8 +137,16 @@ public class OptionScreen extends GameScreen {
             } else if (mInsaneBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
                 settings.setDifficulty(getGame().getContext(), 4);
                 currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+            } else if (mMuteBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                if (currentSoundSetting == 0) {
+                    settings.setSound(getGame().getContext(), 1);
+                    currentSoundSetting = settings.getSound(getGame().getContext());
+                } else {
+                    settings.setSound(getGame().getContext(), 0);
+                    currentSoundSetting = settings.getSound(getGame().getContext());
+                }
             }
-            // TODO: Add Touch Listener for mute button
+
             // TODO: Add Touch Listener for back button
         }
     }
@@ -185,8 +200,16 @@ public class OptionScreen extends GameScreen {
             graphics2D.drawBitmap(btnInsane_Normal, null,mInsaneBound,null);
         }
 
+        // Mute Button
+        if (currentSoundSetting == 0) {
+            Bitmap btnSound_UnMute = mGame.getAssetManager().getBitmap("btnSound-UnMute");
+            graphics2D.drawBitmap(btnSound_UnMute, null,mMuteBound,null);
+        } else {
+            Bitmap btnSound_Mute = mGame.getAssetManager().getBitmap("btnSound-Mute");
+            graphics2D.drawBitmap(btnSound_Mute, null,mMuteBound,null);
+        }
+        
         // TODO: Draw the Titles
-        // TODO: Draw the mute button
         // TODO: Draw the back button
     }
 }
