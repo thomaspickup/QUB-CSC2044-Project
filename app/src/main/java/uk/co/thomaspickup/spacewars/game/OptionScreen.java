@@ -27,7 +27,11 @@ public class OptionScreen extends GameScreen {
     // Hard = 3
     // Insane = 4
     int currentDifficultySetting;
-    boolean gameMuted;
+
+    // Mute
+    // Un-Mute = 0
+    // Mute = 1
+    int currentSoundSetting;
 
     // Create instance of SettingsHandler to allow for easy of referencing
     SettingsHandler settings = new SettingsHandler();
@@ -46,7 +50,7 @@ public class OptionScreen extends GameScreen {
 
         // Loads in Current Settings from SharedPreferences
         currentDifficultySetting = settings.getDifficulty(getGame().getContext());
-        // TODO: load in current sound setting
+        currentSoundSetting = settings.getSound(getGame().getContext());
 
         // Load in the bitmaps used on the options screen
         AssetStore assetManager = mGame.getAssetManager();
@@ -80,7 +84,8 @@ public class OptionScreen extends GameScreen {
         endX = startX + 255;
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
-        // TODO: Create bounds for titles and Mute Button
+        // TODO: Create bounds for titles
+        // TODO: Create bound for mute button
         // TODO: Create bound for back button
     }
 
@@ -114,6 +119,8 @@ public class OptionScreen extends GameScreen {
                 settings.setDifficulty(getGame().getContext(), 4);
                 currentDifficultySetting = settings.getDifficulty(getGame().getContext());
             }
+            // TODO: Add Touch Listener for mute button
+            // TODO: Add Touch Listener for back button
         }
     }
 
@@ -167,6 +174,7 @@ public class OptionScreen extends GameScreen {
         }
 
         // TODO: Draw the Titles
-        // TODO: Draw the Buttons
+        // TODO: Draw the mute button
+        // TODO: Draw the back button
     }
 }
