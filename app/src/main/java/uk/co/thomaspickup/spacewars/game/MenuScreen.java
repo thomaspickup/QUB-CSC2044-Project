@@ -10,7 +10,10 @@ import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
+import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
+import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
+import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 
 /**
@@ -28,6 +31,12 @@ public class MenuScreen extends GameScreen {
 	private Rect mSettingsButtonBound;
 	private Rect mTitleBound;
 
+	// Background Objects
+	private GameObject mSpaceBackground;
+	private ScreenViewport mScreenViewport;
+	private LayerViewport mLayerViewport;
+	private int intXMultiplier = 1;
+
 	/**
 	 * Creates the menu screens
 	 * 
@@ -42,6 +51,24 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
 		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
 		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/SpaceBackground.png");
+
+		// Defines the background
+		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+				.getAssetManager().getBitmap("SpaceBackground"), this);
+		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+				game.getScreenHeight());
+		// Create the layer viewport, taking into account the orientation
+		// and aspect ratio of the screen.
+		if (mScreenViewport.width > mScreenViewport.height)
+			mLayerViewport = new LayerViewport(240.0f, 240.0f
+					* mScreenViewport.height / mScreenViewport.width, 240,
+					240.0f * mScreenViewport.height / mScreenViewport.width);
+		else
+			mLayerViewport = new LayerViewport(240.0f * mScreenViewport.height
+					/ mScreenViewport.width, 240.0f, 240.0f
+					* mScreenViewport.height / mScreenViewport.width, 240);
 
 		// Defines the Title Image Rect
 		int spacingX = (game.getScreenWidth() / 2) - 560;
@@ -96,6 +123,17 @@ public class MenuScreen extends GameScreen {
 				mGame.getScreenManager().addScreen(optionScreen);
 			}
 		}
+
+		// Move the background diagonally
+		// Changes the multiplier if it hits the bounds
+		if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+			intXMultiplier = -1;
+		} else if (mLayerViewport.x == mScreenViewport.left) {
+			intXMultiplier = 1;
+		}
+
+		// Adds the multiplier to x
+		mLayerViewport.x += intXMultiplier;
 	}
 
 	/*
@@ -112,7 +150,8 @@ public class MenuScreen extends GameScreen {
 		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
 		Bitmap settingsIcon = mGame.getAssetManager().getBitmap("SettingsIcon");
 
-		graphics2D.clear(Color.BLACK);
+		mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
+				mScreenViewport);
 		graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
 		graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
 		graphics2D.drawBitmap(settingsIcon, null, mSettingsButtonBound, null);
