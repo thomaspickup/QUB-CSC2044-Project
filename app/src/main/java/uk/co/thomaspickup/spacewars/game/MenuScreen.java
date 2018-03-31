@@ -30,6 +30,7 @@ public class MenuScreen extends GameScreen {
 	private Rect mPlayButtonBound;
 	private Rect mSettingsButtonBound;
 	private Rect mTitleBound;
+	private Rect mAboutBound;
 
 	// Background Objects
 	private GameObject mSpaceBackground;
@@ -59,6 +60,7 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
 		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
+		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
 
 		// Plays title theme
 		mMainTheme = assetManager.getMusic("MainTheme");
@@ -102,6 +104,13 @@ public class MenuScreen extends GameScreen {
 		spacingY = 50;
 		spacingX = game.getScreenWidth() - (btnSettingsWidth + 50);
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
+
+		// Defines the about rect
+		int btnAboutWidth = 150;
+		int btnAboutHeight = 150;
+		spacingY = (game.getScreenHeight() - 50) - btnAboutHeight;
+		spacingX = (game.getScreenWidth() - 50) - btnAboutWidth;
+		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
 	}
 
 	/*
@@ -135,6 +144,12 @@ public class MenuScreen extends GameScreen {
 				OptionScreen optionScreen = new OptionScreen(mGame);
 
 				mGame.getScreenManager().addScreen(optionScreen);
+			} else if (mAboutBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				// If the about icon area has been touched then load up about menu
+				mGame.getScreenManager().removeScreen(this.getName());
+				AboutScreen aboutScreen = new AboutScreen(mGame);
+
+				mGame.getScreenManager().addScreen(aboutScreen);
 			}
 		}
 
@@ -163,11 +178,16 @@ public class MenuScreen extends GameScreen {
 		Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
 		Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
 		Bitmap settingsIcon = mGame.getAssetManager().getBitmap("SettingsIcon");
+		Bitmap aboutIcon = mGame.getAssetManager().getBitmap("AboutIcon");
 
+		// Draws the background with adjusted viewport
 		mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
+
+		// Draws all the static icons on top
 		graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
 		graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
 		graphics2D.drawBitmap(settingsIcon, null, mSettingsButtonBound, null);
+		graphics2D.drawBitmap(aboutIcon,null,mAboutBound,null);
 	}
 }
