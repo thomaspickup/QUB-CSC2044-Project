@@ -11,7 +11,10 @@ import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
+import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
+import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
+import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
 /**
  * This screen acts as an options screen where the user can adjust various in game options:
@@ -20,7 +23,6 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
  * Created by Thomas Pickup
  */
 // TODO: Add Music To Options Screen & Mute when pressed Mute
-// TODO: Add In Moving Background to Options Screen
 // TODO: Add in variables to be passed over when invocing this screen to leave off background as in main screen
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~
@@ -52,6 +54,12 @@ public class OptionScreen extends GameScreen {
 
     // Bounds for titles
     private Rect mDifficultyTitle, mMuteTitle;
+
+    // Background Objects
+    private GameObject mSpaceBackground;
+    private ScreenViewport mScreenViewport;
+    private LayerViewport mLayerViewport;
+    private int intXMultiplier = 1;
 
     // ~~~~ Methods Start ~~~~
     /**
@@ -134,6 +142,24 @@ public class OptionScreen extends GameScreen {
         startX = 50;
         startY = 50;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
+
+        // Defines the background
+        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+                .getAssetManager().getBitmap("SpaceBackground"), this);
+        mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+                game.getScreenHeight());
+
+        // Create the layer viewport, taking into account the orientation
+        // and aspect ratio of the screen.
+        if (mScreenViewport.width > mScreenViewport.height)
+            mLayerViewport = new LayerViewport(240.0f, 240.0f
+                    * mScreenViewport.height / mScreenViewport.width, 240,
+                    240.0f * mScreenViewport.height / mScreenViewport.width);
+        else
+            mLayerViewport = new LayerViewport(240.0f * mScreenViewport.height
+                    / mScreenViewport.width, 240.0f, 240.0f
+                    * mScreenViewport.height / mScreenViewport.width, 240);
     }
 
     /*
@@ -182,6 +208,17 @@ public class OptionScreen extends GameScreen {
                 mGame.getScreenManager().addScreen(menuScreen);
             }
         }
+
+        // Move the background diagonally
+        // Changes the multiplier if it hits the bounds
+        if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+            intXMultiplier = -1;
+        } else if (mLayerViewport.x == mScreenViewport.left) {
+            intXMultiplier = 1;
+        }
+
+        // Adds the multiplier to x
+        mLayerViewport.x += intXMultiplier;
     }
 
     /*
@@ -193,8 +230,9 @@ public class OptionScreen extends GameScreen {
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
-        // Sets Background
-        graphics2D.clear(Color.BLACK);
+        // Draws the background with adjusted viewport
+        mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
+                mScreenViewport);
 
         // Draws Difficulty Title
         Bitmap txtDifficulty = mGame.getAssetManager().getBitmap("txtDifficulty");
