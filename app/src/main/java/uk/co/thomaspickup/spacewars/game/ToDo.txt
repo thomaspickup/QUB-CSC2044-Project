@@ -1,9 +1,0 @@
-// To Do List \\
-- Menu
- - Moving Background?
- - Sound
- - Pause Menu?
-- AI Difficulty (Fire Power? Speed?)
-- Weapon Firing (Lasers)
-- Health Bar
-- Lives?

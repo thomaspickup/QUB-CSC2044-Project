@@ -18,10 +18,17 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
- * Simple steering game world 
+ * The Main Game World - A 2D Space Shooter.
  * 
  * @version 1.0
  */
+// TODO: Add Music To Space Level Screen
+// TODO: Add Health Bar to Space Screen
+// TODO: Add Lives Indicator To Space Screen
+// TODO: Add Weapon Firing
+// TODO: Add Pause Menu Functionality
+// TODO: Add AI Difficutly Adjustment
+
 public class SpaceLevelScreen extends GameScreen {
 
 	// /////////////////////////////////////////////////////////////////////////
