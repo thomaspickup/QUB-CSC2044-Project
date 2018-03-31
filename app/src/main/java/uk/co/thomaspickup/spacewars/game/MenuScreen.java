@@ -1,9 +1,7 @@
 package uk.co.thomaspickup.spacewars.game;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
@@ -57,8 +55,8 @@ public class MenuScreen extends GameScreen {
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
 		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
-		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/SpaceBackground.png");
+		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
 		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
 
 		// Defines the background

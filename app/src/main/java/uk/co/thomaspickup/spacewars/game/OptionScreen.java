@@ -3,7 +3,6 @@ package uk.co.thomaspickup.spacewars.game;
 // Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
@@ -79,8 +78,8 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
         assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
         assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
-        assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/txtDifficulty.png");
-        assetManager.loadAndAddBitmap("txtMute", "img/titles/txtMute.png");
+        assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/ttlDifficulty.png");
+        assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
 
         // Bounds for Difficulty Title
         int txtDifficultyWidth = 525;

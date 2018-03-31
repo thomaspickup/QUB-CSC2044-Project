@@ -104,15 +104,15 @@ public class SpaceLevelScreen extends GameScreen {
 
 		// Load in the assets used by the steering demo
 		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/SpaceBackground.png");
-		assetManager.loadAndAddBitmap("Asteroid1", "img/Asteroid1.png");
-		assetManager.loadAndAddBitmap("Asteroid2", "img/Asteroid2.png");
-		assetManager.loadAndAddBitmap("Spaceship1", "img/Spaceship1.png");
-		assetManager.loadAndAddBitmap("Spaceship2", "img/Spaceship2.png");
-		assetManager.loadAndAddBitmap("Spaceship3", "img/Spaceship3.png");
-		assetManager.loadAndAddBitmap("Turret", "img/Turret.png");
-		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/PauseWhite.png");
-		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/PauseBlack.png");
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
+		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
+		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
+		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
+		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
+		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
+		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
+		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
 
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
