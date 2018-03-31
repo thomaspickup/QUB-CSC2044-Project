@@ -23,7 +23,7 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  * Created by Thomas Pickup
  */
 // TODO: Add Music To Options Screen & Mute when pressed Mute
-// TODO: Add in variables to be passed over when invocing this screen to leave off background as in main screen
+    
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~
     // ~~ Current Settings Vars ~~
@@ -68,7 +68,7 @@ public class OptionScreen extends GameScreen {
      * @param game
      *            SpaceGame to which this screen belongs
      */
-    public OptionScreen(Game game) {
+    public OptionScreen(Game game, LayerViewport backgroundViewPort) {
         super("OptionScreen", game);
 
         // Loads in Current Settings from SharedPreferences
@@ -149,17 +149,7 @@ public class OptionScreen extends GameScreen {
                 .getAssetManager().getBitmap("SpaceBackground"), this);
         mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
                 game.getScreenHeight());
-
-        // Create the layer viewport, taking into account the orientation
-        // and aspect ratio of the screen.
-        if (mScreenViewport.width > mScreenViewport.height)
-            mLayerViewport = new LayerViewport(240.0f, 240.0f
-                    * mScreenViewport.height / mScreenViewport.width, 240,
-                    240.0f * mScreenViewport.height / mScreenViewport.width);
-        else
-            mLayerViewport = new LayerViewport(240.0f * mScreenViewport.height
-                    / mScreenViewport.width, 240.0f, 240.0f
-                    * mScreenViewport.height / mScreenViewport.width, 240);
+        mLayerViewport = backgroundViewPort;
     }
 
     /*

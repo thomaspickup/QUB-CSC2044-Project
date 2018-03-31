@@ -141,7 +141,7 @@ public class MenuScreen extends GameScreen {
 			} else if (mSettingsButtonBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
 				// If the settings icon area has been touched then load up options menu
 				mGame.getScreenManager().removeScreen(this.getName());
-				OptionScreen optionScreen = new OptionScreen(mGame);
+				OptionScreen optionScreen = new OptionScreen(mGame, mLayerViewport);
 
 				mGame.getScreenManager().addScreen(optionScreen);
 			} else if (mAboutBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
