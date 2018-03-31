@@ -42,6 +42,9 @@ public class MenuScreen extends GameScreen {
 	// Main Theme Objects
 	private Music mMainTheme;
 
+	// New Settings Instance
+	private SettingsHandler settingsHandler = new SettingsHandler();
+
 	/**
 	 * Creates the menu screens
 	 * 
@@ -59,12 +62,19 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
 		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
 
+		// Plays title theme
+		mMainTheme = assetManager.getMusic("MainTheme");
+		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()));
+		mMainTheme.setLopping(true);
+		mMainTheme.play();
+
 		// Defines the background
 		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
 				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
 				.getAssetManager().getBitmap("SpaceBackground"), this);
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
 				game.getScreenHeight());
+
 		// Create the layer viewport, taking into account the orientation
 		// and aspect ratio of the screen.
 		if (mScreenViewport.width > mScreenViewport.height)

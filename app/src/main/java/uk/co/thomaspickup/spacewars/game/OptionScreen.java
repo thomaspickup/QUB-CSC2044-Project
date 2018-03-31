@@ -31,8 +31,8 @@ public class OptionScreen extends GameScreen {
     int currentDifficultySetting;
 
     // Mute
-    // Un-Mute = 0
-    // Mute = 1
+    // Mute = 0
+    // Un-Mute = 1
     int currentSoundSetting;
 
     // Create instance of SettingsHandler to allow for easy of referencing
@@ -235,7 +235,7 @@ public class OptionScreen extends GameScreen {
         graphics2D.drawBitmap(txtMute,null,mMuteTitle,null);
 
         // Mute Button
-        if (currentSoundSetting == 0) {
+        if (currentSoundSetting == 1) {
             Bitmap btnSound_UnMute = mGame.getAssetManager().getBitmap("btnSound-UnMute");
             graphics2D.drawBitmap(btnSound_UnMute, null,mMuteBound,null);
         } else {

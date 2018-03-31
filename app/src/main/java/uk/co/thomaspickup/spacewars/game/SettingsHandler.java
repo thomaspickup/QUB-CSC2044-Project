@@ -109,8 +109,8 @@ public class SettingsHandler {
     /**
      *  This function sets the sound setting to be stored in sharedPreferences.
      *  Difficulty Settings:
-     *  Un-Mute - 0
-     *  Mute - 1
+     *  Mute - 0
+     *  Un-Mute - 1
      *
      * @param appContext - Passes the Context of the application to allow for accessing system level functions.
      * @param soundSetting - Passes through the sound setting.
@@ -149,8 +149,8 @@ public class SettingsHandler {
     /**
      *  This function returns the sound setting that is stored in sharedPreferences.
      *  Difficulty Settings:
-     *  UnMute - 0
-     *  Mute - 1
+     *  Mute - 0
+     *  Un-Mute - 1
      *
      * @param appContext - Passes the Context of the application to allow for accessing system level functions.
      * @return The difficulty stored in SharedPreferences.
@@ -177,10 +177,10 @@ public class SettingsHandler {
             // Commits changes to shared preferences
             editor.commit();
 
-            soundSetting = settings.getInt(AppStrings.getPREF_SOUND(), 0);
+            soundSetting = settings.getInt(AppStrings.getPREF_SOUND(), 1);
         } else {
             // If the key has already been set return the value stored in the key
-            soundSetting = settings.getInt(AppStrings.getPREF_SOUND(), 0);
+            soundSetting = settings.getInt(AppStrings.getPREF_SOUND(), 1);
         }
 
         // Returns the result from SharedPreferences
