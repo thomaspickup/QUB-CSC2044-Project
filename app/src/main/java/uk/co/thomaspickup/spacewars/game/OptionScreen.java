@@ -19,7 +19,9 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
  * - Mute
  * Created by Thomas Pickup
  */
-// TODO: Add Music To Options Screen
+// TODO: Add Music To Options Screen & Mute when pressed Mute
+// TODO: Add In Moving Background to Options Screen
+// TODO: Add in variables to be passed over when invocing this screen to leave off background as in main screen
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~
     // ~~ Current Settings Vars ~~
@@ -172,7 +174,12 @@ public class OptionScreen extends GameScreen {
                     currentSoundSetting = settings.getSound(getGame().getContext());
                 }
             } else if (mBackBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                // TODO: Add logic for back button on options screen
+                // Remove this screen
+                mGame.getScreenManager().removeScreen(this.getName());
+
+                // Create a new instance of menuScreen and add it to screen manager
+                MenuScreen menuScreen = new MenuScreen(mGame);
+                mGame.getScreenManager().addScreen(menuScreen);
             }
         }
     }

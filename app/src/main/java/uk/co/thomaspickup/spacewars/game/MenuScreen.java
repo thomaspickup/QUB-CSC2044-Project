@@ -23,9 +23,7 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
  * 
  * @version 1.0
  */
-// TODO: Add Music to Main Menu Screen
 public class MenuScreen extends GameScreen {
-
 	/**
 	 * Define the trigger touch region for navigating to the game or options menu
 	 */
