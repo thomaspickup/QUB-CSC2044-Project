@@ -51,7 +51,7 @@ public class AssetStore {
     /**
      * Create a new asset store
      *
-     * @param game Context to which this File IO will use
+     * @param fileIO Context to which this File IO will use
      */
     public AssetStore(FileIO fileIO) {
         mFileIO = fileIO;

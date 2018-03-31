@@ -3,10 +3,13 @@ package uk.co.thomaspickup.spacewars.game;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
+
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
+import uk.co.thomaspickup.spacewars.gage.engine.audio.Music;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
@@ -38,6 +41,9 @@ public class MenuScreen extends GameScreen {
 	private LayerViewport mLayerViewport;
 	private int intXMultiplier = 1;
 
+	// Main Theme Objects
+	private Music mMainTheme;
+
 	/**
 	 * Creates the menu screens
 	 * 
@@ -47,12 +53,13 @@ public class MenuScreen extends GameScreen {
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);
 
-		// Load in the bitmaps used on the menu screen
+		// Load in the bitmaps and sounds used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
 		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
 		assetManager.loadAndAddBitmap("TitleImage", "img/TitleCard.png");
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/SpaceBackground.png");
+		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
 
 		// Defines the background
 		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
