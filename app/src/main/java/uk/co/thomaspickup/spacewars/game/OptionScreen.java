@@ -194,7 +194,7 @@ public class OptionScreen extends GameScreen {
                 mGame.getScreenManager().removeScreen(this.getName());
 
                 // Create a new instance of menuScreen and add it to screen manager
-                MenuScreen menuScreen = new MenuScreen(mGame);
+                MenuScreen menuScreen = new MenuScreen(mGame, mLayerViewport);
                 mGame.getScreenManager().addScreen(menuScreen);
             }
         }

@@ -113,6 +113,60 @@ public class MenuScreen extends GameScreen {
 		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
 	}
 
+	public MenuScreen(Game game, LayerViewport backgroundViewPort) {
+		super("MenuScreen", game);
+
+		// Load in the bitmaps and sounds used on the menu screen
+		AssetStore assetManager = mGame.getAssetManager();
+		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
+		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
+		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
+		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
+
+		// Plays title theme
+		mMainTheme = assetManager.getMusic("MainTheme");
+		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()));
+		mMainTheme.setLopping(true);
+		mMainTheme.play();
+
+		// Defines the background
+		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+				.getAssetManager().getBitmap("SpaceBackground"), this);
+		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+				game.getScreenHeight());
+
+		// Create the layer viewport, taking into account the orientation
+		mLayerViewport = backgroundViewPort;
+
+		// Defines the Title Image Rect
+		int spacingX = (game.getScreenWidth() / 2) - 560;
+		int spacingY = 100;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
+
+		// Defines the Play Button Image Rect
+		int btnPlayWidth = 400;
+		int btnPlayHeight = 400;
+		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
+		spacingY = (game.getScreenHeight() / 2) + 50;
+		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
+
+		// Defines the Settings Cog Rect
+		int btnSettingsWidth = 150;
+		int btnSettingsHeight = 150;
+		spacingY = 50;
+		spacingX = game.getScreenWidth() - (btnSettingsWidth + 50);
+		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
+
+		// Defines the about rect
+		int btnAboutWidth = 150;
+		int btnAboutHeight = 150;
+		spacingY = (game.getScreenHeight() - 50) - btnAboutHeight;
+		spacingX = (game.getScreenWidth() - 50) - btnAboutWidth;
+		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
