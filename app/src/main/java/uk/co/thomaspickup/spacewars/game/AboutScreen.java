@@ -32,11 +32,7 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  *
  * Created by Thomas Pickup
  */
-// TODO: Add in read from text files and output to text boxes
-// TODO: Add In Moving Background to About Screen
-// TODO: Add in variables to be passed over when invocing this screen to leave off background as in main screen
 public class AboutScreen extends GameScreen {
-
     // Create instance of SettingsHandler to allow for easy of referencing
     SettingsHandler settings = new SettingsHandler();
 

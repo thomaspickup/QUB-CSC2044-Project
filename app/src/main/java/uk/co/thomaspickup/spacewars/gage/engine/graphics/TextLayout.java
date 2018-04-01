@@ -43,6 +43,8 @@ public class TextLayout extends LinearLayout {
         textView.setBackgroundColor(Color.WHITE);
         textView.setTextColor(Color.BLACK);
         textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+
+        // TODO: Finish adding Scroll Bars
         textView.setVerticalScrollbarPosition(SCROLLBAR_POSITION_RIGHT);
         textView.setVerticalScrollBarEnabled(true);
         textView.setMovementMethod(new ScrollingMovementMethod());
