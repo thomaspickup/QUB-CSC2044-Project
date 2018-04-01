@@ -22,7 +22,10 @@ import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.TextLayout;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
+import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
+import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
+import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
 /**
  * This screen acts as an version / about screen where the features (version) and credits are shown.
@@ -47,6 +50,12 @@ public class AboutScreen extends GameScreen {
     // Bounds for back button
     private Rect mBackBound;
 
+    // Background Objects
+    private GameObject mSpaceBackground;
+    private ScreenViewport mScreenViewport;
+    private LayerViewport mLayerViewport;
+    private int intXMultiplier = 1;
+
     // ~~~~ Methods Start ~~~~
     /**
      * Create a simple about screen
@@ -54,7 +63,7 @@ public class AboutScreen extends GameScreen {
      * @param game
      *            SpaceGame to which this screen belongs
      */
-    public AboutScreen(Game game) {
+    public AboutScreen(Game game, LayerViewport backgroundViewPort) {
         super("AboutScreen", game);
 
         // Initilize the asset manager and
@@ -80,6 +89,14 @@ public class AboutScreen extends GameScreen {
         int startX = 50;
         int startY = 50;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
+
+        // Defines the background
+        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+                .getAssetManager().getBitmap("SpaceBackground"), this);
+        mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+                game.getScreenHeight());
+        mLayerViewport = backgroundViewPort;
     }
 
     /*
@@ -103,10 +120,21 @@ public class AboutScreen extends GameScreen {
                 mGame.getScreenManager().removeScreen(this.getName());
 
                 // Create a new instance of menuScreen and add it to screen manager
-                MenuScreen menuScreen = new MenuScreen(mGame);
+                MenuScreen menuScreen = new MenuScreen(mGame, mLayerViewport);
                 mGame.getScreenManager().addScreen(menuScreen);
             }
         }
+
+        // Move the background diagonally
+        // Changes the multiplier if it hits the bounds
+        if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+            intXMultiplier = -1;
+        } else if (mLayerViewport.x == mScreenViewport.left) {
+            intXMultiplier = 1;
+        }
+
+        // Adds the multiplier to x
+        mLayerViewport.x += intXMultiplier;
     }
 
     /*
@@ -118,8 +146,9 @@ public class AboutScreen extends GameScreen {
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
-        // Sets Background
-        graphics2D.clear(Color.BLACK);
+        // Draws the background with adjusted viewport
+        mSpaceBackground.draw(elapsedTime, graphics2D, mLayerViewport,
+                mScreenViewport);
 
         // Back Button
         Bitmap btnBack = mGame.getAssetManager().getBitmap("btnBack");

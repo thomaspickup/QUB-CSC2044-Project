@@ -201,7 +201,7 @@ public class MenuScreen extends GameScreen {
 			} else if (mAboutBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
 				// If the about icon area has been touched then load up about menu
 				mGame.getScreenManager().removeScreen(this.getName());
-				AboutScreen aboutScreen = new AboutScreen(mGame);
+				AboutScreen aboutScreen = new AboutScreen(mGame, mLayerViewport);
 
 				mGame.getScreenManager().addScreen(aboutScreen);
 			}

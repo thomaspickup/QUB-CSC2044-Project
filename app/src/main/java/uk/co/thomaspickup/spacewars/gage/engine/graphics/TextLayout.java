@@ -3,6 +3,7 @@ package uk.co.thomaspickup.spacewars.gage.engine.graphics;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +43,9 @@ public class TextLayout extends LinearLayout {
         textView.setBackgroundColor(Color.WHITE);
         textView.setTextColor(Color.BLACK);
         textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        textView.setVerticalScrollbarPosition(SCROLLBAR_POSITION_RIGHT);
+        textView.setVerticalScrollBarEnabled(true);
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
         // Adds the text view to the layout
         linearLayout.addView(textView);
