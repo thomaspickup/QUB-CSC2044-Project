@@ -1,6 +1,7 @@
 package uk.co.thomaspickup.spacewars.gage.engine.graphics;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -83,4 +84,6 @@ public interface IGraphics2D {
 	 *            Paint parameters controlling how the bitmap is rendered
 	 */
 	public void drawBitmap(Bitmap bitmap, Matrix matrix, Paint paint);
+
+	public Canvas getMCanvas();
 }

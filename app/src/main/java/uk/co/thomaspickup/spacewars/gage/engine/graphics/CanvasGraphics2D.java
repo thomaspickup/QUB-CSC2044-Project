@@ -138,4 +138,6 @@ public class CanvasGraphics2D implements IGraphics2D {
 	public int getSurfaceHeight() {
 		return mHeight;
 	}
+
+	public Canvas getMCanvas() { return mCanvas; }
 }

@@ -2,16 +2,24 @@ package uk.co.thomaspickup.spacewars.game;
 
 // Imports
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.List;
 
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
+import uk.co.thomaspickup.spacewars.gage.engine.graphics.TextLayout;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
@@ -29,6 +37,12 @@ public class AboutScreen extends GameScreen {
     // Create instance of SettingsHandler to allow for easy of referencing
     SettingsHandler settings = new SettingsHandler();
 
+    // Creates the asset manager so it can be used accross the class
+    AssetStore assetManager;
+
+    // Creates the strings that will hold the credits and feature list
+    String strCredits;
+    String strFeatures;
 
     // Bounds for back button
     private Rect mBackBound;
@@ -43,9 +57,22 @@ public class AboutScreen extends GameScreen {
     public AboutScreen(Game game) {
         super("AboutScreen", game);
 
-        // Load in the bitmaps used on the options screen
-        AssetStore assetManager = mGame.getAssetManager();
+        // Initilize the asset manager and
+        // load in the bitmaps used on the about screen
+        assetManager = mGame.getAssetManager();
         assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
+
+        // Imports text files
+        try {
+            strCredits = assetManager.getTextFile(getGame().getContext(), "txt/txtCredits.txt");
+        } catch (Exception ex) {
+            Log.e("Import Fail", ex.toString());
+        }
+        try {
+            strFeatures = assetManager.getTextFile(getGame().getContext(), "txt/txtFeatures.txt");
+        } catch (Exception ex) {
+            Log.e("Import Fail", ex.toString());
+        }
 
         // Sets the bounds for the back button
         int btnBackWidth = 150;
@@ -97,5 +124,17 @@ public class AboutScreen extends GameScreen {
         // Back Button
         Bitmap btnBack = mGame.getAssetManager().getBitmap("btnBack");
         graphics2D.drawBitmap(btnBack, null, mBackBound,null);
+
+        // Text View
+        // Gets the canvas
+        Canvas thisCanvas = graphics2D.getMCanvas();
+
+        // Defines a new layout
+        int viewWidth = (getGame().getScreenWidth() - (mBackBound.right + 150)) / 2;
+        TextLayout textViewCredits = new TextLayout(thisCanvas, getGame().getContext(), mBackBound.right + 50,50,getGame().getScreenHeight() - 100, viewWidth, strCredits);
+        textViewCredits.draw(thisCanvas);
+
+        TextLayout textViewFeatures = new TextLayout(thisCanvas, getGame().getContext(), mBackBound.right + viewWidth + 100,50,getGame().getScreenHeight() - 100, viewWidth, strFeatures);
+        textViewFeatures.draw(thisCanvas);
     }
 }

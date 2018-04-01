@@ -1,11 +1,14 @@
 package uk.co.thomaspickup.spacewars.gage.engine;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import uk.co.thomaspickup.spacewars.gage.engine.audio.Music;
@@ -207,5 +210,41 @@ public class AssetStore {
      */
     public Sound getSound(String assetName) {
         return mSounds.get(assetName);
+    }
+
+    /**
+     * Retrives the specified text file
+     *
+     * @param context passes through the app context
+     * @param filename passes through the file name of the text file
+     * @return the String content of the text file
+     * @throws IOException
+     */
+    public static String getTextFile(Context context, String filename) throws IOException {
+        // Creates a new buffered reader to loop through the text file
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
+
+        // Creates an output to return
+        String output = "";
+
+        // Reads the first line
+        String currentLine = bufferedReader.readLine();
+
+        // Loops through the text file until there is no more to loop through
+        while (currentLine != null) {
+            // Appends the current line to output
+            output += currentLine;
+
+            output += System.getProperty("line.separator");
+
+            // Reads the next line
+            currentLine = bufferedReader.readLine();
+        }
+
+        // Disposes of the reader
+        bufferedReader.close();
+
+        // Returns the output via the function
+        return output;
     }
 }
