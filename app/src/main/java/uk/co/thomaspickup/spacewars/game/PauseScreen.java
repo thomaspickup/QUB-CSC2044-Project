@@ -18,18 +18,21 @@ import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.AISpaceship;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.Asteroid;
-import uk.co.thomaspickup.spacewars.game.spaceLevel.PauseButton;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.PlayerSpaceship;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceSave;
 
 /**
+ * The pause screen - creates a freeze frame of the level.
+ * Allows the user to resume or exit the game
+ *
  * Created by thomaspickup on 02/04/2018.
  */
 
 public class PauseScreen extends GameScreen {
-    // TODO: Finish Design of the Pause Screen
     private Rect mPlayButtonBound;
+    private Rect mTitleBound;
+    private Rect mExitButtonBound;
 
     /**
      * Width and height of the level
@@ -78,6 +81,8 @@ public class PauseScreen extends GameScreen {
         assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
         assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
         assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
+        assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
+        assetManager.loadAndAddBitmap("ExitIcon", "img/buttons/btnExit.png");
 
         // Create the space background
         mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
@@ -93,7 +98,24 @@ public class PauseScreen extends GameScreen {
         // Gets AI Spaceships from the save file
         mAISpaceships = this.saveFile.getMAISpaceships();
 
-        mPlayButtonBound = new Rect(200, 200,500,500);
+        // Defines the Title Image Rect
+        int spacingX = (game.getScreenWidth() / 2) - 560;
+        int spacingY = 100;
+        mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
+
+        // Defines the Exit Icon Rect
+        int btnExitWidth = 150;
+        int btnExitHeight = 150;
+        spacingY = 50;
+        spacingX = game.getScreenWidth() - (btnExitWidth + 50);
+        mExitButtonBound = new Rect(spacingX, spacingY, spacingX + btnExitWidth, spacingY + btnExitHeight);
+
+        // Defines the Play Button Image Rect
+        int btnPlayWidth = 400;
+        int btnPlayHeight = 400;
+        spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
+        spacingY = (game.getScreenHeight() / 2) + 50;
+        mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
     }
     @Override
     public void update(ElapsedTime elapsedTime) {
@@ -112,6 +134,13 @@ public class PauseScreen extends GameScreen {
 
                 // As it's the only added screen it will become active.
                 mGame.getScreenManager().addScreen(spaceLevelScreen);
+            } else if (mExitButtonBound.contains((int) touchEvent.x,
+                    (int) touchEvent.y)) {
+                mGame.getScreenManager().removeScreen(this.getName());
+
+                MenuScreen menuScreen = new MenuScreen(mGame);
+
+                mGame.getScreenManager().addScreen(menuScreen);
             }
         }
     }
@@ -140,8 +169,16 @@ public class PauseScreen extends GameScreen {
         mPlayerSpaceship.draw(elapsedTime, graphics2D, mLayerViewport,
                 mScreenViewport);
 
+        // Draws the title
+        Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
+        graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
+
         // Draw the play button
         Bitmap playIcon = mGame.getAssetManager().getBitmap("PlayIcon");
         graphics2D.drawBitmap(playIcon, null, mPlayButtonBound,null);
+
+        // Draw the exit icon
+        Bitmap exitIcon = mGame.getAssetManager().getBitmap("ExitIcon");
+        graphics2D.drawBitmap(exitIcon, null, mExitButtonBound, null);
     }
 }
