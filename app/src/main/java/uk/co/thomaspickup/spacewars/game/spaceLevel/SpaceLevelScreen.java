@@ -52,12 +52,7 @@ public class SpaceLevelScreen extends GameScreen {
 	 * space ship and separate lists of asteroids and AI controlled
 	 * space ships.
 	 */
-	
 	private GameObject mSpaceBackground;
-
-	// Pause Button
-	private PauseButton mPauseButton;
-	private Boolean isPaused;
 
 	private PlayerSpaceship mPlayerSpaceship;
 
@@ -68,7 +63,15 @@ public class SpaceLevelScreen extends GameScreen {
 	private final int NUM_TURRETS = 5;
 	private List<AISpaceship> mAISpaceships;
 
+	// Pause Button
+	private PauseButton mPauseButton;
+	private Boolean isPaused;
+
+	// Settings Handler for ease of accessing the settings
 	private SettingsHandler settings = new SettingsHandler();
+
+	// Save File used for transfering and receiving a save from other screens
+	private SpaceSave saveFile = new SpaceSave();
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
