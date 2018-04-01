@@ -1,6 +1,8 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.widget.Space;
 
 import java.util.ArrayList;
@@ -11,11 +13,15 @@ import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
+import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
+import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.util.BoundingBox;
 import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
+import uk.co.thomaspickup.spacewars.game.MenuScreen;
+import uk.co.thomaspickup.spacewars.game.PauseScreen;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
@@ -27,7 +33,6 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 // TODO: Add Health Bar to Space Screen
 // TODO: Add Lives Indicator To Space Screen
 // TODO: Add Weapon Firing
-// TODO: Add Pause Menu Functionality
 // TODO: Add AI Difficutly Adjustment
 
 public class SpaceLevelScreen extends GameScreen {
@@ -65,8 +70,7 @@ public class SpaceLevelScreen extends GameScreen {
 	private List<AISpaceship> mAISpaceships;
 
 	// Pause Button
-	private PauseButton mPauseButton;
-	private Boolean isPaused;
+	private Rect mPauseBound;
 
 	// Settings Handler for ease of accessing the settings
 	private SettingsHandler settings = new SettingsHandler();
@@ -124,8 +128,7 @@ public class SpaceLevelScreen extends GameScreen {
 						.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseButton = new PauseButton(100.0f, 100.0f, 200.0f, 200.0f,
-				"PauseButtonWhite", "PauseButtonBlack", this);
+		mPauseBound = new Rect(50,50,150,150);
 
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
@@ -224,8 +227,7 @@ public class SpaceLevelScreen extends GameScreen {
 				.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseButton = new PauseButton(100.0f, 100.0f, 200.0f, 200.0f,
-				"PauseButtonWhite", "PauseButtonBlack", this);
+		mPauseBound = new Rect(50,50,150,150);
 
 		// Gets the player spaceship from the save file
 		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
@@ -281,21 +283,26 @@ public class SpaceLevelScreen extends GameScreen {
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
-		// Update Pause Button
-		mPauseButton.update(elapsedTime);
+		// Process any touch events occurring since the update
+		Input input = mGame.getInput();
 
-		/*
-			Checks if the game is paused:
-				If it is it resumes and sets isPaused to False
-				If it isn't it pauses and sets isPaused to True
-		 */
-		if (mPauseButton.pushTriggered()) {
-			if (!isPaused) {
-				this.pause();
-				isPaused = true;
-			} else {
-				this.resume();
-				isPaused = false;
+		List<TouchEvent> touchEvents = input.getTouchEvents();
+		if (touchEvents.size() > 0) {
+			TouchEvent touchEvent = touchEvents.get(0);
+
+			if (mPauseBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				// Remove this screen
+				mGame.getScreenManager().removeScreen(this.getName());
+
+				// Sets current states to save file
+				saveFile.setMAISpaceships(mAISpaceships);
+				saveFile.setMAsteroids(mAsteroids);
+				saveFile.setMLayerViewport(mLayerViewport);
+				saveFile.setMPlayerSpaceShip(mPlayerSpaceship);
+
+				// Create a new instance of menuScreen and add it to screen manager
+				PauseScreen pauseScreen = new PauseScreen(mGame, saveFile);
+				mGame.getScreenManager().addScreen(pauseScreen);
 			}
 		}
 
@@ -371,11 +378,7 @@ public class SpaceLevelScreen extends GameScreen {
 				mScreenViewport);
 
 		// Draws the Pause Button
-		mPauseButton.draw(elapsedTime, graphics2D, mLayerViewport,
-				mScreenViewport);
-	}
-
-	public void onPausePressed() {
-
+		Bitmap imgPauseButton =  mGame.getAssetManager().getBitmap("PauseButtonWhite");
+		graphics2D.drawBitmap(imgPauseButton,null,mPauseBound,null);
 	}
 }
