@@ -1,6 +1,7 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 import android.graphics.Color;
+import android.widget.Space;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +181,60 @@ public class SpaceLevelScreen extends GameScreen {
 			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting));
 		}
 
+	}
+
+	/**
+	 * Creates the Space Game Level from a save file.
+	 *
+	 * @param game
+	 *            SpaceGame to which this screen belongs
+	 * @param saveFile the save file that the game is to be based on
+	 */
+	public SpaceLevelScreen(Game game, SpaceSave saveFile) {
+		super("SpaceLevelScreen", game);
+
+		this.saveFile = saveFile;
+
+		// Gets current settings
+		int currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+		int currentSoundSetting = settings.getSound(getGame().getContext());
+
+		// Create the screen viewport
+		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+				game.getScreenHeight());
+
+		// Gets the Layer View Port from the save file
+		mLayerViewport = this.saveFile.getMLayerViewport();
+
+		// Load in the assets used by the steering demo
+		AssetStore assetManager = mGame.getAssetManager();
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
+		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
+		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
+		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
+		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
+		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
+		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
+		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+
+		// Create the space background
+		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
+				LEVEL_HEIGHT / 2.0f, LEVEL_WIDTH, LEVEL_HEIGHT, getGame()
+				.getAssetManager().getBitmap("SpaceBackground"), this);
+
+		// Creates the pause button
+		mPauseButton = new PauseButton(100.0f, 100.0f, 200.0f, 200.0f,
+				"PauseButtonWhite", "PauseButtonBlack", this);
+
+		// Gets the player spaceship from the save file
+		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
+
+		// Gets Asteroids from the save file
+		mAsteroids = this.saveFile.getMAsteroids();
+
+		// Gets AI Spaceships from the save file
+		mAISpaceships = this.saveFile.getMAISpaceships();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
