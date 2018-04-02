@@ -2,8 +2,8 @@ package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
-import android.widget.Space;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,6 @@ import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
-import uk.co.thomaspickup.spacewars.game.MenuScreen;
 import uk.co.thomaspickup.spacewars.game.PauseScreen;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
@@ -77,6 +76,9 @@ public class SpaceLevelScreen extends GameScreen {
 
 	// Save File used for transfering and receiving a save from other screens
 	private SpaceSave saveFile = new SpaceSave();
+
+	// Creates a new healthbar
+	int hbXPosition, hbYPosition, hbWidth, hbHeight;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -184,6 +186,12 @@ public class SpaceLevelScreen extends GameScreen {
 			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting));
 		}
 
+		// Adds new healthbar
+		hbHeight = 100;
+		hbWidth = (getGame().getScreenWidth() / 10) * 6;
+		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
+		hbYPosition = 50;
+		mPlayerSpaceship.setHealth(100);
 	}
 
 	/**
@@ -237,6 +245,13 @@ public class SpaceLevelScreen extends GameScreen {
 
 		// Gets AI Spaceships from the save file
 		mAISpaceships = this.saveFile.getMAISpaceships();
+
+		// Adds new healthbar
+		hbHeight = 100;
+		hbWidth = (getGame().getScreenWidth() / 10) * 6;
+		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
+		hbYPosition = 50;
+		mPlayerSpaceship.setHealth(50);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -380,5 +395,22 @@ public class SpaceLevelScreen extends GameScreen {
 		// Draws the Pause Button
 		Bitmap imgPauseButton =  mGame.getAssetManager().getBitmap("PauseButtonWhite");
 		graphics2D.drawBitmap(imgPauseButton,null,mPauseBound,null);
+
+		// Draws the HealthBar
+		int borderLine = 10;
+
+		// Draws the backboard that the health bar is drawn on
+		Rect backBoard = new Rect(hbXPosition,hbYPosition,hbXPosition+hbWidth,hbYPosition+hbHeight);
+		Paint paintCan = new Paint();
+		paintCan.setColor(Color.BLACK);
+		graphics2D.drawRect(backBoard, paintCan);
+
+		// Draws the health bar on the backboard with a border of 10
+		float multiplier = (hbWidth) / 100; // Represents Each Percentage per pixel
+		int width = mPlayerSpaceship.getHealth() * (int) multiplier;
+
+		Rect mHealthBar = new Rect(hbXPosition + borderLine, hbYPosition + 10, hbXPosition + 10 + width , (hbYPosition+hbHeight) - 10);
+		paintCan.setColor(Color.RED);
+		graphics2D.drawRect(mHealthBar,paintCan);
 	}
 }

@@ -86,4 +86,6 @@ public interface IGraphics2D {
 	public void drawBitmap(Bitmap bitmap, Matrix matrix, Paint paint);
 
 	public Canvas getMCanvas();
+
+	public void drawRect(Rect r, Paint paint);
 }

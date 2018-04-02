@@ -61,6 +61,12 @@ public class Sprite extends GameObject {
 	 */
 	protected Matrix drawMatrix = new Matrix();
 
+	/**
+	 * Private variable to hold the health of the target.
+	 * Used for the Spaceships and Turrets!
+	 */
+	private int spriteHealth;
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -204,5 +210,12 @@ public class Sprite extends GameObject {
 			// Draw the image
 			graphics2D.drawBitmap(mBitmap, drawMatrix, null);
 		}
+	}
+
+	// Getters and setters of health
+	public int getHealth() { return spriteHealth; }
+
+	public void setHealth(int health) {
+		spriteHealth = health;
 	}
 }

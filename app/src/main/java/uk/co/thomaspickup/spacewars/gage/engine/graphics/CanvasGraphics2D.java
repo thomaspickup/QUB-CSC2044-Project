@@ -95,6 +95,16 @@ public class CanvasGraphics2D implements IGraphics2D {
 		mCanvas.drawText(text, x, y, paint);		
 	}
 
+	/**
+	 *
+	 * @param r
+	 * @param paint
+	 */
+	public void drawRect(Rect r, Paint paint) {
+		mCanvas.drawRect(r, paint);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
