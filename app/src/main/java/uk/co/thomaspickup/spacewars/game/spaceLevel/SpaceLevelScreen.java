@@ -16,10 +16,12 @@ import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
 import uk.co.thomaspickup.spacewars.gage.util.BoundingBox;
+import uk.co.thomaspickup.spacewars.gage.util.CollisionDetector;
 import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
+import uk.co.thomaspickup.spacewars.game.MenuScreen;
 import uk.co.thomaspickup.spacewars.game.PauseScreen;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
@@ -251,7 +253,6 @@ public class SpaceLevelScreen extends GameScreen {
 		hbWidth = (getGame().getScreenWidth() / 10) * 6;
 		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
 		hbYPosition = 50;
-		mPlayerSpaceship.setHealth(50);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -298,6 +299,16 @@ public class SpaceLevelScreen extends GameScreen {
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
+		// First off check if the players health is less than 0
+		if (mPlayerSpaceship.getHealth() <= 0) {
+			// TODO: Replace with end screen
+			// Remove this screen
+			mGame.getScreenManager().removeScreen(this.getName());
+
+			MenuScreen menuScreen = new MenuScreen(mGame);
+			mGame.getScreenManager().addScreen(menuScreen);
+		}
+
 		// Process any touch events occurring since the update
 		Input input = mGame.getInput();
 
@@ -352,12 +363,22 @@ public class SpaceLevelScreen extends GameScreen {
 			mLayerViewport.y -= (mLayerViewport.getTop() - LEVEL_HEIGHT);
 
 		// Update each of the AI controlled spaceships
-		for (AISpaceship aiSpaceship : mAISpaceships)
+		for (AISpaceship aiSpaceship : mAISpaceships) {
+			if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(), aiSpaceship.getBound())) {
+				mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
+				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), aiSpaceship);
+			}
 			aiSpaceship.update(elapsedTime);
-
+		}
 		// Update each of the asteroids
-		for (Asteroid asteroid : mAsteroids)
+		for (Asteroid asteroid : mAsteroids) {
+			if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(), asteroid.getBound())) {
+				mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
+				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), asteroid);
+			}
 			asteroid.update(elapsedTime);
+		}
+
 	}
 
 	/*

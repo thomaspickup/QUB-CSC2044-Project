@@ -1,6 +1,7 @@
 package uk.co.thomaspickup.spacewars.gage.util;
 
 import uk.co.thomaspickup.spacewars.gage.world.GameObject;
+import uk.co.thomaspickup.spacewars.game.spaceLevel.PlayerSpaceship;
 
 /**
  * Collision Detector Helper Library
