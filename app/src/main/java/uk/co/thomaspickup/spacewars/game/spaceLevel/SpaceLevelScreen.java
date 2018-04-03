@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -147,7 +148,7 @@ public class SpaceLevelScreen extends GameScreen {
 		for (int idx = 0; idx < NUM_SEEKERS; idx++)
 			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
 					random.nextFloat() * LEVEL_HEIGHT,
-					AISpaceship.ShipBehaviour.Seeker, this, currentDifficultySetting));
+					AISpaceship.ShipBehaviour.Seeker, this, currentDifficultySetting, 100));
 
 		// Positions Turrets
 		for (int idx = 0; idx < NUM_TURRETS; idx++) {
@@ -180,7 +181,7 @@ public class SpaceLevelScreen extends GameScreen {
 				}
 			} while (valid = false);
 
-			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting));
+			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting,100));
 		}
 
 		// Adds new healthbar
@@ -348,7 +349,9 @@ public class SpaceLevelScreen extends GameScreen {
 				PauseScreen pauseScreen = new PauseScreen(mGame, saveFile);
 				mGame.getScreenManager().addScreen(pauseScreen);
 			} else if (mFireBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				// Fire and then stop processing any more touch events
 				mPlayerSpaceship.fire(this);
+				return;
 			}
 		}
 
@@ -383,11 +386,43 @@ public class SpaceLevelScreen extends GameScreen {
 			mLayerViewport.y -= (mLayerViewport.getTop() - LEVEL_HEIGHT);
 
 		// Update each of the AI controlled spaceships
-		for (AISpaceship aiSpaceship : mAISpaceships) {
+		Iterator<AISpaceship> iterAISpaceships = mAISpaceships.iterator();
+
+		while (iterAISpaceships.hasNext()) {
+			AISpaceship aiSpaceship = iterAISpaceships.next();
 			if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(), aiSpaceship.getBound())) {
 				mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
 				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), aiSpaceship);
 			}
+
+			// Checks if any space ships are to bump into asteroids
+			for (Asteroid asteroid : mAsteroids) {
+				if (CollisionDetector.isCollision(aiSpaceship.getBound(), asteroid.getBound())) {
+					CollisionDetector.determineAndResolveCollision(aiSpaceship, asteroid);
+
+					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
+
+					if (aiSpaceship.getHealth() == 0) {
+						iterAISpaceships.remove();
+					}
+				}
+			}
+
+			// Checks if there is any hits with lasers
+			Iterator<Laser> mLasers = mPlayerSpaceship.mLasers.iterator();
+			while (mLasers.hasNext()) {
+				Laser laser = mLasers.next();
+
+				if (CollisionDetector.isCollision(aiSpaceship.getBound(),laser.getBound())) {
+					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
+
+					if (aiSpaceship.getHealth() == 0) {
+						iterAISpaceships.remove();
+						mLasers.remove();
+					}
+				}
+			}
+
 			aiSpaceship.update(elapsedTime);
 		}
 		// Update each of the asteroids
@@ -396,6 +431,7 @@ public class SpaceLevelScreen extends GameScreen {
 				mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
 				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), asteroid);
 			}
+
 			asteroid.update(elapsedTime);
 		}
 	}

@@ -60,7 +60,7 @@ public class AISpaceship extends Sprite {
 	 *            Gamescreen to which AI belongs
 	 */
 	public AISpaceship(float startX, float startY, ShipBehaviour shipBehaviour,
-			SpaceLevelScreen gameScreen, int difficulty) {
+			SpaceLevelScreen gameScreen, int difficulty, int health) {
 		super(startX, startY, 50.0f, 50.0f, null, gameScreen);
 
 		float speedMultiplier = helperTools.getSpeedMultiplier(difficulty);
@@ -74,6 +74,7 @@ public class AISpaceship extends Sprite {
 			maxAngularVelocity = 50.0f* speedMultiplier;
 			maxAngularAcceleration = 50.0f * speedMultiplier;
 			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Turret");
+			this.setHealth(health);
 			break;
 		case Seeker:
 			maxAcceleration = 30.0f * speedMultiplier;
@@ -81,6 +82,7 @@ public class AISpaceship extends Sprite {
 			maxAngularVelocity = 150.0f * speedMultiplier;
 			maxAngularAcceleration = 300.0f * speedMultiplier;
 			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship1");
+			this.setHealth(health);
 			break;
 		}
 	}

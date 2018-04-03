@@ -38,7 +38,9 @@ public class PlayerSpaceship extends Sprite {
 	private int livesLost;
 	private int livesLeft;
 
-	private List<Laser> mLasers;
+	// List of lasers
+	public List<Laser> mLasers;
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -152,5 +154,9 @@ public class PlayerSpaceship extends Sprite {
 	public void fire(GameScreen gameScreen) {
 		gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
 		mLasers.add(new Laser((int) position.x, (int) position.y,gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"),this.angularAcceleration));
+	}
+
+	public List<Laser> getMLasers() {
+		return mLasers;
 	}
 }
