@@ -31,8 +31,6 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  * @version 1.0
  */
 // TODO: Add Music To Space Level Screen
-// TODO: Add Health Bar to Space Screen
-// TODO: Add Lives Indicator To Space Screen
 // TODO: Add Weapon Firing
 // TODO: Add AI Difficutly Adjustment
 
@@ -185,7 +183,26 @@ public class SpaceLevelScreen extends GameScreen {
 		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
 		hbYPosition = 50;
 		mPlayerSpaceship.setHealth(100);
-		mPlayerSpaceship.setLives(3);
+
+		// Sets the lives of the player based on the difficulty
+		int playerLives = 0;
+
+		switch (currentDifficultySetting) {
+			case 1: // Easy
+				playerLives = 5;
+				break;
+			case 2: // Normal
+				playerLives = 3;
+				break;
+			case 3: // Hard
+				playerLives = 2;
+				break;
+			case 4: // Insane
+				playerLives = 1;
+				break;
+		}
+
+		mPlayerSpaceship.setLives(playerLives);
 	}
 
 	/**
@@ -460,6 +477,7 @@ public class SpaceLevelScreen extends GameScreen {
 		}
 	}
 
+	// Loads in all the bitmaps needed
 	public void loadBitmaps() {
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
