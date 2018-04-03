@@ -1,10 +1,16 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.thomaspickup.spacewars.gage.ai.SteeringBehaviours;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
+import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.util.Vector2;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
+import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
+import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.gage.world.Sprite;
 
 /**
@@ -32,6 +38,7 @@ public class PlayerSpaceship extends Sprite {
 	private int livesLost;
 	private int livesLeft;
 
+	private List<Laser> mLasers;
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -59,6 +66,8 @@ public class PlayerSpaceship extends Sprite {
 		maxVelocity = 100.0f;
 		maxAngularVelocity = 1440.0f;
 		maxAngularAcceleration = 1440.0f;
+
+		mLasers = new ArrayList<Laser>(100);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -99,8 +108,23 @@ public class PlayerSpaceship extends Sprite {
 		acceleration.multiply(0.75f);
 		velocity.multiply(0.95f);
 
+		if (mLasers != null) {
+			for (Laser laser : mLasers)
+				laser.update(elapsedTime);
+		}
+
 		// Apply the determined accelerations
 		super.update(elapsedTime);
+	}
+
+	@Override
+	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D, LayerViewport mLayerViewport, ScreenViewport mScreenViewport) {
+		if (mLasers != null) {
+			for (Laser laser : mLasers)
+				laser.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
+		}
+		super.draw(elapsedTime, graphics2D, mLayerViewport,
+				mScreenViewport);
 	}
 
 	// Sets the lives of the player ship
@@ -122,5 +146,11 @@ public class PlayerSpaceship extends Sprite {
 	// Gets the lives left
 	public int getLivesLeft() {
 		return livesLeft;
+	}
+
+	// Creates a new laser
+	public void fire(GameScreen gameScreen) {
+		gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
+		mLasers.add(new Laser((int) position.x, (int) position.y,gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"),this.angularAcceleration));
 	}
 }

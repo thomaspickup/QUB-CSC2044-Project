@@ -71,6 +71,9 @@ public class SpaceLevelScreen extends GameScreen {
 	// Pause Button
 	private Rect mPauseBound;
 
+	// Fire Button
+	private Rect mFireBound;
+
 	// Settings Handler for ease of accessing the settings
 	private SettingsHandler settings = new SettingsHandler();
 
@@ -122,6 +125,9 @@ public class SpaceLevelScreen extends GameScreen {
 
 		// Creates the pause button
 		mPauseBound = new Rect(50,50,150,150);
+
+		// Creates the fire button bound
+		mFireBound = new Rect(getGame().getScreenWidth() - 200, getGame().getScreenHeight() - 200, getGame().getScreenWidth() - 50, getGame().getScreenHeight() -50);
 
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
@@ -239,6 +245,9 @@ public class SpaceLevelScreen extends GameScreen {
 		// Creates the pause button
 		mPauseBound = new Rect(50,50,150,150);
 
+		// Creates the fire button bound
+		mFireBound = new Rect(getGame().getScreenWidth() - 200, getGame().getScreenHeight() - 200, getGame().getScreenWidth() - 50, getGame().getScreenHeight() -50);
+
 		// Gets the player spaceship from the save file
 		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
 
@@ -338,6 +347,8 @@ public class SpaceLevelScreen extends GameScreen {
 				// Create a new instance of menuScreen and add it to screen manager
 				PauseScreen pauseScreen = new PauseScreen(mGame, saveFile);
 				mGame.getScreenManager().addScreen(pauseScreen);
+			} else if (mFireBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				mPlayerSpaceship.fire(this);
 			}
 		}
 
@@ -398,7 +409,6 @@ public class SpaceLevelScreen extends GameScreen {
 	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
-
 		// Create the screen to black and define a clip based on the viewport
 		graphics2D.clear(Color.BLACK);
 		graphics2D.clipRect(mScreenViewport.toRect());
@@ -424,6 +434,10 @@ public class SpaceLevelScreen extends GameScreen {
 		// Draws the Pause Button
 		Bitmap imgPauseButton =  mGame.getAssetManager().getBitmap("PauseButtonWhite");
 		graphics2D.drawBitmap(imgPauseButton,null,mPauseBound,null);
+
+		// Draws the fire button
+		Bitmap imgFireButton = mGame.getAssetManager().getBitmap("FireButton");
+		graphics2D.drawBitmap(imgFireButton, null,mFireBound,null);
 
 		// Draws the HealthBar
 		int borderLine = 10;
@@ -489,6 +503,7 @@ public class SpaceLevelScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
 		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
 		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+		assetManager.loadAndAddBitmap("FireButton", "img/buttons/btnFire-Normal.png");
 		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
 		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
 	}
