@@ -41,6 +41,9 @@ public class PlayerSpaceship extends Sprite {
 	// List of lasers
 	public List<Laser> mLasers;
 
+	private int reloadTime;
+	private int timeToReload;
+	private boolean canFire;
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -70,6 +73,10 @@ public class PlayerSpaceship extends Sprite {
 		maxAngularAcceleration = 1440.0f;
 
 		mLasers = new ArrayList<Laser>(100);
+
+		reloadTime = gameScreen.getGame().getTargetFramesPerSecond();
+		timeToReload = 0;
+		canFire = true;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -115,6 +122,13 @@ public class PlayerSpaceship extends Sprite {
 				laser.update(elapsedTime);
 		}
 
+		if (!canFire) {
+			timeToReload = timeToReload + 1;
+
+			if (reloadTime == timeToReload) {
+				canFire = true;
+			}
+		}
 		// Apply the determined accelerations
 		super.update(elapsedTime);
 	}
@@ -152,8 +166,12 @@ public class PlayerSpaceship extends Sprite {
 
 	// Creates a new laser
 	public void fire(GameScreen gameScreen) {
-		gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
-		mLasers.add(new Laser((int) position.x, (int) position.y,gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"),this.angularAcceleration));
+		if (canFire) {
+			gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
+			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"), this.angularAcceleration));
+			timeToReload = 0;
+			canFire = false;
+		}
 	}
 
 	public List<Laser> getMLasers() {
