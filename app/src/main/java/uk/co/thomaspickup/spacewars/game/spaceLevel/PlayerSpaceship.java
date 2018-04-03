@@ -28,6 +28,10 @@ public class PlayerSpaceship extends Sprite {
 	 */
 	private Vector2 playerTouchAcceleration = new Vector2();
 
+	// Contains the lives lost and left
+	private int livesLost;
+	private int livesLeft;
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -97,5 +101,26 @@ public class PlayerSpaceship extends Sprite {
 
 		// Apply the determined accelerations
 		super.update(elapsedTime);
+	}
+
+	// Sets the lives of the player ship
+	public void setLives(int lives) {
+		livesLeft = lives;
+	}
+
+	// Minuses a live from the livesLeft and adds one to livesLost
+	public void minusLive() {
+		livesLeft = livesLeft - 1;
+		livesLost = livesLost + 1;
+	}
+
+	// Gets the lives lost
+	public int getLivesLost() {
+		return livesLost;
+	}
+
+	// Gets the lives left
+	public int getLivesLeft() {
+		return livesLeft;
 	}
 }

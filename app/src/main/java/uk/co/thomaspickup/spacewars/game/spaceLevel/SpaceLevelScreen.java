@@ -114,17 +114,8 @@ public class SpaceLevelScreen extends GameScreen {
 					/ mScreenViewport.width, 240.0f, 240.0f
 					* mScreenViewport.height / mScreenViewport.width, 240);
 
-		// Load in the assets used by the steering demo
-		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
-		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
-		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
-		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
-		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
-		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
-		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
-		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
-		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+		// Load in the assets used by the level
+		loadBitmaps();
 
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
@@ -194,6 +185,7 @@ public class SpaceLevelScreen extends GameScreen {
 		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
 		hbYPosition = 50;
 		mPlayerSpaceship.setHealth(100);
+		mPlayerSpaceship.setLives(3);
 	}
 
 	/**
@@ -219,17 +211,8 @@ public class SpaceLevelScreen extends GameScreen {
 		// Gets the Layer View Port from the save file
 		mLayerViewport = this.saveFile.getMLayerViewport();
 
-		// Load in the assets used by the steering demo
-		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
-		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
-		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
-		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
-		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
-		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
-		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
-		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
-		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+		// Load in the assets used by the level
+		loadBitmaps();
 
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
@@ -301,12 +284,21 @@ public class SpaceLevelScreen extends GameScreen {
 	public void update(ElapsedTime elapsedTime) {
 		// First off check if the players health is less than 0
 		if (mPlayerSpaceship.getHealth() <= 0) {
-			// TODO: Replace with end screen
-			// Remove this screen
-			mGame.getScreenManager().removeScreen(this.getName());
+			// Minus one live
+			mPlayerSpaceship.minusLive();
 
-			MenuScreen menuScreen = new MenuScreen(mGame);
-			mGame.getScreenManager().addScreen(menuScreen);
+			// Set Health to 100 again
+			mPlayerSpaceship.setHealth(100);
+
+			// If no lives left then end game
+			if (mPlayerSpaceship.getLivesLeft() == 0) {
+				// TODO: Replace with end screen
+				// Remove this screen
+				mGame.getScreenManager().removeScreen(this.getName());
+
+				MenuScreen menuScreen = new MenuScreen(mGame);
+				mGame.getScreenManager().addScreen(menuScreen);
+			}
 		}
 
 		// Process any touch events occurring since the update
@@ -378,7 +370,6 @@ public class SpaceLevelScreen extends GameScreen {
 			}
 			asteroid.update(elapsedTime);
 		}
-
 	}
 
 	/*
@@ -433,5 +424,54 @@ public class SpaceLevelScreen extends GameScreen {
 		Rect mHealthBar = new Rect(hbXPosition + borderLine, hbYPosition + 10, hbXPosition + 10 + width , (hbYPosition+hbHeight) - 10);
 		paintCan.setColor(Color.RED);
 		graphics2D.drawRect(mHealthBar,paintCan);
+
+		// Draws the lives lost
+		Bitmap heartFull = mGame.getAssetManager().getBitmap("HeartFull");
+		Bitmap heartEmpty = mGame.getAssetManager().getBitmap("HeartEmpty");
+
+		int heartWidth = 100;
+		int heartHeight = 100;
+
+		int startX = getGame().getScreenWidth() / 2 - (((mPlayerSpaceship.getLivesLeft() + mPlayerSpaceship.getLivesLost()) * heartWidth) / 2);
+		int yOffset = getGame().getScreenHeight() - 50;
+
+		int endX;
+
+		Rect mHeartBound;
+
+		for (int c = 0; c < mPlayerSpaceship.getLivesLeft(); c++) {
+			endX = startX + heartWidth;
+
+			mHeartBound = new Rect(startX, yOffset - heartHeight, endX, yOffset);
+
+			graphics2D.drawBitmap(heartFull,null, mHeartBound,null);
+
+			startX = endX;
+		}
+
+		for (int c = 0; c < mPlayerSpaceship.getLivesLost(); c++) {
+			endX = startX + heartWidth;
+
+			mHeartBound = new Rect(startX, yOffset - heartHeight, endX, yOffset);
+
+			graphics2D.drawBitmap(heartEmpty,null, mHeartBound,null);
+
+			startX = endX;
+		}
+	}
+
+	public void loadBitmaps() {
+		AssetStore assetManager = mGame.getAssetManager();
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
+		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
+		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
+		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
+		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
+		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
+		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
+		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
+		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
 	}
 }
