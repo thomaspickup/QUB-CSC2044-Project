@@ -92,7 +92,6 @@ public class PlayerSpaceship extends Sprite {
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
-
 		// Consider any touch events occurring since the update
 		Input input = mGameScreen.getGame().getInput();
 
@@ -117,6 +116,9 @@ public class PlayerSpaceship extends Sprite {
 		acceleration.multiply(0.75f);
 		velocity.multiply(0.95f);
 
+		// Apply the determined accelerations
+		super.update(elapsedTime);
+
 		if (mLasers != null) {
 			for (Laser laser : mLasers)
 				laser.update(elapsedTime);
@@ -129,8 +131,6 @@ public class PlayerSpaceship extends Sprite {
 				canFire = true;
 			}
 		}
-		// Apply the determined accelerations
-		super.update(elapsedTime);
 	}
 
 	@Override
@@ -167,10 +167,10 @@ public class PlayerSpaceship extends Sprite {
 	// Creates a new laser
 	public void fire(GameScreen gameScreen) {
 		if (canFire) {
-			gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
-			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"), this.angularAcceleration));
-			timeToReload = 0;
 			canFire = false;
+			gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
+			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"), this.acceleration, this.velocity, orientation));
+			timeToReload = 0;
 		}
 	}
 

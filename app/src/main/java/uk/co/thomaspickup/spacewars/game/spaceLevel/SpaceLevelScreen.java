@@ -393,6 +393,10 @@ public class SpaceLevelScreen extends GameScreen {
 			if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(), aiSpaceship.getBound())) {
 				mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
 				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), aiSpaceship);
+
+				if (aiSpaceship.getHealth() == 0) {
+					iterAISpaceships.remove();
+				}
 			}
 
 			// Checks if any space ships are to bump into asteroids
@@ -409,22 +413,26 @@ public class SpaceLevelScreen extends GameScreen {
 			}
 
 			// Checks if there is any hits with lasers
-			Iterator<Laser> mLasers = mPlayerSpaceship.mLasers.iterator();
-			while (mLasers.hasNext()) {
-				Laser laser = mLasers.next();
+			Iterator<Laser> iterLaser = mPlayerSpaceship.mLasers.iterator();
 
+			while(iterLaser.hasNext()){
+				Laser laser = iterLaser.next();
 				if (CollisionDetector.isCollision(aiSpaceship.getBound(),laser.getBound())) {
 					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
 
+					iterLaser.remove();
+
 					if (aiSpaceship.getHealth() == 0) {
 						iterAISpaceships.remove();
-						mLasers.remove();
+
+						mPlayerSpaceship.update(elapsedTime);
 					}
 				}
 			}
 
 			aiSpaceship.update(elapsedTime);
 		}
+
 		// Update each of the asteroids
 		for (Asteroid asteroid : mAsteroids) {
 			if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(), asteroid.getBound())) {
