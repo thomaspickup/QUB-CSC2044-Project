@@ -91,14 +91,14 @@ public class MenuScreen extends GameScreen {
 
 		// Defines the Title Image Rect
 		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
-		int titleHeight = (int) (game.getScreenHeight() * 0.208); // On 1080 Screen Height = 400
+		int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
 		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
 		int spacingY = paddingY * 2;
 		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
 
 		// Defines the Play Button Image Rect
-		int btnPlayWidth = (int) (game.getScreenWidth() * 0.370);
-		int btnPlayHeight = (int) (game.getScreenHeight() * 0.208);
+		int btnPlayWidth = (int) (game.getScreenWidth() * 0.208);
+		int btnPlayHeight = (int) (game.getScreenHeight() *  0.373);
 		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
 		spacingY = (game.getScreenHeight() / 2) + paddingY;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
@@ -151,14 +151,14 @@ public class MenuScreen extends GameScreen {
 
 		// Defines the Title Image Rect
 		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
-		int titleHeight = (int) (game.getScreenHeight() * 0.208); // On 1080 Screen Height = 400
+		int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
 		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
 		int spacingY = paddingY * 2;
 		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
 
 		// Defines the Play Button Image Rect
-		int btnPlayWidth = (int) (game.getScreenWidth() * 0.370);
-		int btnPlayHeight = (int) (game.getScreenHeight() * 0.208);
+		int btnPlayWidth = (int) (game.getScreenWidth() * 0.208);
+		int btnPlayHeight = (int) (game.getScreenHeight() *  0.373);
 		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
 		spacingY = (game.getScreenHeight() / 2) + paddingY;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
@@ -169,7 +169,7 @@ public class MenuScreen extends GameScreen {
 		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
 		spacingX = paddingX;
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
-		
+
 		// Defines the about rect
 		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
 		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);

@@ -62,6 +62,9 @@ public class AboutScreen extends GameScreen {
     public AboutScreen(Game game, LayerViewport backgroundViewPort) {
         super("AboutScreen", game);
 
+        int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+        int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
         // Initilize the asset manager and
         // load in the bitmaps used on the about screen
         assetManager = mGame.getAssetManager();
@@ -80,10 +83,10 @@ public class AboutScreen extends GameScreen {
         }
 
         // Sets the bounds for the back button
-        int btnBackWidth = 150;
-        int btnBackHeight = 150;
-        int startX = 50;
-        int startY = 50;
+        int btnBackWidth = (int) (game.getScreenWidth() * 0.078);
+        int btnBackHeight = (int) (game.getScreenHeight() * 0.138);
+        int startX = paddingX;
+        int startY = paddingY;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
 
         // Defines the background

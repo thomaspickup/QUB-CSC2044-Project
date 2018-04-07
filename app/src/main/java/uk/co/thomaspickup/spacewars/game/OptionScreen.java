@@ -71,6 +71,9 @@ public class OptionScreen extends GameScreen {
     public OptionScreen(Game game, LayerViewport backgroundViewPort) {
         super("OptionScreen", game);
 
+        int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+        int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
         // Loads in Current Settings from SharedPreferences
         currentDifficultySetting = settings.getDifficulty(getGame().getContext());
         currentSoundSetting = settings.getSound(getGame().getContext());
@@ -92,55 +95,59 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
 
         // Bounds for Difficulty Title
-        int txtDifficultyWidth = 525;
-        int txtDifficultyHeight = 200;
+        int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273);
+        int txtDifficultyHeight = (int) (getGame().getScreenHeight() * 0.185);
         int startX = (getGame().getScreenWidth() / 2) - (txtDifficultyWidth / 2);
-        int startY = 50;
+        int startY = paddingY;
         mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
 
         // Sets bounds for the difficulty settings stack
         // each button 255px width
         // and 120px high
-        startX = (getGame().getScreenWidth() / 2) - 525;
-        int endX = startX + 255;
-        startY = startY + txtDifficultyHeight + 50;
-        int endY = startY + 120;
+        int stackPad = (int) (getGame().getScreenWidth() * 0.00520);
+        int halfStack = (int) (getGame().getScreenWidth() * 0.273);
+        int buttonWidth = (int) (getGame().getScreenWidth() * 0.132);
+        int buttonHeight = (int) (getGame().getScreenHeight() * 0.111);
+        startX = (getGame().getScreenWidth() / 2) - halfStack;
+        int endX = startX + buttonWidth;
+        startY = startY + txtDifficultyHeight + paddingY;
+        int endY = startY + buttonHeight;
         mEasyBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + 10;
-        endX = startX + 255;
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
         mNormalBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + 10;
-        endX = startX + 255;
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
         mHardBound = new Rect(startX, startY, endX, endY);
 
-        startX = endX + 10;
-        endX = startX + 255;
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
         // Sets the Mute Title
-        int txtMuteWidth = 525;
-        int txtMuteHeight = 200;
-        startY = endY + 100;
+        int txtMuteWidth = (int) (getGame().getScreenWidth() * 0.273);
+        int txtMuteHeight = (int) (getGame().getScreenHeight() * 0.185);
+        startY = endY + (paddingY *2);
         endY = startY + txtMuteHeight;
         startX = (getGame().getScreenWidth() / 2) - (txtMuteWidth / 2);
         endX = startX + txtMuteWidth;
         mMuteTitle = new Rect(startX, startY, endX, endY);
 
         // Sets the bounds for the Mute Button
-        int btnSoundWidth = 200;
-        int btnSoundHeight = 200;
-        startY = endY + 50;
+        int btnSoundWidth = (int) (getGame().getScreenHeight() * 0.104);
+        int btnSoundHeight = (int) (getGame().getScreenHeight() * 0.185);
+        startY = endY + paddingY;
         endY = startY + btnSoundHeight;
         startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
         mMuteBound = new Rect(startX, startY, startX + btnSoundWidth, endY);
 
         // Sets the bounds for the back button
-        int btnBackWidth = 150;
-        int btnBackHeight = 150;
-        startX = 50;
-        startY = 50;
+        int btnBackWidth = (int) (game.getScreenWidth() * 0.078);
+        int btnBackHeight = (int) (game.getScreenHeight() * 0.138);
+        startX = paddingX;
+        startY = paddingY;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
 
         // Defines the background

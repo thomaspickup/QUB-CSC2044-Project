@@ -84,6 +84,9 @@ public class SpaceLevelScreen extends GameScreen {
 	// Creates a new healthbar
 	int hbXPosition, hbYPosition, hbWidth, hbHeight;
 
+	int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+	int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -125,10 +128,14 @@ public class SpaceLevelScreen extends GameScreen {
 						.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseBound = new Rect(50,50,150,150);
+		int btnPauseWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnPauseHeight = (int) (game.getScreenHeight() * 0.138);
+		mPauseBound = new Rect(paddingX,paddingY,btnPauseWidth,btnPauseHeight);
 
+		int btnFireWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnFireHeight = (int) (game.getScreenHeight() * 0.138);
 		// Creates the fire button bound
-		mFireBound = new Rect(getGame().getScreenWidth() - 200, getGame().getScreenHeight() - 200, getGame().getScreenWidth() - 50, getGame().getScreenHeight() -50);
+		mFireBound = new Rect(getGame().getScreenWidth() - btnFireWidth, getGame().getScreenHeight() - btnFireHeight, getGame().getScreenWidth() - paddingX, getGame().getScreenHeight() -paddingY);
 
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
@@ -185,10 +192,10 @@ public class SpaceLevelScreen extends GameScreen {
 		}
 
 		// Adds new healthbar
-		hbHeight = 100;
+		hbHeight = (int) (getGame().getScreenHeight() * 0.138);
 		hbWidth = (getGame().getScreenWidth() / 10) * 6;
 		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
-		hbYPosition = 50;
+		hbYPosition = paddingY;
 		mPlayerSpaceship.setHealth(100);
 
 		// Sets the lives of the player based on the difficulty
@@ -244,10 +251,14 @@ public class SpaceLevelScreen extends GameScreen {
 				.getAssetManager().getBitmap("SpaceBackground"), this);
 
 		// Creates the pause button
-		mPauseBound = new Rect(50,50,150,150);
+		int btnPauseWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnPauseHeight = (int) (game.getScreenHeight() * 0.138);
+		mPauseBound = new Rect(paddingX,paddingY,btnPauseWidth,btnPauseHeight);
 
+		int btnFireWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnFireHeight = (int) (game.getScreenHeight() * 0.138);
 		// Creates the fire button bound
-		mFireBound = new Rect(getGame().getScreenWidth() - 200, getGame().getScreenHeight() - 200, getGame().getScreenWidth() - 50, getGame().getScreenHeight() -50);
+		mFireBound = new Rect(getGame().getScreenWidth() - btnFireWidth, getGame().getScreenHeight() - btnFireHeight, getGame().getScreenWidth() - paddingX, getGame().getScreenHeight() -paddingY);
 
 		// Gets the player spaceship from the save file
 		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
@@ -259,10 +270,10 @@ public class SpaceLevelScreen extends GameScreen {
 		mAISpaceships = this.saveFile.getMAISpaceships();
 
 		// Adds new healthbar
-		hbHeight = 100;
+		hbHeight = (int) (getGame().getScreenHeight() * 0.138);
 		hbWidth = (getGame().getScreenWidth() / 10) * 6;
 		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
-		hbYPosition = 50;
+		hbYPosition = paddingY;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -504,11 +515,11 @@ public class SpaceLevelScreen extends GameScreen {
 		Bitmap heartFull = mGame.getAssetManager().getBitmap("HeartFull");
 		Bitmap heartEmpty = mGame.getAssetManager().getBitmap("HeartEmpty");
 
-		int heartWidth = 100;
-		int heartHeight = 100;
+		int heartWidth = (int) (getGame().getScreenWidth() * 0.052);
+		int heartHeight = (int) (getGame().getScreenHeight() * 0.092);
 
 		int startX = getGame().getScreenWidth() / 2 - (((mPlayerSpaceship.getLivesLeft() + mPlayerSpaceship.getLivesLost()) * heartWidth) / 2);
-		int yOffset = getGame().getScreenHeight() - 50;
+		int yOffset = getGame().getScreenHeight() - paddingY;
 
 		int endX;
 
