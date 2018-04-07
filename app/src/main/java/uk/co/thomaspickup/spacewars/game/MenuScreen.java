@@ -63,11 +63,12 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
 		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
+		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
 		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
 
 		// Plays title theme
 		mMainTheme = assetManager.getMusic("MainTheme");
-		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()));
+		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
 		mMainTheme.setLopping(true);
 		mMainTheme.play();
 
@@ -131,11 +132,12 @@ public class MenuScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
 		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
 		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
+		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
 		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
 
 		// Plays title theme
 		mMainTheme = assetManager.getMusic("MainTheme");
-		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()));
+		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
 		mMainTheme.setLopping(true);
 		mMainTheme.play();
 
@@ -196,6 +198,7 @@ public class MenuScreen extends GameScreen {
 
 			if (mPlayButtonBound.contains((int) touchEvent.x,
 					(int) touchEvent.y)) {
+				getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
 				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
@@ -205,7 +208,8 @@ public class MenuScreen extends GameScreen {
 				// As it's the only added screen it will become active.
 				mGame.getScreenManager().addScreen(spaceLevelScreen);
 			} else if (mSettingsButtonBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-				// If the settings icon area has been touched then load up options menu
+				getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+				// If the settingsHandler icon area has been touched then load up options menu
 				mGame.getScreenManager().removeScreen(this.getName());
 				OptionScreen optionScreen = new OptionScreen(mGame, mLayerViewport);
 
@@ -213,6 +217,7 @@ public class MenuScreen extends GameScreen {
 
 				mGame.getScreenManager().addScreen(optionScreen);
 			} else if (mAboutBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
 				// If the about icon area has been touched then load up about menu
 				mGame.getScreenManager().removeScreen(this.getName());
 				AboutScreen aboutScreen = new AboutScreen(mGame, mLayerViewport);

@@ -14,6 +14,7 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.gage.world.Sprite;
+import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
  * Player controlled spaceship
@@ -46,6 +47,9 @@ public class PlayerSpaceship extends Sprite {
 	private int reloadTime;
 	private int timeToReload;
 	private boolean canFire;
+
+	private SettingsHandler settingsHandler = new SettingsHandler();
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
@@ -63,6 +67,8 @@ public class PlayerSpaceship extends Sprite {
 	public PlayerSpaceship(float startX, float startY, GameScreen gameScreen) {
 		super(startX, startY, 50.0f, 50.0f, gameScreen.getGame()
 				.getAssetManager().getBitmap("Spaceship2"), gameScreen);
+
+		gameScreen.getGame().getAssetManager().loadAndAddSound("WeaponFire","sfx/sfx_weaponfire.mp3");
 
 		// Store the centre of the screen
 		screenCentre.x = gameScreen.getGame().getScreenWidth() / 2;
@@ -171,6 +177,7 @@ public class PlayerSpaceship extends Sprite {
 	// Creates a new laser
 	public void fire(GameScreen gameScreen) {
 		if (canFire) {
+			gameScreen.getGame().getAssetManager().getSound("WeaponFire").play(settingsHandler.getSound(gameScreen.getGame().getContext()));
 			canFire = false;
 			gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
 			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"), this.acceleration, this.velocity, orientation));

@@ -2,7 +2,6 @@ package uk.co.thomaspickup.spacewars.game;
 
 // Imports
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
 import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
@@ -22,7 +21,6 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  * - Mute
  * Created by Thomas Pickup
  */
-// TODO: Add Music To Options Screen & Mute when pressed Mute
     
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~
@@ -40,7 +38,7 @@ public class OptionScreen extends GameScreen {
     int currentSoundSetting;
 
     // Create instance of SettingsHandler to allow for easy of referencing
-    SettingsHandler settings = new SettingsHandler();
+    SettingsHandler settingsHandler = new SettingsHandler();
 
     // ~~ Bounds for objects on screen ~~
     // Bounds for difficultySettings
@@ -80,8 +78,8 @@ public class OptionScreen extends GameScreen {
         int paddingX = (int) (getGame().getScreenWidth() * 0.026); // @1920 = 50
 
         // Loads in Current Settings from SharedPreferences
-        currentDifficultySetting = settings.getDifficulty(getGame().getContext());
-        currentSoundSetting = settings.getSound(getGame().getContext());
+        currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
+        currentSoundSetting = settingsHandler.getSound(getGame().getContext());
 
         // Load in the bitmaps used on the options screen
         AssetStore assetManager = mGame.getAssetManager();
@@ -98,6 +96,7 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
         assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/ttlDifficulty.png");
         assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
+        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
 
         // Bounds for Difficulty Title
         int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
@@ -106,7 +105,7 @@ public class OptionScreen extends GameScreen {
         int startY = paddingY;
         mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
 
-        // Sets bounds for the difficulty settings stack
+        // Sets bounds for the difficulty settingsHandler stack
         // each button 255px width
         // and 120px high
         int stackPad = (int) (getGame().getScreenWidth() * 0.00520); // @1920 = 10
@@ -196,33 +195,39 @@ public class OptionScreen extends GameScreen {
 
             if (mEasyBound.contains((int) touchEvent.x,
                     (int) touchEvent.y)) {
-                settings.setDifficulty(getGame().getContext(), 1);
-                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+                settingsHandler.setDifficulty(getGame().getContext(), 1);
+                currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
             } else if (mNormalBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                settings.setDifficulty(getGame().getContext(), 2);
-                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+                settingsHandler.setDifficulty(getGame().getContext(), 2);
+                currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
             } else if (mHardBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                settings.setDifficulty(getGame().getContext(), 3);
-                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+                settingsHandler.setDifficulty(getGame().getContext(), 3);
+                currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
             } else if (mInsaneBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                settings.setDifficulty(getGame().getContext(), 4);
-                currentDifficultySetting = settings.getDifficulty(getGame().getContext());
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+                settingsHandler.setDifficulty(getGame().getContext(), 4);
+                currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
             } else if (mMuteBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
                 if (canPress) {
                     if (currentSoundSetting == 0) {
                         canPress = false;
-                        settings.setSound(getGame().getContext(), 1);
-                        currentSoundSetting = settings.getSound(getGame().getContext());
+                        settingsHandler.setSound(getGame().getContext(), 1);
+                        currentSoundSetting = settingsHandler.getSound(getGame().getContext());
 
                         timeLeft = 0;
                     } else {
                         canPress = false;
-                        settings.setSound(getGame().getContext(), 0);
-                        currentSoundSetting = settings.getSound(getGame().getContext());
+                        settingsHandler.setSound(getGame().getContext(), 0);
+                        currentSoundSetting = settingsHandler.getSound(getGame().getContext());
                         timeLeft = 0;
                     }
                 }
             } else if (mBackBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
                 // Remove this screen
                 mGame.getScreenManager().removeScreen(this.getName());
 

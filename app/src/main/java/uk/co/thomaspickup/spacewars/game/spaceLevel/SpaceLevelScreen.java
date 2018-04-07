@@ -32,7 +32,7 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  * @version 1.0
  */
 // TODO: Add Music To Space Level Screen
-// TODO: Add Weapon Firing
+// TODO: Add Weapon Firing for enemies
 // TODO: Add AI Difficutly Adjustment
 
 public class SpaceLevelScreen extends GameScreen {
@@ -75,8 +75,8 @@ public class SpaceLevelScreen extends GameScreen {
 	// Fire Button
 	private Rect mFireBound;
 
-	// Settings Handler for ease of accessing the settings
-	private SettingsHandler settings = new SettingsHandler();
+	// Settings Handler for ease of accessing the settingsHandler
+	private SettingsHandler settingsHandler = new SettingsHandler();
 
 	// Save File used for transfering and receiving a save from other screens
 	private SpaceSave saveFile = new SpaceSave();
@@ -100,9 +100,9 @@ public class SpaceLevelScreen extends GameScreen {
 	public SpaceLevelScreen(Game game) {
 		super("SpaceLevelScreen", game);
 
-		// Gets current settings
-		int currentDifficultySetting = settings.getDifficulty(getGame().getContext());
-		int currentSoundSetting = settings.getSound(getGame().getContext());
+		// Gets current settingsHandler
+		int currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
+		int currentSoundSetting = settingsHandler.getSound(getGame().getContext());
 
 		// Create the screen viewport
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
@@ -231,9 +231,9 @@ public class SpaceLevelScreen extends GameScreen {
 
 		this.saveFile = saveFile;
 
-		// Gets current settings
-		int currentDifficultySetting = settings.getDifficulty(getGame().getContext());
-		int currentSoundSetting = settings.getSound(getGame().getContext());
+		// Gets current settingsHandler
+		int currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
+		int currentSoundSetting = settingsHandler.getSound(getGame().getContext());
 
 		// Create the screen viewport
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
@@ -347,6 +347,8 @@ public class SpaceLevelScreen extends GameScreen {
 			TouchEvent touchEvent = touchEvents.get(0);
 
 			if (mPauseBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+				getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
+
 				// Remove this screen
 				mGame.getScreenManager().removeScreen(this.getName());
 
@@ -406,6 +408,7 @@ public class SpaceLevelScreen extends GameScreen {
 				CollisionDetector.determineAndResolveCollision(getPlayerSpaceship(), aiSpaceship);
 
 				if (aiSpaceship.getHealth() == 0) {
+					getGame().getAssetManager().getSound("WeaponExplosion").play(settingsHandler.getSound(getGame().getContext()));
 					iterAISpaceships.remove();
 				}
 			}
@@ -418,6 +421,7 @@ public class SpaceLevelScreen extends GameScreen {
 					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
 
 					if (aiSpaceship.getHealth() == 0) {
+						getGame().getAssetManager().getSound("WeaponExplosion").play(settingsHandler.getSound(getGame().getContext()));
 						iterAISpaceships.remove();
 					}
 				}
@@ -429,11 +433,13 @@ public class SpaceLevelScreen extends GameScreen {
 			while(iterLaser.hasNext()){
 				Laser laser = iterLaser.next();
 				if (CollisionDetector.isCollision(aiSpaceship.getBound(),laser.getBound())) {
+
 					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
 
 					iterLaser.remove();
 
 					if (aiSpaceship.getHealth() == 0) {
+						getGame().getAssetManager().getSound("WeaponExplosion").play(settingsHandler.getSound(getGame().getContext()));
 						iterAISpaceships.remove();
 
 						mPlayerSpaceship.update(elapsedTime);
@@ -561,5 +567,7 @@ public class SpaceLevelScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("FireButton", "img/buttons/btnFire-Normal.png");
 		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
 		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
+		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+		assetManager.loadAndAddSound("WeaponExplosion","sfx/sfx_weaponexplosion.mp4");
 	}
 }

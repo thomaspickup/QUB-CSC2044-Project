@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -52,6 +53,8 @@ public class AboutScreen extends GameScreen {
     private LayerViewport mLayerViewport;
     private int intXMultiplier = 1;
 
+    private SettingsHandler settingsHandler = new SettingsHandler();
+
     // ~~~~ Methods Start ~~~~
     /**
      * Create a simple about screen
@@ -69,6 +72,7 @@ public class AboutScreen extends GameScreen {
         // load in the bitmaps used on the about screen
         assetManager = mGame.getAssetManager();
         assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
+        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
 
         // Imports text files
         try {
@@ -115,6 +119,7 @@ public class AboutScreen extends GameScreen {
             TouchEvent touchEvent = touchEvents.get(0);
 
          if (mBackBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
                 // Remove this screen
                 mGame.getScreenManager().removeScreen(this.getName());
 

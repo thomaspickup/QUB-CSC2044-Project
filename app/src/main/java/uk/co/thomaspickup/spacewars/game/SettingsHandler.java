@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * This class handles all the settings for the app, both setting them and getting them.
+ * This class handles all the settingsHandler for the app, both setting them and getting them.
  * Created by thomaspickup.
  */
 
@@ -36,7 +36,7 @@ public class SettingsHandler {
         int difficultySetting;
         Context myAppContext = appContext;
 
-        // Creates instance of SharePreferences called settings
+        // Creates instance of SharePreferences called settingsHandler
         SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF_(), 0);
 
         // Creates instance of SharedPreferences Editor called editor
@@ -45,7 +45,7 @@ public class SettingsHandler {
         if (!settings.contains(AppStrings.getPREF_DIFFICULTY())) {
             // If the key doesn't already exist then create the default key of 0
 
-            // Defines the editor as the edit of settings
+            // Defines the editor as the edit of settingsHandler
             editor = settings.edit();
 
             // Puts the int
@@ -81,13 +81,13 @@ public class SettingsHandler {
             int myDifficultySetting = difficultySetting;
             Context myAppContext = appContext;
 
-            // Creates instance of SharePreferences called settings
+            // Creates instance of SharePreferences called settingsHandler
             SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF_(), 0);
 
             // Creates instance of SharedPreferences Editor called editor
             SharedPreferences.Editor editor;
 
-            // Defines the editor as the edit of settings
+            // Defines the editor as the edit of settingsHandler
             editor = settings.edit();
 
             // Puts the int
@@ -121,13 +121,13 @@ public class SettingsHandler {
             int mySoundSetting = soundSetting;
             Context myAppContext = appContext;
 
-            // Creates instance of SharePreferences called settings
+            // Creates instance of SharePreferences called settingsHandler
             SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF_(), 0);
 
             // Creates instance of SharedPreferences Editor called editor
             SharedPreferences.Editor editor;
 
-            // Defines the editor as the edit of settings
+            // Defines the editor as the edit of settingsHandler
             editor = settings.edit();
 
             // Puts the int
@@ -159,7 +159,7 @@ public class SettingsHandler {
         int soundSetting;
         Context myAppContext = appContext;
 
-        // Creates instance of SharePreferences called settings
+        // Creates instance of SharePreferences called settingsHandler
         SharedPreferences settings = myAppContext.getSharedPreferences(AppStrings.getPREF_(), 0);
 
         // Creates instance of SharedPreferences Editor called editor
@@ -168,7 +168,7 @@ public class SettingsHandler {
         if (!settings.contains(AppStrings.getPREF_SOUND())) {
             // If the key doesn't already exist then create the default key value of 0
 
-            // Defines the editor as the edit of settings
+            // Defines the editor as the edit of settingsHandler
             editor = settings.edit();
 
             // Puts the int

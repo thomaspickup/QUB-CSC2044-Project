@@ -53,6 +53,7 @@ public class PauseScreen extends GameScreen {
     // Save File used for transfering and receiving a save from other screens
     private SpaceSave saveFile = new SpaceSave();
 
+    private SettingsHandler settingsHandler = new SettingsHandler();
     /**
      *
      * @param game
@@ -86,6 +87,7 @@ public class PauseScreen extends GameScreen {
         assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
         assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
         assetManager.loadAndAddBitmap("ExitIcon", "img/buttons/btnExit.png");
+        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
 
         // Create the space background
         mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
@@ -133,6 +135,7 @@ public class PauseScreen extends GameScreen {
 
             if (mPlayButtonBound.contains((int) touchEvent.x,
                     (int) touchEvent.y)) {
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
                 // If the play game area has been touched then swap screens
                 mGame.getScreenManager().removeScreen(this.getName());
                 SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame, saveFile);
@@ -141,6 +144,7 @@ public class PauseScreen extends GameScreen {
                 mGame.getScreenManager().addScreen(spaceLevelScreen);
             } else if (mExitButtonBound.contains((int) touchEvent.x,
                     (int) touchEvent.y)) {
+                getGame().getAssetManager().getSound("ButtonClick").play(settingsHandler.getSound(getGame().getContext()));
                 mGame.getScreenManager().removeScreen(this.getName());
 
                 MenuScreen menuScreen = new MenuScreen(mGame);
