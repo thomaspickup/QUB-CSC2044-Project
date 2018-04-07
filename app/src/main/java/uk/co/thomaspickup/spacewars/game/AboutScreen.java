@@ -126,9 +126,9 @@ public class AboutScreen extends GameScreen {
 
         // Move the background diagonally
         // Changes the multiplier if it hits the bounds
-        if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+        if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth() / 2)) {
             intXMultiplier = -1;
-        } else if (mLayerViewport.x == mScreenViewport.left) {
+        } else if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth())) {
             intXMultiplier = 1;
         }
 

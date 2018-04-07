@@ -76,8 +76,8 @@ public class OptionScreen extends GameScreen {
     public OptionScreen(Game game, LayerViewport backgroundViewPort) {
         super("OptionScreen", game);
 
-        int paddingY = (int) (getGame().getScreenHeight() * 0.02);
-        int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+        int paddingY = (int) (getGame().getScreenHeight() * 0.02); // @1080 = 50
+        int paddingX = (int) (getGame().getScreenWidth() * 0.026); // @1920 = 50
 
         // Loads in Current Settings from SharedPreferences
         currentDifficultySetting = settings.getDifficulty(getGame().getContext());
@@ -100,8 +100,8 @@ public class OptionScreen extends GameScreen {
         assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
 
         // Bounds for Difficulty Title
-        int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273);
-        int txtDifficultyHeight = (int) (getGame().getScreenHeight() * 0.185);
+        int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int txtDifficultyHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
         int startX = (getGame().getScreenWidth() / 2) - (txtDifficultyWidth / 2);
         int startY = paddingY;
         mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
@@ -109,10 +109,10 @@ public class OptionScreen extends GameScreen {
         // Sets bounds for the difficulty settings stack
         // each button 255px width
         // and 120px high
-        int stackPad = (int) (getGame().getScreenWidth() * 0.00520);
-        int halfStack = (int) (getGame().getScreenWidth() * 0.273);
-        int buttonWidth = (int) (getGame().getScreenWidth() * 0.132);
-        int buttonHeight = (int) (getGame().getScreenHeight() * 0.111);
+        int stackPad = (int) (getGame().getScreenWidth() * 0.00520); // @1920 = 10
+        int halfStack = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int buttonWidth = (int) (getGame().getScreenWidth() * 0.132); // @1920 = 255
+        int buttonHeight = (int) (getGame().getScreenHeight() * 0.111); // @1080 = 120
         startX = (getGame().getScreenWidth() / 2) - halfStack;
         int endX = startX + buttonWidth;
         startY = startY + txtDifficultyHeight + paddingY;
@@ -132,8 +132,8 @@ public class OptionScreen extends GameScreen {
         mInsaneBound = new Rect(startX, startY, endX, endY);
 
         // Sets the Mute Title
-        int txtMuteWidth = (int) (getGame().getScreenWidth() * 0.273);
-        int txtMuteHeight = (int) (getGame().getScreenHeight() * 0.185);
+        int txtMuteWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int txtMuteHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
         startY = endY + (paddingY *2);
         endY = startY + txtMuteHeight;
         startX = (getGame().getScreenWidth() / 2) - (txtMuteWidth / 2);
@@ -141,16 +141,16 @@ public class OptionScreen extends GameScreen {
         mMuteTitle = new Rect(startX, startY, endX, endY);
 
         // Sets the bounds for the Mute Button
-        int btnSoundWidth = (int) (game.getScreenWidth() * 0.156);
-        int btnSoundHeight = (int) (game.getScreenHeight() * 0.231);
+        int btnSoundWidth = (int) (game.getScreenWidth() * 0.156); // @1920 = 300
+        int btnSoundHeight = (int) (game.getScreenHeight() * 0.231); // @1080 = 250
         startY = endY + paddingY;
         endY = startY + btnSoundHeight;
         startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
         mMuteBound = new Rect(startX, startY, startX + btnSoundWidth, endY);
 
         // Sets the bounds for the back button
-        int btnBackWidth = (int) (game.getScreenWidth() * 0.078);
-        int btnBackHeight = (int) (game.getScreenHeight() * 0.138);
+        int btnBackWidth = (int) (game.getScreenWidth() * 0.078); // @1920 = 150
+        int btnBackHeight = (int) (game.getScreenHeight() * 0.138); // @1080 = 150
         startX = paddingX;
         startY = paddingY;
         mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
@@ -186,6 +186,7 @@ public class OptionScreen extends GameScreen {
                 canPress = true;
             }
         }
+
         // Process any touch events occurring since the update
         Input input = mGame.getInput();
 
@@ -212,6 +213,7 @@ public class OptionScreen extends GameScreen {
                         canPress = false;
                         settings.setSound(getGame().getContext(), 1);
                         currentSoundSetting = settings.getSound(getGame().getContext());
+
                         timeLeft = 0;
                     } else {
                         canPress = false;
@@ -232,9 +234,9 @@ public class OptionScreen extends GameScreen {
 
         // Move the background diagonally
         // Changes the multiplier if it hits the bounds
-        if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+        if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth() / 2)) {
             intXMultiplier = -1;
-        } else if (mLayerViewport.x == mScreenViewport.left) {
+        } else if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth())) {
             intXMultiplier = 1;
         }
 

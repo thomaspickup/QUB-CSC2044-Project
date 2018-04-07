@@ -200,6 +200,8 @@ public class MenuScreen extends GameScreen {
 				mGame.getScreenManager().removeScreen(this.getName());
 				SpaceLevelScreen spaceLevelScreen = new SpaceLevelScreen(mGame);
 
+				mMainTheme.dispose();
+
 				// As it's the only added screen it will become active.
 				mGame.getScreenManager().addScreen(spaceLevelScreen);
 			} else if (mSettingsButtonBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
@@ -207,11 +209,15 @@ public class MenuScreen extends GameScreen {
 				mGame.getScreenManager().removeScreen(this.getName());
 				OptionScreen optionScreen = new OptionScreen(mGame, mLayerViewport);
 
+				mMainTheme.dispose();
+
 				mGame.getScreenManager().addScreen(optionScreen);
 			} else if (mAboutBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
 				// If the about icon area has been touched then load up about menu
 				mGame.getScreenManager().removeScreen(this.getName());
 				AboutScreen aboutScreen = new AboutScreen(mGame, mLayerViewport);
+
+				mMainTheme.dispose();
 
 				mGame.getScreenManager().addScreen(aboutScreen);
 			}
@@ -219,9 +225,9 @@ public class MenuScreen extends GameScreen {
 
 		// Move the background diagonally
 		// Changes the multiplier if it hits the bounds
-		if (mLayerViewport.x == getGame().getScreenWidth() - mLayerViewport.getRight()) {
+		if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth() / 2)) {
 			intXMultiplier = -1;
-		} else if (mLayerViewport.x == mScreenViewport.left) {
+		} else if (mLayerViewport.x == getGame().getScreenWidth() - (mLayerViewport.getWidth())) {
 			intXMultiplier = 1;
 		}
 
