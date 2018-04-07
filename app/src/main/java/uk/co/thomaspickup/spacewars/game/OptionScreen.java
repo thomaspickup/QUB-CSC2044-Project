@@ -141,8 +141,8 @@ public class OptionScreen extends GameScreen {
         mMuteTitle = new Rect(startX, startY, endX, endY);
 
         // Sets the bounds for the Mute Button
-        int btnSoundWidth = (int) (getGame().getScreenHeight() * 0.104);
-        int btnSoundHeight = (int) (getGame().getScreenHeight() * 0.185);
+        int btnSoundWidth = (int) (game.getScreenWidth() * 0.156);
+        int btnSoundHeight = (int) (game.getScreenHeight() * 0.231);
         startY = endY + paddingY;
         endY = startY + btnSoundHeight;
         startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
@@ -181,7 +181,7 @@ public class OptionScreen extends GameScreen {
         // Counts up to Average FPS
         if (!canPress) {
             timeLeft += 1;
-            
+
             if (timeLeft == avgFPS) {
                 canPress = true;
             }
