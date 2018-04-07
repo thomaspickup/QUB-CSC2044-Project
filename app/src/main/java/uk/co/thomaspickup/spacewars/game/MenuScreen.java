@@ -106,8 +106,8 @@ public class MenuScreen extends GameScreen {
 		// Defines the Settings Cog Rect
 		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
 		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = paddingY;
-		spacingX = game.getScreenWidth() - (btnSettingsWidth + paddingX);
+		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
+		spacingX = paddingX;
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
 
 		// Defines the about rect
@@ -166,10 +166,10 @@ public class MenuScreen extends GameScreen {
 		// Defines the Settings Cog Rect
 		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
 		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = paddingY;
-		spacingX = game.getScreenWidth() - (btnSettingsWidth + paddingX);
+		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
+		spacingX = paddingX;
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
-
+		
 		// Defines the about rect
 		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
 		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);

@@ -61,6 +61,9 @@ public class PauseScreen extends GameScreen {
     public PauseScreen(Game game, SpaceSave saveFile) {
         super("PauseScreen", game);
 
+        int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+        int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
         // Copies over te save file to the class
         this.saveFile = saveFile;
 
@@ -99,23 +102,25 @@ public class PauseScreen extends GameScreen {
         mAISpaceships = this.saveFile.getMAISpaceships();
 
         // Defines the Title Image Rect
-        int spacingX = (game.getScreenWidth() / 2) - 560;
-        int spacingY = 100;
-        mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
+        int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+        int titleHeight = (int) (game.getScreenHeight() * 0.208); // On 1080 Screen Height = 400
+        int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
+        int spacingY = paddingY * 2;
+        mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
+
+        // Defines the Play Button Image Rect
+        int btnPlayWidth = (int) (game.getScreenWidth() * 0.370);
+        int btnPlayHeight = (int) (game.getScreenHeight() * 0.208);
+        spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
+        spacingY = (game.getScreenHeight() / 2) + paddingY;
+        mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
 
         // Defines the Exit Icon Rect
-        int btnExitWidth = 150;
-        int btnExitHeight = 150;
+        int btnExitWidth = (int) (game.getScreenWidth() * 0.078);
+        int btnExitHeight = (int) (game.getScreenHeight() * 0.138);
         spacingY = 50;
         spacingX = game.getScreenWidth() - (btnExitWidth + 50);
         mExitButtonBound = new Rect(spacingX, spacingY, spacingX + btnExitWidth, spacingY + btnExitHeight);
-
-        // Defines the Play Button Image Rect
-        int btnPlayWidth = 400;
-        int btnPlayHeight = 400;
-        spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
-        spacingY = (game.getScreenHeight() / 2) + 50;
-        mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
     }
     @Override
     public void update(ElapsedTime elapsedTime) {
