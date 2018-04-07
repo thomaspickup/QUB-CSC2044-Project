@@ -60,7 +60,7 @@ public class Laser extends Sprite {
         }
 
         // Update the position using the velocity
-        position.add(velocity.x * dt, velocity.y * dt);
+        position.add(velocity.x *dt , velocity.y * dt);
     }
 
     @Override

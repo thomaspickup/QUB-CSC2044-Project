@@ -1,5 +1,7 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +133,8 @@ public class PlayerSpaceship extends Sprite {
 				canFire = true;
 			}
 		}
+
+		Log.i("Orientation", String.format("%f",SteeringBehaviours.alignWithMovement(this)));
 	}
 
 	@Override

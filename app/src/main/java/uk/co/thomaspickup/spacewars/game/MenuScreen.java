@@ -53,6 +53,9 @@ public class MenuScreen extends GameScreen {
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);
 
+		int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+		int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
 		// Load in the bitmaps and sounds used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
@@ -87,34 +90,39 @@ public class MenuScreen extends GameScreen {
 					* mScreenViewport.height / mScreenViewport.width, 240);
 
 		// Defines the Title Image Rect
-		int spacingX = (game.getScreenWidth() / 2) - 560;
-		int spacingY = 100;
-		mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
+		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+		int titleHeight = (int) (game.getScreenHeight() * 0.208); // On 1080 Screen Height = 400
+		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
+		int spacingY = paddingY * 2;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
 
 		// Defines the Play Button Image Rect
-		int btnPlayWidth = 400;
-		int btnPlayHeight = 400;
+		int btnPlayWidth = (int) (game.getScreenWidth() * 0.370);
+		int btnPlayHeight = (int) (game.getScreenHeight() * 0.208);
 		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
-		spacingY = (game.getScreenHeight() / 2) + 50;
+		spacingY = (game.getScreenHeight() / 2) + paddingY;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
 
 		// Defines the Settings Cog Rect
-		int btnSettingsWidth = 150;
-		int btnSettingsHeight = 150;
-		spacingY = 50;
-		spacingX = game.getScreenWidth() - (btnSettingsWidth + 50);
+		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = paddingY;
+		spacingX = game.getScreenWidth() - (btnSettingsWidth + paddingX);
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
 
 		// Defines the about rect
-		int btnAboutWidth = 150;
-		int btnAboutHeight = 150;
-		spacingY = (game.getScreenHeight() - 50) - btnAboutHeight;
-		spacingX = (game.getScreenWidth() - 50) - btnAboutWidth;
+		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = (game.getScreenHeight() - paddingY) - btnAboutHeight;
+		spacingX = (game.getScreenWidth() - paddingX) - btnAboutWidth;
 		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
 	}
 
 	public MenuScreen(Game game, LayerViewport backgroundViewPort) {
 		super("MenuScreen", game);
+
+		int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+		int paddingX = (int) (getGame().getScreenWidth() * 0.026);
 
 		// Load in the bitmaps and sounds used on the menu screen
 		AssetStore assetManager = mGame.getAssetManager();
@@ -142,29 +150,31 @@ public class MenuScreen extends GameScreen {
 		mLayerViewport = backgroundViewPort;
 
 		// Defines the Title Image Rect
-		int spacingX = (game.getScreenWidth() / 2) - 560;
-		int spacingY = 100;
-		mTitleBound = new Rect(spacingX,spacingY, spacingX+1120, spacingY + 400);
+		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+		int titleHeight = (int) (game.getScreenHeight() * 0.208); // On 1080 Screen Height = 400
+		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
+		int spacingY = paddingY * 2;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
 
 		// Defines the Play Button Image Rect
-		int btnPlayWidth = 400;
-		int btnPlayHeight = 400;
+		int btnPlayWidth = (int) (game.getScreenWidth() * 0.370);
+		int btnPlayHeight = (int) (game.getScreenHeight() * 0.208);
 		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
-		spacingY = (game.getScreenHeight() / 2) + 50;
+		spacingY = (game.getScreenHeight() / 2) + paddingY;
 		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
 
 		// Defines the Settings Cog Rect
-		int btnSettingsWidth = 150;
-		int btnSettingsHeight = 150;
-		spacingY = 50;
-		spacingX = game.getScreenWidth() - (btnSettingsWidth + 50);
+		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = paddingY;
+		spacingX = game.getScreenWidth() - (btnSettingsWidth + paddingX);
 		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
 
 		// Defines the about rect
-		int btnAboutWidth = 150;
-		int btnAboutHeight = 150;
-		spacingY = (game.getScreenHeight() - 50) - btnAboutHeight;
-		spacingX = (game.getScreenWidth() - 50) - btnAboutWidth;
+		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = (game.getScreenHeight() - paddingY) - btnAboutHeight;
+		spacingX = (game.getScreenWidth() - paddingX) - btnAboutWidth;
 		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
 	}
 	/*
