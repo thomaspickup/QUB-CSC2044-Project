@@ -61,6 +61,11 @@ public class OptionScreen extends GameScreen {
     private LayerViewport mLayerViewport;
     private int intXMultiplier = 1;
 
+    // Delay on button
+    int avgFPS;
+    int timeLeft;
+    boolean canPress;
+
     // ~~~~ Methods Start ~~~~
     /**
      * Create a simple options screen
@@ -157,6 +162,11 @@ public class OptionScreen extends GameScreen {
         mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
                 game.getScreenHeight());
         mLayerViewport = backgroundViewPort;
+
+        // Allow to press the mute button
+        canPress = true;
+        avgFPS =  getGame().getTargetFramesPerSecond();
+        timeLeft = 0;
     }
 
     /*
@@ -168,6 +178,14 @@ public class OptionScreen extends GameScreen {
      */
     @Override
     public void update(ElapsedTime elapsedTime) {
+        // Counts up to Average FPS
+        if (!canPress) {
+            timeLeft += 1;
+            
+            if (timeLeft == avgFPS) {
+                canPress = true;
+            }
+        }
         // Process any touch events occurring since the update
         Input input = mGame.getInput();
 
@@ -189,12 +207,18 @@ public class OptionScreen extends GameScreen {
                 settings.setDifficulty(getGame().getContext(), 4);
                 currentDifficultySetting = settings.getDifficulty(getGame().getContext());
             } else if (mMuteBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
-                if (currentSoundSetting == 0) {
-                    settings.setSound(getGame().getContext(), 1);
-                    currentSoundSetting = settings.getSound(getGame().getContext());
-                } else {
-                    settings.setSound(getGame().getContext(), 0);
-                    currentSoundSetting = settings.getSound(getGame().getContext());
+                if (canPress) {
+                    if (currentSoundSetting == 0) {
+                        canPress = false;
+                        settings.setSound(getGame().getContext(), 1);
+                        currentSoundSetting = settings.getSound(getGame().getContext());
+                        timeLeft = 0;
+                    } else {
+                        canPress = false;
+                        settings.setSound(getGame().getContext(), 0);
+                        currentSoundSetting = settings.getSound(getGame().getContext());
+                        timeLeft = 0;
+                    }
                 }
             } else if (mBackBound.contains((int) touchEvent.x, (int) touchEvent.y)) {
                 // Remove this screen
