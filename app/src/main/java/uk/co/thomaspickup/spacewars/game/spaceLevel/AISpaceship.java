@@ -1,7 +1,5 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
-import android.support.v7.widget.ThemedSpinnerAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 
 /**
  * This class handles the setting and getting of the SharedPreferences.
- * 
+ *
  * Created by Thomas Pickup
  */
 public class SettingsHandler {
