@@ -107,6 +107,10 @@ public class AISpaceship extends Sprite {
 			angularAcceleration = 
 				SteeringBehaviours.lookAt(this, 
 						((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position);
+			float deltaX = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.x - this.position.x;
+			float deltaY = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.y - this.position.y;
+
+
 			break;
 		case Seeker:
 			// Seek towards the player

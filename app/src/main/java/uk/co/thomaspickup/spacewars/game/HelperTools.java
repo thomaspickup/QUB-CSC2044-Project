@@ -50,4 +50,12 @@ public class HelperTools {
             return 1.0f;
         }
     }
+
+    public float getDistance(float deltaX, float deltaY) {
+        float result;
+
+        result = (float) Math.sqrt((deltaX*deltaX) + (deltaY*deltaY));
+
+        return result;
+    }
 }
