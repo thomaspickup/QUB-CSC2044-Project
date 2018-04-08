@@ -56,7 +56,6 @@ public class AboutScreen extends GameScreen {
 
     private SettingsHandler settingsHandler = new SettingsHandler();
 
-    // ~~~~ Methods Start ~~~~
     /**
      * Create a simple about screen
      *
