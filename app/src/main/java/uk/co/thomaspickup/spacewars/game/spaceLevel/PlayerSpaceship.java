@@ -21,9 +21,6 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  * 
  * @version 1.0
  */
-
-// TODO: Base damage upon difficulty setting
-
 public class PlayerSpaceship extends Sprite {
 
 	// /////////////////////////////////////////////////////////////////////////
