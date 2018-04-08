@@ -225,7 +225,7 @@ public class SpaceLevelScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
 		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
 		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
-		assetManager.loadAndAddSound("WeaponExplosion","sfx/sfx_weaponexplosion.mp4");
+		assetManager.loadAndAddSound("WeaponExplosion","sfx/sfx_weaponexplosion.mp3");
 	}
 
 	/**

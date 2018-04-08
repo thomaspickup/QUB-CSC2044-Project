@@ -90,7 +90,7 @@ public class AISpaceship extends Sprite {
 			maxAngularVelocity = 50.0f* speedMultiplier;
 			maxAngularAcceleration = 50.0f * speedMultiplier;
 			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Turret");
-			this.setHealth(health);
+
 			break;
 		case Seeker:
 			maxAcceleration = 30.0f * speedMultiplier;
@@ -98,12 +98,12 @@ public class AISpaceship extends Sprite {
 			maxAngularVelocity = 150.0f * speedMultiplier;
 			maxAngularAcceleration = 300.0f * speedMultiplier;
 			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship1");
-			this.setHealth(health);
 			break;
 		}
 
 		mLasers = new ArrayList<Laser>(100);
 
+		this.setHealth(health);
 		reloadTime = gameScreen.getGame().getTargetFramesPerSecond();
 		timeToReload = 0;
 		canFire = true;
