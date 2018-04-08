@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
  * Created by thomaspickup.
  */
 
+// TODO: Annotate
 public class SettingsHandler {
     // Sets up a new instance of helper tools
     // for commonly used algorithms.

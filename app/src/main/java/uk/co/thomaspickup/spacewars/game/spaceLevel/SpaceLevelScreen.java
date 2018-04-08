@@ -37,6 +37,8 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
  * The main game screen - runs the game.
+ *
+ * Created by Thomas Pickup
  */
 // TODO: Add Music To Space Level Screen
 // TODO: Refine weapon firing for turrets

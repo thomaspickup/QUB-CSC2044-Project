@@ -14,7 +14,7 @@ import uk.co.thomaspickup.spacewars.gage.world.Sprite;
 /**
  * Created by thomaspickup on 03/04/2018.
  */
-
+// TODO: Optimize and annotate
 public class Laser extends Sprite {
     // ints to hold positioning
     private int startX, startY, endX, endY;

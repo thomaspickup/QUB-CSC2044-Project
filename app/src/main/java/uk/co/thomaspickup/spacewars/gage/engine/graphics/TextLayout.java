@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by thomaspickup on 01/04/2018.
  */
-
+// TODO: Optimize and annotate
 public class TextLayout extends LinearLayout {
     // Creates the private variables
     private LinearLayout linearLayout;

@@ -2,19 +2,20 @@ package uk.co.thomaspickup.spacewars.game;
 
 /**
  * This class is used for various functions that are used globally around the game.
- * Mainly maths based functions
- * Created by thomaspickup on 24/03/2018.
+ * Mainly maths based functions/
+ *
+ * Created by Thomas Pickup
  */
-
 public class HelperTools {
     /**
      * Checks if the value x is in between (including) a lowerBound and an upperBound.
-     * @param x The Number to check.
+     *
+     * @param x          The Number to check.
      * @param lowerBound The lower bound to check against.
      * @param upperBound The upper bound to check against.
      * @return Boolean value - true or false to the statement above.
      */
-    public boolean inBetween(int x ,int lowerBound, int upperBound) {
+    public boolean inBetween(int x, int lowerBound, int upperBound) {
         if (x >= lowerBound && x <= upperBound) {
             return true;
         } else {
@@ -29,6 +30,7 @@ public class HelperTools {
      * 2 (Normal) = 1 (Ships Are Normal)
      * 3 (Hard) = 1.5 (Ships a bit faster)
      * 4 (Insane) = 2 (Ships are twice as fast!!)
+     *
      * @param difficultySetting
      * @return Speed Multiplier as Int
      */
@@ -51,10 +53,17 @@ public class HelperTools {
         }
     }
 
+    /**
+     * Takes in the delta of X & Y and returns the direct distance between two points.
+     *
+     * @param deltaX Length of the distance between two X Coordinates
+     * @param deltaY Length of the distance between two Y Coordinates
+     * @return The direct distance between two points
+     */
     public float getDistance(float deltaX, float deltaY) {
         float result;
 
-        result = (float) Math.sqrt((deltaX*deltaX) + (deltaY*deltaY));
+        result = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
         return result;
     }

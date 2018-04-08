@@ -3,9 +3,10 @@ package uk.co.thomaspickup.spacewars.game;
 /**
  * This class holds all of the strings that would link to various constants.
  * I.E. the settings paths are all controlled via this!
- * Created by thomaspickup on 10/03/2018.
+ *
+ * Created by Thomas Pickup
  */
-
+// TODO: Optimize and annotate
 public class AppStrings {
     private static String PREF_ = "pref";
     private static String PREF_DIFFICULTY = "prefDifficulty";

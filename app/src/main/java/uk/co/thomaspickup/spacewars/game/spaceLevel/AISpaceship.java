@@ -21,6 +21,7 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  * 
  * @version 1.0
  */
+// TODO: Optimize and annotate
 public class AISpaceship extends Sprite {
 
 	// /////////////////////////////////////////////////////////////////////////

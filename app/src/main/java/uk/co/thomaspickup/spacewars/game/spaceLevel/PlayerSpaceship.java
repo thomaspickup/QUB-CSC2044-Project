@@ -19,8 +19,9 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 /**
  * Player controlled spaceship
  * 
- * @version 1.0
+ * Created by Thomas Pickup
  */
+// TODO: Optimize and annotate
 public class PlayerSpaceship extends Sprite {
 
 	// /////////////////////////////////////////////////////////////////////////

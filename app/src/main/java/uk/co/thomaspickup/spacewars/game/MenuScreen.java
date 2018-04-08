@@ -21,8 +21,10 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
  * The main menu of the Space Wars Game
  * It links to the game as well as an options menus
  * 
- * @version 1.0
+ * Created by Thomas Pickup
  */
+
+// TODO: Optimize and annotate
 public class MenuScreen extends GameScreen {
 	/**
 	 * Define the trigger touch region for navigating to the game or options menu

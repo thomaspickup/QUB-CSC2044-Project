@@ -16,7 +16,7 @@ import static android.support.test.InstrumentationRegistry.getContext;
 /**
  * Created by thomaspickup on 07/04/2018.
  */
-
+// TODO: Optimize and annotate
 public class PlayerTest {
     private Context testContext;
     private SettingsHandler settingsHandler;

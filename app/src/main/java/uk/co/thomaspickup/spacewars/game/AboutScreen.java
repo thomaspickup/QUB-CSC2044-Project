@@ -33,6 +33,7 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  *
  * Created by Thomas Pickup
  */
+// TODO: Optimize and annotate
 public class AboutScreen extends GameScreen {
     // Create instance of SettingsHandler to allow for easy of referencing
     SettingsHandler settings = new SettingsHandler();

@@ -21,7 +21,8 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  * - Mute
  * Created by Thomas Pickup
  */
-    
+
+// TODO: Optimize and annotate
 public class OptionScreen extends GameScreen {
     // ~~~~ Vars Start ~~~~
     // ~~ Current Settings Vars ~~
