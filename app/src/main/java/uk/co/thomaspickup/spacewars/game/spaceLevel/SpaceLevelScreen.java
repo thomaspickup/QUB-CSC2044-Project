@@ -1,15 +1,22 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
+// /////////////////////////////////////////////////////////////////////////
+// Imports
+// /////////////////////////////////////////////////////////////////////////
+
+// Android Graphics Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+// Util Imports
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+// GAGE imports
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
@@ -22,87 +29,85 @@ import uk.co.thomaspickup.spacewars.gage.world.GameObject;
 import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
+
+// Game Imports
 import uk.co.thomaspickup.spacewars.game.MenuScreen;
 import uk.co.thomaspickup.spacewars.game.PauseScreen;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
- * The Main Game World - A 2D Space Shooter.
- * 
- * @version 1.0
+ * The main game screen - runs the game.
  */
 // TODO: Add Music To Space Level Screen
-// TODO: Add Weapon Firing for enemies
 // TODO: Add AI Difficutly Adjustment
+// TODO: Refine weapon firing for turrets
 
 public class SpaceLevelScreen extends GameScreen {
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Properties
+	// Variables
 	// /////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Width and height of the level 
-	 */
+
+	// Private finals to hold the Level Width and Height.
 	private final float LEVEL_WIDTH = 1000.0f;
 	private final float LEVEL_HEIGHT = 1000.0f;
 
-	/**
-	 * Define viewports for this layer and the associated screen projection
-	 */
+	// Defines the Screen and Layer viewports.
 	private ScreenViewport mScreenViewport;
 	private LayerViewport mLayerViewport;
 
-	/**
-	 * Define a background object, alongside a player controlled
-	 * space ship and separate lists of asteroids and AI controlled
-	 * space ships.
-	 */
+	// The game object of the background.
 	private GameObject mSpaceBackground;
 
+	// The player ships game object.
 	private PlayerSpaceship mPlayerSpaceship;
 
+	// The definition of how many asteroids as well as the list of all asteroids.
 	private final int NUM_ASTEROIDS = 20;
 	private List<Asteroid> mAsteroids;
 
+	// The definitions of how many AISpaceships there are as well as the list that holds them.
 	private final int NUM_SEEKERS = 5;
 	private final int NUM_TURRETS = 5;
 	private List<AISpaceship> mAISpaceships;
 
-	// Pause Button
+	// Pause Button Bound.
 	private Rect mPauseBound;
 
-	// Fire Button
+	// Fire Button Bound.
 	private Rect mFireBound;
 
-	// Settings Handler for ease of accessing the settingsHandler
+	// Settings Handler to allow the game to access the Shared Preferences.
 	private SettingsHandler settingsHandler = new SettingsHandler();
 
-	// Save File used for transfering and receiving a save from other screens
+	// Save File used for transfering and receiving a save from other screens.
 	private SpaceSave saveFile = new SpaceSave();
 
-	// Creates a new healthbar
+	// Creates a new healthbar.
 	int hbXPosition, hbYPosition, hbWidth, hbHeight;
 
+	// Padding used by the game @1920x1080 = 50 x 50 padding.
 	int paddingY = (int) (getGame().getScreenHeight() * 0.02);
 	int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
+	// The current settings stored at launch of screen.
+	int currentDifficultySetting;
+	int currentSoundSetting;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// /////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Create a simple steering game world
+	 * Create the Space Game Level from scratch.
 	 * 
-	 * @param game
-	 *            SpaceGame to which this screen belongs
+	 * @param game SpaceGame to which this screen belongs.
 	 */
 	public SpaceLevelScreen(Game game) {
 		super("SpaceLevelScreen", game);
 
-		// Gets current settingsHandler
-		int currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
-		int currentSoundSetting = settingsHandler.getSound(getGame().getContext());
+		// Pulls in the latest settings from settings handler
+		getSettings();
 
 		// Create the screen viewport
 		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
@@ -122,80 +127,143 @@ public class SpaceLevelScreen extends GameScreen {
 		// Load in the assets used by the level
 		loadBitmaps();
 
+		// Runs the set up UI function
+		setUpUI(game);
+
+		// Generates the new game objects
+		generateNewGameObjects();
+	}
+
+	/**
+	 * Creates the Space Game Level from a save file.
+	 *
+	 * @param game SpaceGame to which this screen belongs.
+	 * @param saveFile The save file that the game is to be based on.
+	 */
+	public SpaceLevelScreen(Game game, SpaceSave saveFile) {
+		super("SpaceLevelScreen", game);
+
+		// Imports the save file
+		this.saveFile = saveFile;
+
+		// Pulls in the latest settings from settings handler
+		getSettings();
+
+		// Create the screen viewport
+		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+				game.getScreenHeight());
+
+		// Gets the Layer View Port from the save file
+		mLayerViewport = this.saveFile.getMLayerViewport();
+
+		// Load in the assets used by the level
+		loadBitmaps();
+
+		// Runs the set up UI function
+		setUpUI(game);
+
+		// Gets the player spaceship from the save file
+		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
+
+		// Gets Asteroids from the save file
+		mAsteroids = this.saveFile.getMAsteroids();
+
+		// Gets AI Spaceships from the save file
+		mAISpaceships = this.saveFile.getMAISpaceships();
+	}
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Support methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Return the player spaceship.
+	 * 
+	 * @return Player spaceship.
+	 */	
+	public PlayerSpaceship getPlayerSpaceship() {
+		return mPlayerSpaceship;
+	}
+
+	/**
+	 * Return a list of the AI spaceships in the level.
+	 * 
+	 * @return List of AI controlled spaceships.
+	 */
+	public List<AISpaceship> getAISpaceships() {
+		return mAISpaceships;
+	}
+
+	/**
+	 * Return a list of asteroids in the the level.
+	 * 
+	 * @return List of asteroids in the level.
+	 */
+	public List<Asteroid> getAsteroids() {
+		return mAsteroids;
+	}
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Start up methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Used by both constructors to load in all bitmaps used at the start of the game.
+	 */
+	private void loadBitmaps() {
+		AssetStore assetManager = mGame.getAssetManager();
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
+		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
+		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
+		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
+		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
+		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
+		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
+		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
+		assetManager.loadAndAddBitmap("FireButton", "img/buttons/btnFire-Normal.png");
+		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
+		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
+		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+		assetManager.loadAndAddSound("WeaponExplosion","sfx/sfx_weaponexplosion.mp4");
+	}
+
+	/**
+	 * Used by both constructors to create the UI Element bounds used across the game.
+	 *
+	 * @param game The game to add the UI Elements to.
+	 */
+	private void setUpUI(Game game) {
 		// Create the space background
 		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
 				LEVEL_HEIGHT / 2.0f, LEVEL_WIDTH, LEVEL_HEIGHT, getGame()
-						.getAssetManager().getBitmap("SpaceBackground"), this);
+				.getAssetManager().getBitmap("SpaceBackground"), this);
 
-		// Creates the pause button
-		int btnPauseWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnPauseHeight = (int) (game.getScreenHeight() * 0.138);
+		// Creates the pause button bound
+		int btnPauseWidth = (int) (game.getScreenWidth() * 0.078); // @1920 = 150
+		int btnPauseHeight = (int) (game.getScreenHeight() * 0.138); // @1080 = 150
 		mPauseBound = new Rect(paddingX,paddingY,btnPauseWidth,btnPauseHeight);
 
-		int btnFireWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnFireHeight = (int) (game.getScreenHeight() * 0.138);
 		// Creates the fire button bound
+		int btnFireWidth = (int) (game.getScreenWidth() * 0.104); // @1920 = 200
+		int btnFireHeight = (int) (game.getScreenHeight() * 0.185); // @1080 = 200
 		mFireBound = new Rect(getGame().getScreenWidth() - btnFireWidth, getGame().getScreenHeight() - btnFireHeight, getGame().getScreenWidth() - paddingX, getGame().getScreenHeight() -paddingY);
 
+		// Creates the health bar bound
+		hbHeight = (int) (getGame().getScreenHeight() * 0.138); // @1080 = 150
+		hbWidth = (getGame().getScreenWidth() / 10) * 6; // Width is 6 10ths of the screen width
+		hbXPosition = (getGame().getScreenWidth() / 10) * 2; // Starts at 2 10ths of the screen across
+		hbYPosition = paddingY; // Starts at the border of the screen padding
+	}
+
+	/**
+	 * Used to create from scratch all the game objects needed to run the game.
+	 */
+	private void generateNewGameObjects() {
 		// Create the player spaceship
 		mPlayerSpaceship = new PlayerSpaceship(100, 100, this);
 
-		// Create a number of randomly positioned asteroids
-		Random random = new Random();
-		mAsteroids = new ArrayList<Asteroid>(NUM_ASTEROIDS);
-		for (int idx = 0; idx < NUM_ASTEROIDS; idx++) {
-			float x = random.nextFloat() * LEVEL_WIDTH;
-			float y = random.nextFloat() * LEVEL_HEIGHT;
-
-			mAsteroids.add(new Asteroid(x, y, this));
-		}
-
-		// Create a number of randomly positioned AI controlled ships
-		mAISpaceships = new ArrayList<AISpaceship>(NUM_SEEKERS + NUM_TURRETS);
-		for (int idx = 0; idx < NUM_SEEKERS; idx++)
-			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
-					random.nextFloat() * LEVEL_HEIGHT,
-					AISpaceship.ShipBehaviour.Seeker, this, currentDifficultySetting, 100));
-
-		// Positions Turrets
-		for (int idx = 0; idx < NUM_TURRETS; idx++) {
-			// Problem -
-			// Turrets being overlayed on Asteroids
-			// Solution -
-			// Added in code to check whether a turret is going
-			// to be put within 50px of an asteroid. If so
-			// recalculate coordinates.
-			boolean valid = false;
-			float x, y;
-
-			do {
-				valid = true;
-				x = random.nextFloat() * LEVEL_WIDTH;
-				y = random.nextFloat() * LEVEL_HEIGHT;
-
-				for (Asteroid asteroid : mAsteroids) {
-					float asX = asteroid.getBound().x;
-					float asY = asteroid.getBound().y;
-
-					// Check if in X Realm
-					if (!(asX >+ x + 50.0f || asX <= x + 50.0f)) {
-						valid = false;
-					}
-
-					if (!(asY >= y + 50.0f || asY <= x + 50.0f)) {
-						valid = false;
-					}
-				}
-			} while (valid = false);
-
-			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting,100));
-		}
-
-		// Adds new healthbar
-		hbHeight = (int) (getGame().getScreenHeight() * 0.138);
-		hbWidth = (getGame().getScreenWidth() / 10) * 6;
-		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
-		hbYPosition = paddingY;
+		// Set player health to 100
 		mPlayerSpaceship.setHealth(100);
 
 		// Sets the lives of the player based on the difficulty
@@ -217,106 +285,75 @@ public class SpaceLevelScreen extends GameScreen {
 		}
 
 		mPlayerSpaceship.setLives(playerLives);
+
+		// Create a number of randomly positioned asteroids
+		Random random = new Random();
+		mAsteroids = new ArrayList<Asteroid>(NUM_ASTEROIDS);
+		for (int idx = 0; idx < NUM_ASTEROIDS; idx++) {
+			boolean valid = false;
+			float x, y;
+
+			do {
+				valid = true;
+				x = random.nextFloat() * LEVEL_WIDTH;
+				y = random.nextFloat() * LEVEL_HEIGHT;
+
+				for (Asteroid asteroid : mAsteroids) {
+					// Check if the x or y is in the asteroid bounds
+					if (!(asteroid.getBound().contains(x,y))) {
+						valid = false;
+					}
+				}
+			} while (valid = false);
+
+			mAsteroids.add(new Asteroid(x, y, this));
+		}
+
+		// Create a number of randomly positioned AI controlled ships
+		mAISpaceships = new ArrayList<AISpaceship>(NUM_SEEKERS + NUM_TURRETS);
+		for (int idx = 0; idx < NUM_SEEKERS; idx++)
+			mAISpaceships.add(new AISpaceship(random.nextFloat() * LEVEL_WIDTH,
+					random.nextFloat() * LEVEL_HEIGHT,
+					AISpaceship.ShipBehaviour.Seeker, this, currentDifficultySetting, 100));
+
+		// Positions Turrets
+		for (int idx = 0; idx < NUM_TURRETS; idx++) {
+			boolean valid = false;
+			float x, y;
+
+			do {
+				valid = true;
+				x = random.nextFloat() * LEVEL_WIDTH;
+				y = random.nextFloat() * LEVEL_HEIGHT;
+
+				for (Asteroid asteroid : mAsteroids) {
+					// Check if the x or y is in the asteroid bounds
+					if (!(asteroid.getBound().contains(x,y))) {
+						valid = false;
+					}
+				}
+			} while (valid = false);
+
+			mAISpaceships.add(new AISpaceship(x, y, AISpaceship.ShipBehaviour.Turret, this, currentDifficultySetting,100));
+		}
 	}
 
 	/**
-	 * Creates the Space Game Level from a save file.
-	 *
-	 * @param game
-	 *            SpaceGame to which this screen belongs
-	 * @param saveFile the save file that the game is to be based on
+	 * Used to get the current settings from the settings handler and store them in variables.
 	 */
-	public SpaceLevelScreen(Game game, SpaceSave saveFile) {
-		super("SpaceLevelScreen", game);
-
-		this.saveFile = saveFile;
-
-		// Gets current settingsHandler
-		int currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
-		int currentSoundSetting = settingsHandler.getSound(getGame().getContext());
-
-		// Create the screen viewport
-		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
-				game.getScreenHeight());
-
-		// Gets the Layer View Port from the save file
-		mLayerViewport = this.saveFile.getMLayerViewport();
-
-		// Load in the assets used by the level
-		loadBitmaps();
-
-		// Create the space background
-		mSpaceBackground = new GameObject(LEVEL_WIDTH / 2.0f,
-				LEVEL_HEIGHT / 2.0f, LEVEL_WIDTH, LEVEL_HEIGHT, getGame()
-				.getAssetManager().getBitmap("SpaceBackground"), this);
-
-		// Creates the pause button
-		int btnPauseWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnPauseHeight = (int) (game.getScreenHeight() * 0.138);
-		mPauseBound = new Rect(paddingX,paddingY,btnPauseWidth,btnPauseHeight);
-
-		int btnFireWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnFireHeight = (int) (game.getScreenHeight() * 0.138);
-		// Creates the fire button bound
-		mFireBound = new Rect(getGame().getScreenWidth() - btnFireWidth, getGame().getScreenHeight() - btnFireHeight, getGame().getScreenWidth() - paddingX, getGame().getScreenHeight() -paddingY);
-
-		// Gets the player spaceship from the save file
-		mPlayerSpaceship = this.saveFile.getMPlayerSpaceShip();
-
-		// Gets Asteroids from the save file
-		mAsteroids = this.saveFile.getMAsteroids();
-
-		// Gets AI Spaceships from the save file
-		mAISpaceships = this.saveFile.getMAISpaceships();
-
-		// Adds new healthbar
-		hbHeight = (int) (getGame().getScreenHeight() * 0.138);
-		hbWidth = (getGame().getScreenWidth() / 10) * 6;
-		hbXPosition = (getGame().getScreenWidth() / 10) * 2;
-		hbYPosition = paddingY;
-	}
-
-	// /////////////////////////////////////////////////////////////////////////
-	// Support methods
-	// /////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * Return the player spaceship 
-	 * 
-	 * @return Player spaceship
-	 */	
-	public PlayerSpaceship getPlayerSpaceship() {
-		return mPlayerSpaceship;
-	}
-
-	/**
-	 * Return a list of the AI spaceships in the level
-	 * 
-	 * @return List of AI controlled spaceships
-	 */
-	public List<AISpaceship> getAISpaceships() {
-		return mAISpaceships;
-	}
-
-	/**
-	 * Return a list of asteroids in the the level
-	 * 
-	 * @return List of asteroids in the level
-	 */
-	public List<Asteroid> getAsteroids() {
-		return mAsteroids;
+	private void getSettings() {
+		// Gets current settings from settingsHandler
+		currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
+		currentSoundSetting = settingsHandler.getSound(getGame().getContext());
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Update and Draw methods
 	// /////////////////////////////////////////////////////////////////////////
-		
-	/*
-	 * (non-Javadoc) fs
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.GameScreen#update(uk.ac.qub.eeecs.gage.engine
-	 * .ElapsedTime)
+
+	/**
+	 *
+	 * @param elapsedTime Elapsed time information for the frame
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
@@ -475,12 +512,10 @@ public class SpaceLevelScreen extends GameScreen {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.GameScreen#draw(uk.ac.qub.eeecs.gage.engine
-	 * .ElapsedTime, uk.ac.qub.eeecs.gage.engine.graphics.IGraphics2D)
+	/**
+	 *
+	 * @param elapsedTime Elapsed time information for the frame
+	 * @param graphics2D
 	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
@@ -564,24 +599,5 @@ public class SpaceLevelScreen extends GameScreen {
 
 			startX = endX;
 		}
-	}
-
-	// Loads in all the bitmaps needed
-	public void loadBitmaps() {
-		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
-		assetManager.loadAndAddBitmap("Asteroid1", "img/sprites/sprAsteroid1.png");
-		assetManager.loadAndAddBitmap("Asteroid2", "img/sprites/sprAsteroid2.png");
-		assetManager.loadAndAddBitmap("Spaceship1", "img/sprites/sprSpaceship1.png");
-		assetManager.loadAndAddBitmap("Spaceship2", "img/sprites/sprSpaceship2.png");
-		assetManager.loadAndAddBitmap("Spaceship3", "img/sprites/sprSpaceship3.png");
-		assetManager.loadAndAddBitmap("Turret", "img/sprites/sprTurret.png");
-		assetManager.loadAndAddBitmap("PauseButtonWhite", "img/buttons/btnPause-Normal.png");
-		assetManager.loadAndAddBitmap("PauseButtonBlack", "img/buttons/btnPause-Selected.png");
-		assetManager.loadAndAddBitmap("FireButton", "img/buttons/btnFire-Normal.png");
-		assetManager.loadAndAddBitmap("HeartFull", "img/sprites/sprHeart-Full.png");
-		assetManager.loadAndAddBitmap("HeartEmpty", "img/sprites/sprHeart-Empty.png");
-		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
-		assetManager.loadAndAddSound("WeaponExplosion","sfx/sfx_weaponexplosion.mp4");
 	}
 }
