@@ -447,6 +447,20 @@ public class SpaceLevelScreen extends GameScreen {
 				}
 			}
 
+			// Checks if there are any hits with the enemy lasers
+
+			Iterator<Laser> iterEnemyLaser = aiSpaceship.mLasers.iterator();
+
+			while(iterEnemyLaser.hasNext()){
+				Laser laser = iterEnemyLaser.next();
+				if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(),laser.getBound())) {
+
+					mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
+
+					iterEnemyLaser.remove();
+				}
+			}
+
 			aiSpaceship.update(elapsedTime);
 		}
 

@@ -2,11 +2,19 @@ package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 import android.support.v7.widget.ThemedSpinnerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.thomaspickup.spacewars.gage.ai.SteeringBehaviours;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
+import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.util.Vector2;
+import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
+import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
+import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 import uk.co.thomaspickup.spacewars.gage.world.Sprite;
 import uk.co.thomaspickup.spacewars.game.HelperTools;
+import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
  * AI controlled spaceship
@@ -42,6 +50,14 @@ public class AISpaceship extends Sprite {
 
 	// Creates new instance of helperTools
 	HelperTools helperTools = new HelperTools();
+
+	public List<Laser> mLasers;
+
+	private int reloadTime;
+	private int timeToReload;
+	private boolean canFire;
+
+	private SettingsHandler settingsHandler = new SettingsHandler();
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -85,6 +101,12 @@ public class AISpaceship extends Sprite {
 			this.setHealth(health);
 			break;
 		}
+
+		mLasers = new ArrayList<Laser>(100);
+
+		reloadTime = gameScreen.getGame().getTargetFramesPerSecond();
+		timeToReload = 0;
+		canFire = true;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -107,10 +129,6 @@ public class AISpaceship extends Sprite {
 			angularAcceleration = 
 				SteeringBehaviours.lookAt(this, 
 						((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position);
-			float deltaX = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.x - this.position.x;
-			float deltaY = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.y - this.position.y;
-
-
 			break;
 		case Seeker:
 			// Seek towards the player
@@ -152,5 +170,49 @@ public class AISpaceship extends Sprite {
 
 		// Call the sprite's superclass to apply the determine accelerations
 		super.update(elapsedTime);
+
+		float deltaX = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.x - this.position.x;
+		float deltaY = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.y - this.position.y;
+
+		float distanceFromPlayer = helperTools.getDistance(deltaX, deltaY);
+
+		if (distanceFromPlayer <= this.getBound().getWidth() * 3 && canFire) {
+			fire(mGameScreen);
+		}
+
+		if (mLasers != null) {
+			for (Laser laser : mLasers)
+				laser.update(elapsedTime);
+		}
+
+		if (!canFire) {
+			timeToReload = timeToReload + 1;
+
+			if (reloadTime == timeToReload) {
+				canFire = true;
+			}
+		}
+	}
+
+	@Override
+	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D, LayerViewport mLayerViewport, ScreenViewport mScreenViewport)  {
+		if (mLasers != null) {
+			for (Laser laser : mLasers)
+				laser.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
+		}
+
+		super.draw(elapsedTime, graphics2D, mLayerViewport,
+				mScreenViewport);
+	}
+
+	// Creates a new laser
+	public void fire(GameScreen gameScreen) {
+		if (canFire) {
+			gameScreen.getGame().getAssetManager().getSound("WeaponFire").play(settingsHandler.getSound(gameScreen.getGame().getContext()));
+			canFire = false;
+			gameScreen.getGame().getAssetManager().loadAndAddBitmap("EnemyBeam", "img/sprites/sprEnemyBeam.png");
+			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("EnemyBeam"), this.acceleration, this.velocity, orientation));
+			timeToReload = 0;
+		}
 	}
 }
