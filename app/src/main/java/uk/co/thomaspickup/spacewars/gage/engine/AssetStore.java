@@ -235,6 +235,7 @@ public class AssetStore {
             // Appends the current line to output
             output += currentLine;
 
+            // Adds a new carrige return after every line
             output += System.getProperty("line.separator");
 
             // Reads the next line

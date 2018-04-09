@@ -1,21 +1,21 @@
 package uk.co.thomaspickup.spacewars.game;
 
+// /////////////////////////////////////////////////////////////////////////
 // Imports
+// /////////////////////////////////////////////////////////////////////////
 
-import android.content.res.AssetManager;
+// Android Graphics
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import java.io.InputStream;
+// Android Util
+import android.util.Log;
+
+// Java Util
 import java.util.List;
 
+// GAGE
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
@@ -33,10 +33,10 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  *
  * Created by Thomas Pickup
  */
-// TODO: Optimize and annotate
 public class AboutScreen extends GameScreen {
-    // Create instance of SettingsHandler to allow for easy of referencing
-    SettingsHandler settings = new SettingsHandler();
+    // /////////////////////////////////////////////////////////////////////////
+    // Variables
+    // /////////////////////////////////////////////////////////////////////////
 
     // Creates the asset manager so it can be used accross the class
     AssetStore assetManager;
@@ -54,7 +54,16 @@ public class AboutScreen extends GameScreen {
     private LayerViewport mLayerViewport;
     private int intXMultiplier = 1;
 
+    // Create and initilize settingsHandler to allow access to SharedPreferences
     private SettingsHandler settingsHandler = new SettingsHandler();
+
+    // Padding for game screen @1920x1080 = 50x50
+    int paddingY = (int) (getGame().getScreenHeight() * 0.02);
+    int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Constructor
+    // /////////////////////////////////////////////////////////////////////////
 
     /**
      * Create a simple about screen
@@ -65,49 +74,31 @@ public class AboutScreen extends GameScreen {
     public AboutScreen(Game game, LayerViewport backgroundViewPort) {
         super("AboutScreen", game);
 
-        int paddingY = (int) (getGame().getScreenHeight() * 0.02);
-        int paddingX = (int) (getGame().getScreenWidth() * 0.026);
-
-        // Initilize the asset manager and
-        // load in the bitmaps used on the about screen
-        assetManager = mGame.getAssetManager();
-        assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
-        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
-
-        // Imports text files
-        try {
-            strCredits = assetManager.getTextFile(getGame().getContext(), "txt/txtCredits.txt");
-        } catch (Exception ex) {
-            Log.e("Import Fail", ex.toString());
-        }
-        try {
-            strFeatures = assetManager.getTextFile(getGame().getContext(), "txt/txtFeatures.txt");
-        } catch (Exception ex) {
-            Log.e("Import Fail", ex.toString());
-        }
-
-        // Sets the bounds for the back button
-        int btnBackWidth = (int) (game.getScreenWidth() * 0.078);
-        int btnBackHeight = (int) (game.getScreenHeight() * 0.138);
-        int startX = paddingX;
-        int startY = paddingY;
-        mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
-
-        // Defines the background
-        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
-                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
-                .getAssetManager().getBitmap("SpaceBackground"), this);
+        // Creates the view port of the screen
         mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
                 game.getScreenHeight());
+
+        // Imports the background from previous screen for seamless transistion
         mLayerViewport = backgroundViewPort;
+
+        // Loads in Assets
+        loadAssets();
+
+        // Imports text files
+        importTextFiles();
+
+        // Sets up UI
+        setUpUI(game);
     }
 
-    /*
-     * (non-Javadoc)
+    // /////////////////////////////////////////////////////////////////////////
+    // Update and Draw Methods
+    // /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Updates the screen.
      *
-     * @see
-     * uk.ac.qub.eeecs.gage.world.GameScreen#update(uk.ac.qub.eeecs.gage.engine
-     * .ElapsedTime)
+     * @param elapsedTime Elapsed time information for the frame
      */
     @Override
     public void update(ElapsedTime elapsedTime) {
@@ -141,12 +132,11 @@ public class AboutScreen extends GameScreen {
         mLayerViewport.x += intXMultiplier;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Draws on the screen.
      *
-     * @see
-     * uk.ac.qub.eeecs.gage.world.GameScreen#draw(uk.ac.qub.eeecs.gage.engine
-     * .ElapsedTime, uk.ac.qub.eeecs.gage.engine.graphics.IGraphics2D)
+     * @param elapsedTime Elapsed time information for the frame
+     * @param graphics2D The helper to draw on the screen
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
@@ -162,12 +152,70 @@ public class AboutScreen extends GameScreen {
         // Gets the canvas
         Canvas thisCanvas = graphics2D.getMCanvas();
 
-        // Defines a new layout
+        // Defines the width of the textLayout
         int viewWidth = (getGame().getScreenWidth() - (mBackBound.right + 150)) / 2;
+
+        // Creates a new Text Layout and draws to canvas
         TextLayout textViewCredits = new TextLayout(thisCanvas, getGame().getContext(), mBackBound.right + 50,50,getGame().getScreenHeight() - 100, viewWidth, strCredits);
         textViewCredits.draw(thisCanvas);
 
+        // Creates a new Text Layout and draws to canvas
         TextLayout textViewFeatures = new TextLayout(thisCanvas, getGame().getContext(), mBackBound.right + viewWidth + 100,50,getGame().getScreenHeight() - 100, viewWidth, strFeatures);
         textViewFeatures.draw(thisCanvas);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Methods
+    // /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Sets up the UI used by this screen.
+     * @param game
+     */
+    public void setUpUI(Game game) {
+        // Sets the bounds for the back button
+        int btnBackWidth = (int) (game.getScreenWidth() * 0.078);
+        int btnBackHeight = (int) (game.getScreenHeight() * 0.138);
+        int startX = paddingX;
+        int startY = paddingY;
+        mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
+
+        // Defines the background
+        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+                .getAssetManager().getBitmap("SpaceBackground"), this);
+    }
+
+    /**
+     * Loads in the assets used by this screen.
+     */
+    public void loadAssets() {
+        // Create new instance of Asset Manager
+        assetManager = mGame.getAssetManager();
+
+        // Import Bitmaps
+        assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
+
+        // Import Sounds
+        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+    }
+
+    /**
+     * Imports the text files into strings.
+     */
+    public void importTextFiles() {
+        // Tries to import credits
+        try {
+            strCredits = assetManager.getTextFile(getGame().getContext(), "txt/txtCredits.txt");
+        } catch (Exception ex) {
+            Log.e("Import Fail", ex.toString());
+        }
+
+        // Tries to import features
+        try {
+            strFeatures = assetManager.getTextFile(getGame().getContext(), "txt/txtFeatures.txt");
+        } catch (Exception ex) {
+            Log.e("Import Fail", ex.toString());
+        }
     }
 }
