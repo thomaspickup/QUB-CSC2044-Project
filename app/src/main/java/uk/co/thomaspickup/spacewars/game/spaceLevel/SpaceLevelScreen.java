@@ -393,25 +393,23 @@ public class SpaceLevelScreen extends GameScreen {
 
 			// If no lives left then end game
 			if (mPlayerSpaceship.getLivesLeft() == 0) {
-				// TODO: Replace with loss screen
 				// Remove this screen
 				mGame.getScreenManager().removeScreen(this.getName());
 
-				// Add the menu screen
-				MenuScreen menuScreen = new MenuScreen(mGame);
-				mGame.getScreenManager().addScreen(menuScreen);
+				// Add the end game screen
+				EndGameScreen endGameScreen = new EndGameScreen(mGame, false);
+				mGame.getScreenManager().addScreen(endGameScreen);
 			}
 		}
 
 		// If no AI Spaceships exist then end the game with a win
 		if (mAISpaceships.size() == 0) {
-			// TODO: Replace with win screen
 			// Remove this screen
 			mGame.getScreenManager().removeScreen(this.getName());
 
-			// Add the menu screen
-			MenuScreen menuScreen = new MenuScreen(mGame);
-			mGame.getScreenManager().addScreen(menuScreen);
+			// Add the end game screen
+			EndGameScreen endGameScreen = new EndGameScreen(mGame, true);
+			mGame.getScreenManager().addScreen(endGameScreen);
 		}
 
 		// Process any touch events occurring since the update

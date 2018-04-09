@@ -91,8 +91,8 @@ public class CanvasGraphics2D implements IGraphics2D {
 	 * float, float, android.graphics.Paint)
 	 */
 	@Override
-	public void drawText(String text, float x, float y, Paint paint) {
-		mCanvas.drawText(text, x, y, paint);		
+	public void drawText(String text, int startX, int startY, float x, float y, Paint paint) {
+		mCanvas.drawText(text, startX, startY, x, y, paint);
 	}
 
 	/**
