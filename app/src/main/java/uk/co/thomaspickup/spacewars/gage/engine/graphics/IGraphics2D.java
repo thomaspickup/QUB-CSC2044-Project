@@ -49,10 +49,6 @@ public interface IGraphics2D {
 	 * 
 	 * @param text
 	 *            String of text to be rendered
-	 * @param startX
-	 *
-	 * @param startY
-	 *
 	 * @param x
 	 *            Location of text on x-axis
 	 * @param y
@@ -60,7 +56,7 @@ public interface IGraphics2D {
 	 * @param paint
 	 *            Paint parameters controlling text render format
 	 */
-	public void drawText(String text, int startX, int startY, float x, float y, Paint paint);
+	public void drawText(String text, float x, float y, Paint paint);
 
 	/**
 	 * Draw the specified bitmap

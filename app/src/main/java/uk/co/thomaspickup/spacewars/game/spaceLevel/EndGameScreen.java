@@ -39,6 +39,7 @@ public class EndGameScreen extends GameScreen {
 
     // Bounds for the buttons
     private Rect mExitButtonBound;
+    private Rect mTitleBound;
 
     // New instance of SettingsHandler for accessing settings
     private SettingsHandler settingsHandler = new SettingsHandler();
@@ -114,11 +115,25 @@ public class EndGameScreen extends GameScreen {
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
-        // Draw Title Text
+        // Draws the title image
+        Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
+        graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
+
+        // Draw Result (Win // Lose)
+        Paint paintCan = new Paint();
+        paintCan.setColor(Color.BLACK);
+        paintCan.setTextSize(100f);
+
         if (gameWon) {
-            graphics2D.clear(Color.GREEN);
+            int startY = mTitleBound.bottom + paddingY;
+            int startX = mTitleBound.left;
+
+            graphics2D.drawText("Winner", startX,startY, paintCan);
         } else {
-            graphics2D.clear(Color.RED);
+            int startY = mTitleBound.bottom + paddingY;
+            int startX = mTitleBound.left;
+
+            graphics2D.drawText("Loss", startX,startY, paintCan);
         }
 
         // Draw the exit icon
@@ -136,11 +151,18 @@ public class EndGameScreen extends GameScreen {
      * @param game Passes the screen to base on
      */
     private void setUpUI(Game game) {
+        // Defines the Title Image Rect
+        int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+        int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
+        int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
+        int spacingY = paddingY * 2;
+        mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
+
         // Defines the Exit Icon Rect
         int btnExitWidth = (int) (game.getScreenWidth() * 0.078);
         int btnExitHeight = (int) (game.getScreenHeight() * 0.138);
-        int spacingY = paddingY;
-        int spacingX = game.getScreenWidth() - (btnExitWidth + paddingX);
+        spacingY = paddingY;
+        spacingX = game.getScreenWidth() - (btnExitWidth + paddingX);
         mExitButtonBound = new Rect(spacingX, spacingY, spacingX + btnExitWidth, spacingY + btnExitHeight);
     }
 
@@ -153,6 +175,7 @@ public class EndGameScreen extends GameScreen {
 
         // Loads in bitmaps
         assetManager.loadAndAddBitmap("ExitIcon", "img/buttons/btnExit.png");
+        assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
 
         // Loads in sounds
         assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
