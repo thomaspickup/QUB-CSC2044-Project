@@ -395,9 +395,10 @@ public class SpaceLevelScreen extends GameScreen {
 			if (mPlayerSpaceship.getLivesLeft() == 0) {
 				// Remove this screen
 				mGame.getScreenManager().removeScreen(this.getName());
+				int enemiesDefeated = (NUM_SEEKERS + NUM_TURRETS) - mAISpaceships.size();
 
 				// Add the end game screen
-				EndGameScreen endGameScreen = new EndGameScreen(mGame, false);
+				EndGameScreen endGameScreen = new EndGameScreen(mGame, false, enemiesDefeated, mLayerViewport);
 				mGame.getScreenManager().addScreen(endGameScreen);
 			}
 		}
@@ -408,7 +409,7 @@ public class SpaceLevelScreen extends GameScreen {
 			mGame.getScreenManager().removeScreen(this.getName());
 
 			// Add the end game screen
-			EndGameScreen endGameScreen = new EndGameScreen(mGame, true);
+			EndGameScreen endGameScreen = new EndGameScreen(mGame, true, (NUM_SEEKERS + NUM_TURRETS), mLayerViewport);
 			mGame.getScreenManager().addScreen(endGameScreen);
 		}
 
