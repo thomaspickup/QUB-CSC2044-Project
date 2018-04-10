@@ -1,4 +1,4 @@
-package uk.co.thomaspickup.spacewars.game;
+package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
 // /////////////////////////////////////////////////////////////////////////
 // Imports
@@ -26,6 +26,8 @@ import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
 // Game
+import uk.co.thomaspickup.spacewars.game.MenuScreen;
+import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.AISpaceship;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.Asteroid;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.PlayerSpaceship;

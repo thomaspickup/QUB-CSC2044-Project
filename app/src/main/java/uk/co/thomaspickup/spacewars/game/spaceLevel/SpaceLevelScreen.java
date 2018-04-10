@@ -31,8 +31,6 @@ import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
 // Game Imports
-import uk.co.thomaspickup.spacewars.game.MenuScreen;
-import uk.co.thomaspickup.spacewars.game.PauseScreen;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
