@@ -1,6 +1,9 @@
 package uk.co.thomaspickup.spacewars.game;
 
+// /////////////////////////////////////////////////////////////////////////
 // Imports
+// /////////////////////////////////////////////////////////////////////////
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import java.util.List;
@@ -19,29 +22,21 @@ import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
  * This screen acts as an options screen where the user can adjust various in game options:
  * - Difficulty
  * - Mute
+ *
  * Created by Thomas Pickup
  */
-
-// TODO: Optimize and annotate
 public class OptionScreen extends GameScreen {
-    // ~~~~ Vars Start ~~~~
-    // ~~ Current Settings Vars ~~
-    // Difficulty
-    // Easy = 1
-    // Normal = 2
-    // Hard = 3
-    // Insane = 4
-    int currentDifficultySetting;
+    // /////////////////////////////////////////////////////////////////////////
+    // Variables
+    // /////////////////////////////////////////////////////////////////////////
 
-    // Mute
-    // Mute = 0
-    // Un-Mute = 1
+    // Current Settings
+    int currentDifficultySetting;
     int currentSoundSetting;
 
-    // Create instance of SettingsHandler to allow for easy of referencing
+    // Creates a new Settings Handler to allow the opitons screen to load and store settings
     SettingsHandler settingsHandler = new SettingsHandler();
 
-    // ~~ Bounds for objects on screen ~~
     // Bounds for difficultySettings
     private Rect mEasyBound, mNormalBound, mHardBound, mInsaneBound;
 
@@ -65,116 +60,54 @@ public class OptionScreen extends GameScreen {
     int timeLeft;
     boolean canPress;
 
-    // ~~~~ Methods Start ~~~~
+    // Padding @1920x1080 = 50x50
+    int paddingY;
+    int paddingX;
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Constructor
+    // /////////////////////////////////////////////////////////////////////////
+
     /**
      * Create a simple options screen
      *
      * @param game
      *            SpaceGame to which this screen belongs
      */
-    public OptionScreen(Game game, LayerViewport backgroundViewPort) {
+    public OptionScreen(Game game, LayerViewport mLayerViewport) {
         super("OptionScreen", game);
 
-        int paddingY = (int) (getGame().getScreenHeight() * 0.02); // @1080 = 50
-        int paddingX = (int) (getGame().getScreenWidth() * 0.026); // @1920 = 50
+        // Create padding
+        paddingY = (int) (game.getScreenHeight() * 0.02); // @1080 = 50
+        paddingX = (int) (game.getScreenWidth() * 0.026); // @1920 = 50
 
         // Loads in Current Settings from SharedPreferences
-        currentDifficultySetting = settingsHandler.getDifficulty(getGame().getContext());
-        currentSoundSetting = settingsHandler.getSound(getGame().getContext());
+        currentDifficultySetting = settingsHandler.getDifficulty(game.getContext());
+        currentSoundSetting = settingsHandler.getSound(game.getContext());
+
+        // Copies across LayerViewport
+        this.mLayerViewport = mLayerViewport;
 
         // Load in the bitmaps used on the options screen
-        AssetStore assetManager = mGame.getAssetManager();
-        assetManager.loadAndAddBitmap("btnEasy-Normal", "img/buttons/btnEasy-Normal.png");
-        assetManager.loadAndAddBitmap("btnEasy-Selected", "img/buttons/btnEasy-Selected.png");
-        assetManager.loadAndAddBitmap("btnNormal-Normal", "img/buttons/btnNormal-Normal.png");
-        assetManager.loadAndAddBitmap("btnNormal-Selected", "img/buttons/btnNormal-Selected.png");
-        assetManager.loadAndAddBitmap("btnHard-Normal", "img/buttons/btnHard-Normal.png");
-        assetManager.loadAndAddBitmap("btnHard-Selected", "img/buttons/btnHard-Selected.png");
-        assetManager.loadAndAddBitmap("btnInsane-Normal", "img/buttons/btnInsane-Normal.png");
-        assetManager.loadAndAddBitmap("btnInsane-Selected", "img/buttons/btnInsane-Selected.png");
-        assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
-        assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
-        assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
-        assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/ttlDifficulty.png");
-        assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
-        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+        loadAssets();
 
-        // Bounds for Difficulty Title
-        int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
-        int txtDifficultyHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
-        int startX = (getGame().getScreenWidth() / 2) - (txtDifficultyWidth / 2);
-        int startY = paddingY;
-        mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
-
-        // Sets bounds for the difficulty settingsHandler stack
-        // each button 255px width
-        // and 120px high
-        int stackPad = (int) (getGame().getScreenWidth() * 0.00520); // @1920 = 10
-        int halfStack = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
-        int buttonWidth = (int) (getGame().getScreenWidth() * 0.132); // @1920 = 255
-        int buttonHeight = (int) (getGame().getScreenHeight() * 0.111); // @1080 = 120
-        startX = (getGame().getScreenWidth() / 2) - halfStack;
-        int endX = startX + buttonWidth;
-        startY = startY + txtDifficultyHeight + paddingY;
-        int endY = startY + buttonHeight;
-        mEasyBound = new Rect(startX, startY, endX, endY);
-
-        startX = endX + stackPad;
-        endX = startX + buttonWidth;
-        mNormalBound = new Rect(startX, startY, endX, endY);
-
-        startX = endX + stackPad;
-        endX = startX + buttonWidth;
-        mHardBound = new Rect(startX, startY, endX, endY);
-
-        startX = endX + stackPad;
-        endX = startX + buttonWidth;
-        mInsaneBound = new Rect(startX, startY, endX, endY);
-
-        // Sets the Mute Title
-        int txtMuteWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
-        int txtMuteHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
-        startY = endY + (paddingY *2);
-        endY = startY + txtMuteHeight;
-        startX = (getGame().getScreenWidth() / 2) - (txtMuteWidth / 2);
-        endX = startX + txtMuteWidth;
-        mMuteTitle = new Rect(startX, startY, endX, endY);
-
-        // Sets the bounds for the Mute Button
-        int btnSoundWidth = (int) (game.getScreenWidth() * 0.156); // @1920 = 300
-        int btnSoundHeight = (int) (game.getScreenHeight() * 0.231); // @1080 = 250
-        startY = endY + paddingY;
-        endY = startY + btnSoundHeight;
-        startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
-        mMuteBound = new Rect(startX, startY, startX + btnSoundWidth, endY);
-
-        // Sets the bounds for the back button
-        int btnBackWidth = (int) (game.getScreenWidth() * 0.078); // @1920 = 150
-        int btnBackHeight = (int) (game.getScreenHeight() * 0.138); // @1080 = 150
-        startX = paddingX;
-        startY = paddingY;
-        mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
-
-        // Defines the background
-        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
-                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
-                .getAssetManager().getBitmap("SpaceBackground"), this);
-        mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
-                game.getScreenHeight());
-        mLayerViewport = backgroundViewPort;
+        // Sets up UI Elements
+        setUpUI(game);
 
         // Allow to press the mute button
         canPress = true;
-        avgFPS =  getGame().getTargetFramesPerSecond();
+        avgFPS =  game.getTargetFramesPerSecond();
         timeLeft = 0;
     }
 
-    /*
-     * (non-Javadoc)
+    // /////////////////////////////////////////////////////////////////////////
+    // Update & Draw Methods
+    // /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Updates the screen
      *
-     * @see
-     * uk.ac.qub.eeecs.gage.world.GameScreen#update(uk.ac.qub.eeecs.gage.engine
-     * .ElapsedTime)
+     * @param elapsedTime
      */
     @Override
     public void update(ElapsedTime elapsedTime) {
@@ -250,12 +183,12 @@ public class OptionScreen extends GameScreen {
         mLayerViewport.x += intXMultiplier;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Draws UI Elements onto the screen
      *
-     * @see
-     * uk.ac.qub.eeecs.gage.world.GameScreen#draw(uk.ac.qub.eeecs.gage.engine
-     * .ElapsedTime, uk.ac.qub.eeecs.gage.engine.graphics.IGraphics2D)
+     * @param elapsedTime
+     *            Elapsed time information for the frame
+     * @param graphics2D
      */
     @Override
     public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
@@ -320,5 +253,105 @@ public class OptionScreen extends GameScreen {
         // Back Button
         Bitmap btnBack = mGame.getAssetManager().getBitmap("btnBack");
         graphics2D.drawBitmap(btnBack, null, mBackBound,null);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Methods
+    // /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Sets up the UI Elements used by the screen
+     *
+     * @param game
+     */
+    public void setUpUI(Game game) {
+        // Bounds for Difficulty Title
+        int txtDifficultyWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int txtDifficultyHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
+        int startX = (getGame().getScreenWidth() / 2) - (txtDifficultyWidth / 2);
+        int startY = paddingY;
+        mDifficultyTitle = new Rect(startX, startY, startX + txtDifficultyWidth, startY + txtDifficultyHeight);
+
+        // Sets bounds for the difficulty settingsHandler stack
+        // each button 255px width
+        // and 120px high
+        int stackPad = (int) (getGame().getScreenWidth() * 0.00520); // @1920 = 10
+        int halfStack = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int buttonWidth = (int) (getGame().getScreenWidth() * 0.132); // @1920 = 255
+        int buttonHeight = (int) (getGame().getScreenHeight() * 0.111); // @1080 = 120
+        startX = (getGame().getScreenWidth() / 2) - halfStack;
+        int endX = startX + buttonWidth;
+        startY = startY + txtDifficultyHeight + paddingY;
+        int endY = startY + buttonHeight;
+        mEasyBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
+        mNormalBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
+        mHardBound = new Rect(startX, startY, endX, endY);
+
+        startX = endX + stackPad;
+        endX = startX + buttonWidth;
+        mInsaneBound = new Rect(startX, startY, endX, endY);
+
+        // Sets the Mute Title
+        int txtMuteWidth = (int) (getGame().getScreenWidth() * 0.273); // @1920 = 525
+        int txtMuteHeight = (int) (getGame().getScreenHeight() * 0.185); // @1080 = 200
+        startY = endY + (paddingY *2);
+        endY = startY + txtMuteHeight;
+        startX = (getGame().getScreenWidth() / 2) - (txtMuteWidth / 2);
+        endX = startX + txtMuteWidth;
+        mMuteTitle = new Rect(startX, startY, endX, endY);
+
+        // Sets the bounds for the Mute Button
+        int btnSoundWidth = (int) (game.getScreenWidth() * 0.156); // @1920 = 300
+        int btnSoundHeight = (int) (game.getScreenHeight() * 0.231); // @1080 = 250
+        startY = endY + paddingY;
+        endY = startY + btnSoundHeight;
+        startX = (game.getScreenWidth() / 2) - (btnSoundWidth / 2);
+        mMuteBound = new Rect(startX, startY, startX + btnSoundWidth, endY);
+
+        // Sets the bounds for the back button
+        int btnBackWidth = (int) (game.getScreenWidth() * 0.078); // @1920 = 150
+        int btnBackHeight = (int) (game.getScreenHeight() * 0.138); // @1080 = 150
+        startX = paddingX;
+        startY = paddingY;
+        mBackBound = new Rect(startX, startY, startX + btnBackWidth, startY + btnBackHeight);
+
+        // Defines the background
+        mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+                game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+                .getAssetManager().getBitmap("SpaceBackground"), this);
+        mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+                game.getScreenHeight());
+    }
+
+    /**
+     * Loads in the assets used by the screen
+     */
+    public void loadAssets() {
+        // Create new AssetManager
+        AssetStore assetManager = mGame.getAssetManager();
+
+        // Loads Bitmaps
+        assetManager.loadAndAddBitmap("btnEasy-Normal", "img/buttons/btnEasy-Normal.png");
+        assetManager.loadAndAddBitmap("btnEasy-Selected", "img/buttons/btnEasy-Selected.png");
+        assetManager.loadAndAddBitmap("btnNormal-Normal", "img/buttons/btnNormal-Normal.png");
+        assetManager.loadAndAddBitmap("btnNormal-Selected", "img/buttons/btnNormal-Selected.png");
+        assetManager.loadAndAddBitmap("btnHard-Normal", "img/buttons/btnHard-Normal.png");
+        assetManager.loadAndAddBitmap("btnHard-Selected", "img/buttons/btnHard-Selected.png");
+        assetManager.loadAndAddBitmap("btnInsane-Normal", "img/buttons/btnInsane-Normal.png");
+        assetManager.loadAndAddBitmap("btnInsane-Selected", "img/buttons/btnInsane-Selected.png");
+        assetManager.loadAndAddBitmap("btnSound-Mute","img/buttons/btnSound-Mute.png");
+        assetManager.loadAndAddBitmap("btnSound-UnMute", "img/buttons/btnSound-UnMute.png");
+        assetManager.loadAndAddBitmap("btnBack", "img/buttons/btnBack.png");
+        assetManager.loadAndAddBitmap("txtDifficulty", "img/titles/ttlDifficulty.png");
+        assetManager.loadAndAddBitmap("txtMute", "img/titles/ttlMute.png");
+
+        // Loads Sounds
+        assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
     }
 }
