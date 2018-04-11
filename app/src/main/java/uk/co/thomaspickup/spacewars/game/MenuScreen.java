@@ -1,5 +1,9 @@
 package uk.co.thomaspickup.spacewars.game;
 
+// /////////////////////////////////////////////////////////////////////////
+// Imports
+// /////////////////////////////////////////////////////////////////////////
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
@@ -23,9 +27,11 @@ import uk.co.thomaspickup.spacewars.game.spaceLevel.SpaceLevelScreen;
  * 
  * Created by Thomas Pickup
  */
-
-// TODO: Optimize and annotate
 public class MenuScreen extends GameScreen {
+	// /////////////////////////////////////////////////////////////////////////
+	// Variables
+	// /////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Define the trigger touch region for navigating to the game or options menu
 	 */
@@ -46,147 +52,74 @@ public class MenuScreen extends GameScreen {
 	// New Settings Instance
 	private SettingsHandler settingsHandler = new SettingsHandler();
 
+	// Padding for the screen
+	int paddingX;
+	int paddingY;
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Constructors
+	// /////////////////////////////////////////////////////////////////////////
+
 	/**
-	 * Creates the menu screens
+	 * Creates the menu screen.
 	 * 
-	 * @param game
-	 *            SpaceGasme to which this screen belongs
+	 * @param game SpaceGame to which this screen belongs
 	 */
 	public MenuScreen(Game game) {
 		super("MenuScreen", game);
 
-		int paddingY = (int) (getGame().getScreenHeight() * 0.02);
-		int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+		// Sets up Padding
+		paddingY = (int) (getGame().getScreenHeight() * 0.02);
+		paddingX = (int) (getGame().getScreenWidth() * 0.026);
 
 		// Load in the bitmaps and sounds used on the menu screen
-		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
-		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
-		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
-		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
-		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
-		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
+		loadAssets();
 
 		// Plays title theme
-		mMainTheme = assetManager.getMusic("MainTheme");
-		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
-		mMainTheme.setLopping(true);
-		mMainTheme.play();
+		playTheme(game);
 
-		// Defines the background
-		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
-				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
-				.getAssetManager().getBitmap("SpaceBackground"), this);
-		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
-				game.getScreenHeight());
+		// Sets Up UI
+		setUpUI(game);
 
-		// Create the layer viewport, taking into account the orientation
-		// and aspect ratio of the screen.
-		if (mScreenViewport.width > mScreenViewport.height)
-			mLayerViewport = new LayerViewport(240.0f, 240.0f
-					* mScreenViewport.height / mScreenViewport.width, 240,
-					240.0f * mScreenViewport.height / mScreenViewport.width);
-		else
-			mLayerViewport = new LayerViewport(240.0f * mScreenViewport.height
-					/ mScreenViewport.width, 240.0f, 240.0f
-					* mScreenViewport.height / mScreenViewport.width, 240);
+		// Creates Viewport
+		createViewport();
 
-		// Defines the Title Image Rect
-		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
-		int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
-		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
-		int spacingY = paddingY * 2;
-		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
-
-		// Defines the Play Button Image Rect
-		int btnPlayWidth = (int) (game.getScreenWidth() * 0.208);
-		int btnPlayHeight = (int) (game.getScreenHeight() *  0.373);
-		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
-		spacingY = (game.getScreenHeight() / 2) + paddingY;
-		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
-
-		// Defines the Settings Cog Rect
-		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
-		spacingX = paddingX;
-		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
-
-		// Defines the about rect
-		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = (game.getScreenHeight() - paddingY) - btnAboutHeight;
-		spacingX = (game.getScreenWidth() - paddingX) - btnAboutWidth;
-		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
 	}
 
-	public MenuScreen(Game game, LayerViewport backgroundViewPort) {
+	/**
+	 * Creates the menu screen from a previous screens layerviewport.
+	 *
+	 * @param game SpaceGame to which this screen belongs
+	 * @param mLayerViewport Previous screens layer viewport
+	 */
+	public MenuScreen(Game game, LayerViewport mLayerViewport) {
 		super("MenuScreen", game);
 
-		int paddingY = (int) (getGame().getScreenHeight() * 0.02);
-		int paddingX = (int) (getGame().getScreenWidth() * 0.026);
+		// Creates Padding
+		paddingY = (int) (getGame().getScreenHeight() * 0.02);
+		paddingX = (int) (getGame().getScreenWidth() * 0.026);
 
 		// Load in the bitmaps and sounds used on the menu screen
-		AssetStore assetManager = mGame.getAssetManager();
-		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
-		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
-		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
-		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
-		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
-		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
-		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
+		loadAssets();
 
 		// Plays title theme
-		mMainTheme = assetManager.getMusic("MainTheme");
-		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
-		mMainTheme.setLopping(true);
-		mMainTheme.play();
+		playTheme(game);
 
-		// Defines the background
-		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
-				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
-				.getAssetManager().getBitmap("SpaceBackground"), this);
-		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
-				game.getScreenHeight());
+		// Sets Up UI
+		setUpUI(game);
 
-		// Create the layer viewport, taking into account the orientation
-		mLayerViewport = backgroundViewPort;
-
-		// Defines the Title Image Rect
-		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
-		int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
-		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
-		int spacingY = paddingY * 2;
-		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
-
-		// Defines the Play Button Image Rect
-		int btnPlayWidth = (int) (game.getScreenWidth() * 0.208);
-		int btnPlayHeight = (int) (game.getScreenHeight() *  0.373);
-		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
-		spacingY = (game.getScreenHeight() / 2) + paddingY;
-		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
-
-		// Defines the Settings Cog Rect
-		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
-		spacingX = paddingX;
-		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
-
-		// Defines the about rect
-		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
-		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);
-		spacingY = (game.getScreenHeight() - paddingY) - btnAboutHeight;
-		spacingX = (game.getScreenWidth() - paddingX) - btnAboutWidth;
-		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
+		// Transfers over the layerviewport from previous screen
+		this.mLayerViewport = mLayerViewport;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.GameScreen#update(uk.ac.qub.eeecs.gage.engine
-	 * .ElapsedTime)
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Update & Draw Methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Updates the screen.
+	 *
+	 * @param elapsedTime
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
@@ -242,12 +175,12 @@ public class MenuScreen extends GameScreen {
 		mLayerViewport.x += intXMultiplier;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.GameScreen#draw(uk.ac.qub.eeecs.gage.engine
-	 * .ElapsedTime, uk.ac.qub.eeecs.gage.engine.graphics.IGraphics2D)
+	/**
+	 * Draws the screen.
+	 *
+	 * @param elapsedTime
+	 *            Elapsed time information for the frame
+	 * @param graphics2D
 	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D) {
@@ -267,4 +200,105 @@ public class MenuScreen extends GameScreen {
 		graphics2D.drawBitmap(settingsIcon, null, mSettingsButtonBound, null);
 		graphics2D.drawBitmap(aboutIcon,null,mAboutBound,null);
 	}
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Sets up the UI.
+	 *
+	 * @param game
+	 */
+	public void setUpUI(Game game) {
+		// Defines the background
+		mSpaceBackground = new GameObject(game.getScreenWidth() / 2.0f,
+				game.getScreenHeight() / 2.0f, game.getScreenWidth(), game.getScreenHeight(), getGame()
+				.getAssetManager().getBitmap("SpaceBackground"), this);
+		mScreenViewport = new ScreenViewport(0, 0, game.getScreenWidth(),
+				game.getScreenHeight());
+
+		// Defines the Title Image Rect
+		int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+		int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
+		int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
+		int spacingY = paddingY * 2;
+		mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
+
+		// Defines the Play Button Image Rect
+		int btnPlayWidth = (int) (game.getScreenWidth() * 0.208);
+		int btnPlayHeight = (int) (game.getScreenHeight() *  0.373);
+		spacingX = (game.getScreenWidth() / 2) - (btnPlayWidth / 2);
+		spacingY = (game.getScreenHeight() / 2) + paddingY;
+		mPlayButtonBound = new Rect(spacingX, spacingY,spacingX + btnPlayWidth , spacingY +btnPlayHeight);
+
+		// Defines the Settings Cog Rect
+		int btnSettingsWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnSettingsHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = (game.getScreenHeight() - paddingY) - btnSettingsHeight;
+		spacingX = paddingX;
+		mSettingsButtonBound = new Rect(spacingX, spacingY, spacingX + btnSettingsWidth, spacingY + btnSettingsHeight);
+
+		// Defines the about rect
+		int btnAboutWidth = (int) (game.getScreenWidth() * 0.078);
+		int btnAboutHeight = (int) (game.getScreenHeight() * 0.138);
+		spacingY = (game.getScreenHeight() - paddingY) - btnAboutHeight;
+		spacingX = (game.getScreenWidth() - paddingX) - btnAboutWidth;
+		mAboutBound = new Rect(spacingX, spacingY, spacingX + btnAboutWidth, spacingY + btnAboutHeight);
+	}
+
+	/**
+	 * Loads in the assets.
+	 */
+	public void loadAssets() {
+		// Creates new Asset Manager
+		AssetStore assetManager = mGame.getAssetManager();
+
+		// Loads in Bitmaps
+		assetManager.loadAndAddBitmap("PlayIcon", "img/buttons/btnPlay.png");
+		assetManager.loadAndAddBitmap("SettingsIcon", "img/buttons/btnSettings.png");
+		assetManager.loadAndAddBitmap("TitleImage", "img/titles/ttlLogo.png");
+		assetManager.loadAndAddBitmap("SpaceBackground", "img/backgrounds/bgSpace.png");
+		assetManager.loadAndAddBitmap("AboutIcon", "img/buttons/btnAbout.png");
+
+		// Loads in Sounds
+		assetManager.loadAndAddMusic("MainTheme", "sfx/sfx_maintheme.mp3");
+		assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+	}
+
+	/**
+	 * Plays the Theme.
+	 *
+	 * @param game
+	 */
+	public void playTheme(Game game) {
+		// Gets the Song imported prior
+		mMainTheme = game.getAssetManager().getMusic("MainTheme");
+
+		// Sets the volume according to settings handler
+		mMainTheme.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
+
+		// Sets looping to true
+		mMainTheme.setLopping(true);
+
+		// Plays the song
+		mMainTheme.play();
+	}
+
+	/**
+	 * Creates the viewport.
+	 */
+	public void createViewport() {
+		// Create the layer viewport, taking into account the orientation
+		// and aspect ratio of the screen.
+		if (mScreenViewport.width > mScreenViewport.height)
+			mLayerViewport = new LayerViewport(240.0f, 240.0f
+					* mScreenViewport.height / mScreenViewport.width, 240,
+					240.0f * mScreenViewport.height / mScreenViewport.width);
+		else
+			mLayerViewport = new LayerViewport(240.0f * mScreenViewport.height
+					/ mScreenViewport.width, 240.0f, 240.0f
+					* mScreenViewport.height / mScreenViewport.width, 240);
+	}
+
 }
