@@ -1,8 +1,11 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
+// /////////////////////////////////////////////////////////////////////////
+// Imports
+// /////////////////////////////////////////////////////////////////////////
+
 import java.util.ArrayList;
 import java.util.List;
-
 import uk.co.thomaspickup.spacewars.gage.ai.SteeringBehaviours;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
@@ -15,55 +18,56 @@ import uk.co.thomaspickup.spacewars.game.HelperTools;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
- * AI controlled spaceship
+ * This class represents an AI Controlled Spaceship.
+ * It can be a turret or a seeker.
  * 
- * @version 1.0
+ * Created by Thomas Pickup
  */
-// TODO: Optimize and annotate
 public class AISpaceship extends Sprite {
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Properties
+	// Variables
 	// /////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * AI control behaviour
-	 */
+	// Control Behaviour Enum
 	public enum ShipBehaviour {
 		Turret, Seeker
 	}
 
+	// Object holding the Control Behaviour
 	private ShipBehaviour mShipBehaviour;
 
-	/**
-	 * Distance at which the spaceship should avoid other game objects
-	 */
+	// Distance at which the spaceship should avoid other game objects
 	private float separateThresholdShip = 75.0f;
 	private float separateThresholdAsteroid = 125.0f;
 
-	/**
-	 * Accumulators used to build up the net steering outcome
-	 */
+	// Accumulators used to build up the net steering outcome
 	private Vector2 accAccumulator = new Vector2();
 	private Vector2 accComponent = new Vector2();
 
 	// Creates new instance of helperTools
 	HelperTools helperTools = new HelperTools();
 
+	// List of Lasers related to AISpaceship
 	public List<Laser> mLasers;
 
+	// Limit on the reloading time of the aispaceship
 	private int reloadTime;
 	private int timeToReload;
 	private boolean canFire;
 
+	// Creates a new instance of the Settings Handler
 	private SettingsHandler settingsHandler = new SettingsHandler();
 
+	// Speed multiplier decided by difficulty setting
+	private float mSpeedMultiplier;
+
 	// /////////////////////////////////////////////////////////////////////////
-	// Constructors
+	// Constructor
 	// /////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Create a AI controlled spaceship
+	 * Creates an AI controlled spaceship
 	 * 
 	 * @param startX
 	 *            x location of the AI spaceship
@@ -78,50 +82,35 @@ public class AISpaceship extends Sprite {
 			SpaceLevelScreen gameScreen, int difficulty, int health) {
 		super(startX, startY, 50.0f, 50.0f, null, gameScreen);
 
-		float speedMultiplier = helperTools.getSpeedMultiplier(difficulty);
+		// Imports the speed multiplier from helper tools
+		this.mSpeedMultiplier = helperTools.getSpeedMultiplier(difficulty);
 
+		// Copies over the ship behaviour
 		mShipBehaviour = shipBehaviour;
 
-		switch (mShipBehaviour) {
-		case Turret:
-			maxAcceleration = 0.0f;
-			maxVelocity = 0.0f;
-			maxAngularVelocity = 50.0f* speedMultiplier;
-			maxAngularAcceleration = 50.0f * speedMultiplier;
-			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Turret");
+		// Sets up the ship based on
+		setUpShip(gameScreen);
 
-			break;
-		case Seeker:
-			maxAcceleration = 30.0f * speedMultiplier;
-			maxVelocity = 50.0f * speedMultiplier;
-			maxAngularVelocity = 150.0f * speedMultiplier;
-			maxAngularAcceleration = 300.0f * speedMultiplier;
-			mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship1");
-			break;
-		}
-
-		mLasers = new ArrayList<Laser>(100);
-
+		// Sets health based on supplied
 		this.setHealth(health);
+
+		// Sets the ship able to fire
 		reloadTime = gameScreen.getGame().getTargetFramesPerSecond();
 		timeToReload = 0;
 		canFire = true;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Methods
+	// Draw and Update Methods
 	// /////////////////////////////////////////////////////////////////////////
-		
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.Sprite#update(uk.ac.qub.eeecs.gage.engine.
-	 * ElapsedTime)
+
+	/**
+	 * Updates the AI Spaceship.
+	 *
+	 * @param elapsedTime
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
-
 		switch (mShipBehaviour) {
 		case Turret:
 			// Turn towards the player
@@ -170,31 +159,47 @@ public class AISpaceship extends Sprite {
 		// Call the sprite's superclass to apply the determine accelerations
 		super.update(elapsedTime);
 
+		// Gets the difference in player position and this AI Spaceships position
 		float deltaX = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.x - this.position.x;
 		float deltaY = ((SpaceLevelScreen) mGameScreen).getPlayerSpaceship().position.y - this.position.y;
 
+		// Works out the direct distance from the player
 		float distanceFromPlayer = helperTools.getDistance(deltaX, deltaY);
 
+		// If the distance is less than 3 times the width of the spaceship and it can fire then fire.
 		if (distanceFromPlayer <= this.getBound().getWidth() * 3 && canFire) {
 			fire(mGameScreen);
 		}
 
+		// If there is lasers to update then update them
 		if (mLasers != null) {
 			for (Laser laser : mLasers)
 				laser.update(elapsedTime);
 		}
 
+		// If the ai spaceship can't fire
 		if (!canFire) {
+			// Increment time to reload by 1
 			timeToReload = timeToReload + 1;
 
+			// If the time to reload is equal to the reloadtime then the spaceship can fire again.
 			if (reloadTime == timeToReload) {
 				canFire = true;
 			}
 		}
 	}
 
+	/**
+	 * Draws the AI Spaceship and lasers on screen.
+	 *
+	 * @param elapsedTime
+	 * @param graphics2D
+	 * @param mLayerViewport
+	 * @param mScreenViewport
+	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D, LayerViewport mLayerViewport, ScreenViewport mScreenViewport)  {
+		// Draws all the lasers if they exist.
 		if (mLasers != null) {
 			for (Laser laser : mLasers)
 				laser.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
@@ -204,14 +209,65 @@ public class AISpaceship extends Sprite {
 				mScreenViewport);
 	}
 
-	// Creates a new laser
-	public void fire(GameScreen gameScreen) {
+	// /////////////////////////////////////////////////////////////////////////
+	// Methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * This shoots a laser from the AI Spaceship
+	 *
+	 * @param gameScreen Game Screen to draw onto
+	 */
+	private void fire(GameScreen gameScreen) {
+		// Checks if the Enemey can fire
 		if (canFire) {
+			// Play the sound effect
 			gameScreen.getGame().getAssetManager().getSound("WeaponFire").play(settingsHandler.getSound(gameScreen.getGame().getContext()));
+
+			// Set can fire to false
 			canFire = false;
+
+			// Imports the image
 			gameScreen.getGame().getAssetManager().loadAndAddBitmap("EnemyBeam", "img/sprites/sprEnemyBeam.png");
+
+			// Creates a new laser
 			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("EnemyBeam"), this.acceleration, this.velocity, orientation));
+
+			// Resets the timer
 			timeToReload = 0;
 		}
+	}
+
+	/**
+	 * Sets up the ship based on the Ship Behaviour
+	 */
+	private void setUpShip(GameScreen gameScreen) {
+		// Decides what type the ship is to be.
+		switch (mShipBehaviour) {
+			// Sets up to be a turret
+			case Turret:
+				// Limits turrets to being able to turn to look at player
+				maxAcceleration = 0.0f;
+				maxVelocity = 0.0f;
+				maxAngularVelocity = 50.0f* mSpeedMultiplier;
+				maxAngularAcceleration = 50.0f * mSpeedMultiplier;
+				mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Turret");
+
+				break;
+
+			// Sets up to be a seeker
+			case Seeker:
+				// Allows seeker to follow the player around the map
+				maxAcceleration = 30.0f * mSpeedMultiplier;
+				maxVelocity = 50.0f * mSpeedMultiplier;
+				maxAngularVelocity = 150.0f * mSpeedMultiplier;
+				maxAngularAcceleration = 300.0f * mSpeedMultiplier;
+				mBitmap = gameScreen.getGame().getAssetManager().getBitmap("Spaceship1");
+
+				break;
+		}
+
+		// Creates a list with a maximum of 100 lasers
+		mLasers = new ArrayList<Laser>(100);
 	}
 }
