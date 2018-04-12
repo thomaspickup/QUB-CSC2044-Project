@@ -1,6 +1,8 @@
 package uk.co.thomaspickup.spacewars.game.spaceLevel;
 
-import android.util.Log;
+// /////////////////////////////////////////////////////////////////////////
+// Imports
+// /////////////////////////////////////////////////////////////////////////
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +19,20 @@ import uk.co.thomaspickup.spacewars.gage.world.Sprite;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
- * Player controlled spaceship
+ * Player controlled spaceship.
  * 
  * Created by Thomas Pickup
  */
-// TODO: Optimize and annotate
 public class PlayerSpaceship extends Sprite {
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Properties
+	// Variables
 	// /////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Centre of the screen (used to determine the offset of touch events)
-	 */
+	//Centre of the screen (used to determine the offset of touch events)
 	private Vector2 screenCentre = new Vector2();
 
-	/**
-	 * Acceleration vector based on the player's touch input
-	 */
+	// Acceleration vector based on the player's touch input
 	private Vector2 playerTouchAcceleration = new Vector2();
 
 	// Contains the lives lost and left
@@ -45,14 +42,16 @@ public class PlayerSpaceship extends Sprite {
 	// List of lasers
 	public List<Laser> mLasers;
 
+	// Used with the delay of firing
 	private int reloadTime;
 	private int timeToReload;
 	private boolean canFire;
 
+	// Creates new Settings Handler to access the settings
 	private SettingsHandler settingsHandler = new SettingsHandler();
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Constructors
+	// Constructor
 	// /////////////////////////////////////////////////////////////////////////
 	
 	/**
@@ -69,6 +68,7 @@ public class PlayerSpaceship extends Sprite {
 		super(startX, startY, 50.0f, 50.0f, gameScreen.getGame()
 				.getAssetManager().getBitmap("Spaceship2"), gameScreen);
 
+		// Gets the weapon fire sfx and puts in AssetManager
 		gameScreen.getGame().getAssetManager().loadAndAddSound("WeaponFire","sfx/sfx_weaponfire.mp3");
 
 		// Store the centre of the screen
@@ -81,23 +81,23 @@ public class PlayerSpaceship extends Sprite {
 		maxAngularVelocity = 1440.0f;
 		maxAngularAcceleration = 1440.0f;
 
+		// Creates a new list of Lasers with the initial capacity of 100
 		mLasers = new ArrayList<Laser>(100);
 
+		// Allows the player to start firing
 		reloadTime = gameScreen.getGame().getTargetFramesPerSecond();
 		timeToReload = 0;
 		canFire = true;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
-	// Methods
+	// Update & Draw Methods
 	// /////////////////////////////////////////////////////////////////////////
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * uk.ac.qub.eeecs.gage.world.Sprite#update(uk.ac.qub.eeecs.gage.engine.
-	 * ElapsedTime)
+	/**
+	 * Updates the player spaceship.
+	 *
+	 * @param elapsedTime
 	 */
 	@Override
 	public void update(ElapsedTime elapsedTime) {
@@ -128,65 +128,103 @@ public class PlayerSpaceship extends Sprite {
 		// Apply the determined accelerations
 		super.update(elapsedTime);
 
+		// If there is Lasers update them
 		if (mLasers != null) {
 			for (Laser laser : mLasers)
 				laser.update(elapsedTime);
 		}
 
+		// Checks if the player can't fire
 		if (!canFire) {
+			// Increments timetoreload
 			timeToReload = timeToReload + 1;
 
+			// If the reloadTime is equal to timeToReload then the player can fire
 			if (reloadTime == timeToReload) {
 				canFire = true;
 			}
 		}
-
-		Log.i("Orientation", String.format("%f",SteeringBehaviours.alignWithMovement(this)));
 	}
 
+	/**
+	 * Draws the player spaceship on screen.
+	 *
+	 * @param elapsedTime
+	 * @param graphics2D
+	 * @param mLayerViewport
+	 * @param mScreenViewport
+	 */
 	@Override
 	public void draw(ElapsedTime elapsedTime, IGraphics2D graphics2D, LayerViewport mLayerViewport, ScreenViewport mScreenViewport) {
+		// If there is any lasers to update then update them
 		if (mLasers != null) {
 			for (Laser laser : mLasers)
 				laser.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
 		}
+
 		super.draw(elapsedTime, graphics2D, mLayerViewport,
 				mScreenViewport);
 	}
 
-	// Sets the lives of the player ship
+	// /////////////////////////////////////////////////////////////////////////
+	// Methods
+	// /////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Sets the Lives of the Player Spaceship.
+	 *
+	 * @param lives Lives for the player
+	 */
 	public void setLives(int lives) {
 		livesLeft = lives;
 	}
 
-	// Minuses a live from the livesLeft and adds one to livesLost
+	/**
+	 * Takes away one live from the player.
+	 */
 	public void minusLive() {
 		livesLeft = livesLeft - 1;
 		livesLost = livesLost + 1;
 	}
 
-	// Gets the lives lost
+	/**
+	 * Gets the amount of lives lost by the player
+	 *
+	 * @return Lives Lost
+	 */
 	public int getLivesLost() {
 		return livesLost;
 	}
 
-	// Gets the lives left
+	/**
+	 * Gets the amount of the lives left for the player.
+	 *
+	 * @return Lives Left
+	 */
 	public int getLivesLeft() {
 		return livesLeft;
 	}
 
-	// Creates a new laser
+	/**
+	 * Fires a laser from the player spaceship.
+	 *
+	 * @param gameScreen Game Screen to draw the lasers on.
+	 */
 	public void fire(GameScreen gameScreen) {
+		// Checks if the player can fire a laser
 		if (canFire) {
+			// Gets the sound effect from the asset store and plays it
 			gameScreen.getGame().getAssetManager().getSound("WeaponFire").play(settingsHandler.getSound(gameScreen.getGame().getContext()));
+
+			// Sets canFire to false
 			canFire = false;
+
+			// Gets the picture of the laser and creates a Laser with it
 			gameScreen.getGame().getAssetManager().loadAndAddBitmap("PlayerBeam", "img/sprites/sprPlayerBeam.png");
 			mLasers.add(new Laser((int) position.x, (int) position.y, gameScreen, gameScreen.getGame().getAssetManager().getBitmap("PlayerBeam"), this.acceleration, this.velocity, orientation));
+
+			// Starts the reload process.
 			timeToReload = 0;
 		}
-	}
-
-	public List<Laser> getMLasers() {
-		return mLasers;
 	}
 }
