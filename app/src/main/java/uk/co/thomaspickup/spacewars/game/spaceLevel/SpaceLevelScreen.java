@@ -4,19 +4,16 @@ package uk.co.thomaspickup.spacewars.game.spaceLevel;
 // Imports
 // /////////////////////////////////////////////////////////////////////////
 
-// Android Graphics Imports
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-// Util Imports
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-// GAGE imports
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
@@ -30,7 +27,6 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
-// Game Imports
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
@@ -40,7 +36,6 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  */
 // TODO: Add Music To Space Level Screen
 // TODO: Refine weapon firing for turrets
-
 public class SpaceLevelScreen extends GameScreen {
 	// /////////////////////////////////////////////////////////////////////////
 	// Variables

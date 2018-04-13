@@ -1,5 +1,9 @@
 package uk.co.thomaspickup.spacewars.gage.engine.graphics;
 
+// /////////////////////////////////////////////////////////////////////////
+// Imports
+// /////////////////////////////////////////////////////////////////////////
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,16 +13,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by thomaspickup on 01/04/2018.
+ * Creates a text view with white text and a height of 20
+ *
+ * Created by Thomas Pickup
  */
-// TODO: Optimize and annotate
 public class TextLayout extends LinearLayout {
-    // Creates the private variables
-    private LinearLayout linearLayout;
+    // /////////////////////////////////////////////////////////////////////////
+    // Variables
+    // /////////////////////////////////////////////////////////////////////////
+
+    // Private Text View variables
     private TextView textView;
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Constructor
+    // /////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructor to create a new TextView of a specific size and shape
+     *
      * @param mCanvas
      * @param mContext
      * @param xPosition
@@ -30,35 +43,72 @@ public class TextLayout extends LinearLayout {
         super(mContext);
 
         // Initilizes the layout and textview
-        linearLayout = new LinearLayout(mContext);
         textView = new TextView(mContext);
 
         // Sets to be visible and sets the text
-        textView.setVisibility(View.VISIBLE);
-        textView.setText(strText);
-        textView.setWidth(viewWidth);
-        textView.setHeight(viewHeight);
-        textView.setX((float) xPosition);
-        textView.setY((float) yPosition);
-        textView.setTextColor(Color.WHITE);
-        textView.setTextSize(20.0f);
-        textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        setVisibility(View.VISIBLE);
 
-        // TODO: Finish adding Scroll Bars
-        textView.setVerticalScrollbarPosition(SCROLLBAR_POSITION_RIGHT);
-        textView.setVerticalScrollBarEnabled(true);
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        // Sets text equal to the string passed view
+        setText(strText);
+
+        // Sets width and height of text
+        setWidth(viewWidth);
+        setHeight(viewHeight);
+
+        // Sets positioning
+        setX((float) xPosition);
+        setY((float) yPosition);
+
+        // Sets the colour, size, and allignment
+        setTextColor(Color.WHITE);
+        setTextSize(20.0f);
+        setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
         // Adds the text view to the layout
-        linearLayout.addView(textView);
+        this.addView(textView);
 
         // Sets the view height to be equal to the dimesions specified
-        linearLayout.measure(viewWidth, viewHeight);
-        linearLayout.layout(xPosition, yPosition, viewWidth, viewHeight);
+        this.measure(viewWidth, viewHeight);
+        this.layout(xPosition, yPosition, viewWidth, viewHeight);
     }
 
-    public void draw(Canvas mCanvas) {
-        linearLayout.draw(mCanvas);
-        super.draw(mCanvas);
+    // /////////////////////////////////////////////////////////////////////////
+    // Methods
+    // /////////////////////////////////////////////////////////////////////////
+
+    public void setWidth(int viewWidth) {
+        textView.setWidth(viewWidth);
+    }
+
+    public void setHeight(int viewHeight) {
+        textView.setHeight(viewHeight);
+    }
+
+    public void setX(float xPosition) {
+        textView.setX(xPosition);
+    }
+
+    public void setY(float yPosition) {
+        textView.setY(yPosition);
+    }
+
+    public void setTextColor(int color) {
+        textView.setTextColor(color);
+    }
+
+    public void setTextSize(float textSize) {
+        textView.setTextSize(textSize);
+    }
+
+    public void setTextAlignment(int textAlignment) {
+        textView.setTextAlignment(textAlignment);
+    }
+
+    public void setText(String text) {
+        textView.setText(text);
+    }
+
+    public void setTextVisibility(int visibility) {
+        textView.setVisibility(visibility);
     }
 }
