@@ -127,7 +127,6 @@ public class ReleaseButton extends GameObject {
                 mIsPushed = true;
                 mPushTriggered = true;
                 Log.i("ReleaseButton", "TouchUp");
-                // TODO: Also play sound here if it's available.
                 return;
             }
         }

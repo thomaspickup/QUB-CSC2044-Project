@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Creates a text view with white text and a height of 20
+ * Creates a text view.
  *
  * Created by Thomas Pickup
  */
@@ -30,7 +30,8 @@ public class TextLayout extends LinearLayout {
     // /////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructor to create a new TextView of a specific size and shape
+     * Constructor to create a new TextView of a specific size and shape.
+     * This also creates the default settings of white text at size 20.
      *
      * @param mCanvas
      * @param mContext
@@ -78,10 +79,14 @@ public class TextLayout extends LinearLayout {
 
     public void setWidth(int viewWidth) {
         textView.setWidth(viewWidth);
+
+        this.measure(viewWidth, textView.getHeight());
     }
 
     public void setHeight(int viewHeight) {
         textView.setHeight(viewHeight);
+
+        this.measure(textView.getWidth(), viewHeight);
     }
 
     public void setX(float xPosition) {
@@ -108,7 +113,7 @@ public class TextLayout extends LinearLayout {
         textView.setText(text);
     }
 
-    public void setTextVisibility(int visibility) {
+    public void setVisibility(int visibility) {
         textView.setVisibility(visibility);
     }
 }

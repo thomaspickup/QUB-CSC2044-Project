@@ -147,10 +147,8 @@ public class ToggleButton extends GameObject {
                 // A touch up has occured in this control
                 if (mButtonState == ButtonState.OFF) {
                     setToggled(true);
-                    // TODO: Also play on sound here if it's available.
                 } else {
                     setToggled(false);
-                    // TODO: Also play off sound here if it's available.
                 }
 
                 return;

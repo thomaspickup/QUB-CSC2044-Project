@@ -27,6 +27,7 @@ import uk.co.thomaspickup.spacewars.gage.world.GameScreen;
 import uk.co.thomaspickup.spacewars.gage.world.LayerViewport;
 import uk.co.thomaspickup.spacewars.gage.world.ScreenViewport;
 
+import uk.co.thomaspickup.spacewars.game.HelperTools;
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 
 /**
@@ -72,6 +73,9 @@ public class SpaceLevelScreen extends GameScreen {
 
 	// Settings Handler to allow the game to access the Shared Preferences.
 	private SettingsHandler settingsHandler = new SettingsHandler();
+
+	// Helper tools
+	private HelperTools helperTools = new HelperTools();
 
 	// Save File used for transfering and receiving a save from other screens.
 	private SpaceSave saveFile = new SpaceSave();
@@ -473,7 +477,6 @@ public class SpaceLevelScreen extends GameScreen {
 		else if (mLayerViewport.getTop() > LEVEL_HEIGHT)
 			mLayerViewport.y -= (mLayerViewport.getTop() - LEVEL_HEIGHT);
 
-		// TODO: Add in difficulty modifier
 		// Update each of the AI controlled spaceships
 		// Uses an irerator to remove objects from list on fly
 		Iterator<AISpaceship> iterAISpaceships = mAISpaceships.iterator();
@@ -534,8 +537,8 @@ public class SpaceLevelScreen extends GameScreen {
 
 				// Checks to see if there is a collision between the ai spaceship and the laser
 				if (CollisionDetector.isCollision(aiSpaceship.getBound(),laser.getBound())) {
-					// Removes one health point from the ai spaceship
-					aiSpaceship.setHealth(aiSpaceship.getHealth() - 1);
+					// Removes health points from AI Spaceship based on the difficulty multiplier
+					aiSpaceship.setHealth(aiSpaceship.getHealth() - helperTools.getDamageMultiplier(currentDifficultySetting));
 
 					// Removes the laser from play
 					iterLaser.remove();
@@ -562,8 +565,8 @@ public class SpaceLevelScreen extends GameScreen {
 
 				// Checks to see if there is a collision between the player spaceship and the laser
 				if (CollisionDetector.isCollision(mPlayerSpaceship.getBound(),laser.getBound())) {
-					// Removes one health point from the player ship
-					mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - 1);
+					// Removes health points from Player Spaceship based on the difficulty multiplier
+					mPlayerSpaceship.setHealth(mPlayerSpaceship.getHealth() - helperTools.getDamageMultiplier(currentDifficultySetting));
 
 					// Removes the laser from play
 					iterEnemyLaser.remove();

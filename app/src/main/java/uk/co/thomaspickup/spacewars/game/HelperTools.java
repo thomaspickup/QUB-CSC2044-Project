@@ -67,4 +67,34 @@ public class HelperTools {
 
         return result;
     }
+
+    /**
+     * Returns the damage point to deal based on the difficulty
+     * Setting to Points Conversions:
+     * 1 (Easy) = 1
+     * 2 (Normal) = 2
+     * 3 (Hard) = 3
+     * 4 (Insane) = 4
+     *
+     * @param difficultySetting
+     * @return Damage Points as Int
+     */
+    public int getDamageMultiplier(int difficultySetting) {
+        if (inBetween(difficultySetting, 1, 4)) {
+            switch (difficultySetting) {
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                case 3:
+                    return 3;
+                case 4:
+                    return 4;
+                default:
+                    return 2;
+            }
+        } else {
+            return 2;
+        }
+    }
 }
