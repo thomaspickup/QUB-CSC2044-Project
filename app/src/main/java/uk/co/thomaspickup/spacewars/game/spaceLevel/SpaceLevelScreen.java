@@ -35,7 +35,6 @@ import uk.co.thomaspickup.spacewars.game.SettingsHandler;
  *
  * Created by Thomas Pickup
  */
-// TODO: Add Music To Space Level Screen
 // TODO: Refine weapon firing for turrets
 public class SpaceLevelScreen extends GameScreen {
 	// /////////////////////////////////////////////////////////////////////////
