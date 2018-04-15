@@ -1,22 +1,19 @@
 package uk.co.thomaspickup.spacewars.test;
 
 import android.content.Context;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-
 import uk.co.thomaspickup.spacewars.game.SettingsHandler;
 import uk.co.thomaspickup.spacewars.game.SpaceGame;
 import uk.co.thomaspickup.spacewars.game.spaceLevel.PlayerSpaceship;
-
 import static android.support.test.InstrumentationRegistry.getContext;
 
 /**
- * Created by thomaspickup on 07/04/2018.
+ * Game related tests.
+ *
+ * Created by Thomas Pickup.
  */
-// TODO: Optimize and annotate
 public class PlayerTest {
     private Context testContext;
     private SettingsHandler settingsHandler;
@@ -27,6 +24,9 @@ public class PlayerTest {
         super();
     }
 
+    /**
+     * Sets up the variables prior to testing
+     */
     @Before
     public void preTest() {
         // Creates a test gamescreen
@@ -39,7 +39,9 @@ public class PlayerTest {
         settingsHandler = new SettingsHandler();
     }
 
-    // Tests that the settings handler can store and get settings correctly
+    /**
+     * Test that the settings handler can save and recover settings stored.
+     */
     @Test
     public void testSettingsSetGet() {
         // Sets sound as 1 expects to get 1

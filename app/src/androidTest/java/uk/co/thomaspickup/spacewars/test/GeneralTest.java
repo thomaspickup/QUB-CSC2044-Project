@@ -1,19 +1,20 @@
 package uk.co.thomaspickup.spacewars.test;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
 import uk.co.thomaspickup.spacewars.game.HelperTools;
 
 /**
- * Created by thomaspickup on 08/04/2018.
+ * General Tests related to the Space Game.
+ *
+ * Created by Thomas Pickup.
  */
-// TODO: Optimize and annotate
 public class GeneralTest {
     private HelperTools helperTools = new HelperTools();
 
-    // Helper Tools Tests
+    /**
+     * Tests that the helper tools in between works correctly.
+     */
     @Test
     public void testHelperToolsInBetween() {
         // Expected: True 2 is in between 1 & 4
@@ -25,6 +26,9 @@ public class GeneralTest {
         Assert.assertEquals(expectedResult, helperTools.inBetween(400, 500,600));
     }
 
+    /**
+     * Tests that the helper tools speed multiplier works.
+     */
     @Test
     public void testHelperToolsSpeedMultiplier() {
         // Expected: Returns the default value of 1.0f
@@ -36,6 +40,9 @@ public class GeneralTest {
         Assert.assertEquals(expectedResult, helperTools.getSpeedMultiplier(3),0.0);
     }
 
+    /**
+     * Tests that the helper tools get distance works.
+     */
     @Test
     public void testHelperToolsGetDistance() {
         // Expected: 7.07f (Used Calculator)
