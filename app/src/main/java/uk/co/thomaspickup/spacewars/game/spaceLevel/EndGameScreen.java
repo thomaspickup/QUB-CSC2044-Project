@@ -14,6 +14,7 @@ import java.util.List;
 import uk.co.thomaspickup.spacewars.gage.Game;
 import uk.co.thomaspickup.spacewars.gage.engine.AssetStore;
 import uk.co.thomaspickup.spacewars.gage.engine.ElapsedTime;
+import uk.co.thomaspickup.spacewars.gage.engine.audio.Music;
 import uk.co.thomaspickup.spacewars.gage.engine.graphics.IGraphics2D;
 import uk.co.thomaspickup.spacewars.gage.engine.input.Input;
 import uk.co.thomaspickup.spacewars.gage.engine.input.TouchEvent;
@@ -72,6 +73,9 @@ public class EndGameScreen extends GameScreen {
     private final float LEVEL_WIDTH = 1000.0f;
     private final float LEVEL_HEIGHT = 1000.0f;
 
+    // Private variables for the background music
+    private Music mainMusic;
+
     // /////////////////////////////////////////////////////////////////////////
     // Constructor
     // /////////////////////////////////////////////////////////////////////////
@@ -79,7 +83,7 @@ public class EndGameScreen extends GameScreen {
     /**
      * Constructor to create a new EndGameScreen
      *
-     * @param game     Game that this screen is to be built on
+     * @param game Game that this screen is to be built on
      */
     public EndGameScreen(Game game, boolean gameWon, int enemiesDefeated, LayerViewport mLayerViewport) {
         super("EndGameScreen", game);
@@ -99,6 +103,13 @@ public class EndGameScreen extends GameScreen {
 
         // Sets up the UI Element Bounds
         setUpUI(game);
+
+        // Plays the music
+        if (gameWon) {
+            playMusic(game, "MusicVictory");
+        } else {
+            playMusic(game, "MusicDefeat");
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -152,7 +163,7 @@ public class EndGameScreen extends GameScreen {
 
         // Draws the title image
         Bitmap titleImage = mGame.getAssetManager().getBitmap("TitleImage");
-        graphics2D.drawBitmap(titleImage, null,mTitleBound,null);
+        graphics2D.drawBitmap(titleImage, null, mTitleBound, null);
 
         // Draw Result (Win // Lose)
         graphics2D.drawText(titleText, titleStartX, titleStartY, titlePaintCan);
@@ -181,11 +192,11 @@ public class EndGameScreen extends GameScreen {
                 .getAssetManager().getBitmap("SpaceBackground"), this);
 
         // Defines the Title Image Rect
-        int titleWidth =(int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
-        int titleHeight = (int) (game.getScreenHeight() *  0.373); // On 1080 Screen Height = 400
+        int titleWidth = (int) (game.getScreenWidth() * 0.583); // On 1920 Screen Width = 1120
+        int titleHeight = (int) (game.getScreenHeight() * 0.373); // On 1080 Screen Height = 400
         int spacingX = (game.getScreenWidth() / 2) - (titleWidth / 2);
         int spacingY = paddingY * 2;
-        mTitleBound = new Rect(spacingX,spacingY, spacingX+titleWidth, spacingY + titleHeight);
+        mTitleBound = new Rect(spacingX, spacingY, spacingX + titleWidth, spacingY + titleHeight);
 
         // Decides based on data passed whether to show a Win or Defeat message
         if (gameWon) {
@@ -201,7 +212,7 @@ public class EndGameScreen extends GameScreen {
         titlePaintCan.setTextSize(100f);
 
         // Works out the size of the text
-        titlePaintCan.getTextBounds(titleText,0,titleText.length(),mTitleTextBound);
+        titlePaintCan.getTextBounds(titleText, 0, titleText.length(), mTitleTextBound);
 
         // Sets the startX and startY
         titleStartY = mTitleBound.bottom + (paddingY * 2) + mTitleTextBound.height();
@@ -245,5 +256,27 @@ public class EndGameScreen extends GameScreen {
 
         // Loads in sounds
         assetManager.loadAndAddSound("ButtonClick", "sfx/sfx_buttonclick.mp3");
+        assetManager.loadAndAddSound("MusicVictory", "sfx/sfx_victory.mp3");
+        assetManager.loadAndAddSound("MusicDefeat", "sfx/sfx_defeat.mp3");
+    }
+
+    /**
+     * Plays the background music
+     *
+     * @param game Game the music belongs to
+     * @param music Asset identifier to play
+     */
+    private void playMusic(Game game, String music) {
+        // Gets the Song imported prior
+        mainMusic = game.getAssetManager().getMusic(music);
+
+        // Sets the volume according to settings handler
+        mainMusic.setVolume((float) settingsHandler.getSound(getGame().getContext()) * 0.75f);
+
+        // Sets looping to true
+        mainMusic.setLopping(true);
+
+        // Plays the song
+        mainMusic.play();
     }
 }
